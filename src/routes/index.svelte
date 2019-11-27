@@ -1,55 +1,26 @@
 <script>
-	import Button, {Icon, Label} from '@smui/button'
+    import ApplicationList from '../components/ApplicationList.svelte'
+    import Fab, { Label, Icon } from '@smui/fab'
 </script>
 
 <style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
-
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
-
-	figure {
-		margin: 0 0 1em 0;
-	}
-
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	}
-
-	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
+    .btn-register {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+    }
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+    <title>Burst Applications</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<div>
+    <ApplicationList/>
+    <div class="btn-register">
+        <Fab on:click={() => clicked++} extended>
+            <Icon class="material-icons">add_to_queue</Icon>
+            <Label>Register</Label></Fab>
+    </div>
+</div>
 
-<figure>
-	<img alt='Borat' src='great-success.png'>
-	<figcaption>HIGH FIVE!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
-
-<Button on:click={() => {console.log('clicked')}}>
-	<Icon class="material-icons">thumb_up</Icon>
-	<Label>Click Me</Label>
-</Button>
