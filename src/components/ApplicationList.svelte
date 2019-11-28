@@ -16,6 +16,7 @@
 </style>
 
 <div class="container">
+    <p>{$store.syncProgress}</p>
     {#each  $store.apps as data}
         <div class="item">
             <ApplicationItem {data}/>

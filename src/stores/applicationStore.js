@@ -1,21 +1,32 @@
 import { writable } from 'svelte/store'
-import { httpClientProvider } from '../utils/httpClientProvider'
+import { ApplicationTokenService, Events } from '../services/applicationTokenService'
+import { isClientSide } from '../utils/isClientSide'
 // when start loading, need to use indexdb as storage cache
 
 const InitialState = {
     filter: null,
     apps: [],
+    syncProgress: 0,
 }
 
 const store = writable(InitialState, (set) => {
     // todo: use a service for caching stuff
-    const client = httpClientProvider.get()
-    client.get('/apps')
-        .then(({ response }) => {
-            set({ ...InitialState, apps: response.result })
-        })
-        .catch(console.error)
+
+    if (!isClientSide()) return
+
+    const service = new ApplicationTokenService()
+    service.addEventListener(Events.Progress, ({detail}) => {
+        const { total, processed } = detail
+        console.log(total, processed)
+        store.update(state => ({
+            ...state,
+            syncProgress: total && processed / total,
+        }))
+    })
+    service.syncTokens()
+
     return () => {
+        service.removeEventListener()
         set(InitialState)
     }
 })
