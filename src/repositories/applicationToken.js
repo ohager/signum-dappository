@@ -1,11 +1,3 @@
-import Dexie from 'dexie'
-import { ApplicationToken } from './applicationToken'
-
-const database = new Dexie('app-store')
-
-const Version = 1
-
-
 /** Original Contract Data
  at: "347549679294837383"
  atRS: "BURST-QWN9-LY64-M5VL-2YPNB"
@@ -29,11 +21,26 @@ const Version = 1
  stopped: false
  */
 
-const Schema = {
-    appTokens: '++, &at, creator' // created, name, description, tags, active, donation, donationCount',
+import MagicMapper from 'magic-mapper'
+
+const mapper = new MagicMapper({ exclusive: true })
+
+const mappingSchema = {
+    at: MagicMapper.Direct,
+    creator: MagicMapper.Direct,
+    machineData: MagicMapper.Direct, // TODO: map later with ContractHelper
 }
 
-database.version(Version).stores(Schema)
-database.appTokens.mapToClass(ApplicationToken)
+export class ApplicationToken {
+    constructor(data) {
+        // Object.keys(data).map( k => this[k] = data[k] )
+        this.at = data.at
+        this.creator = data.creator
+        this.machineData = data.machineData
+    }
 
-export const db = database
+    static mapFromContract(contract) {
+        const data = mapper.map(contract, mappingSchema)
+        return new ApplicationToken(data)
+    }
+}

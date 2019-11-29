@@ -10,7 +10,6 @@ const InitialState = {
 }
 
 const store = writable(InitialState, (set) => {
-    // todo: use a service for caching stuff
 
     if (!isClientSide()) return
 

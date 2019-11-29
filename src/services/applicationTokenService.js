@@ -1,6 +1,7 @@
 import { applicationTokenRepository } from '../repositories/applicationTokenRepository.js'
 import { eventDispatcher } from '../utils/eventDispatcher'
 import { BurstApi } from '../utils/burstApi.js'
+import { ApplicationToken } from '../repositories/applicationToken'
 
 export const Events = {
     Start: 'start',
@@ -11,6 +12,7 @@ export const Events = {
 
 const FirstAppTokenContractId = '17408006744691164004'
 const MaxParallelFetches = 6
+const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name
 
 export class ApplicationTokenService extends EventTarget {
     constructor(repository = applicationTokenRepository) {
@@ -33,8 +35,13 @@ export class ApplicationTokenService extends EventTarget {
                     chunkedIds.push(contractIds.pop())
                 }
                 const contracts = await this._fetchContractDetailsChunked(chunkedIds)
-                // put into database
-                console.log(total, contractIds.length)
+                const appTokens = contracts
+                    .filter( c => c.name.startsWith(ApplicationTokenName))
+                    .filter( t => !t.dead)
+                    .map(ApplicationToken.mapFromContract)
+                console.log('bla', appTokens)
+                this._repository.upsertBulk(appTokens)
+
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
 
