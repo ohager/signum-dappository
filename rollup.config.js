@@ -59,7 +59,11 @@ export default {
                 namedExports: {
                     '@burstjs/core': [
                         'ApiSettings',
-                        'composeApi'
+                        'composeApi',
+                        'ContractHelper'
+                    ],
+                    '@burstjs/util': [
+                        'convertNQTStringToNumber',
                     ],
                 },
             }),

@@ -22,25 +22,67 @@
  */
 
 import MagicMapper from 'magic-mapper'
+import {ContractHelper} from '@burstjs/core'
 
 const mapper = new MagicMapper({ exclusive: true })
 
 const mappingSchema = {
     at: MagicMapper.Direct,
     creator: MagicMapper.Direct,
-    machineData: MagicMapper.Direct, // TODO: map later with ContractHelper
+    machineData: MagicMapper.Direct,
+    description: MagicMapper.Direct,
+    creationBlock: MagicMapper.Direct,
+}
+
+const infoMappingSchema = {
+    name: MagicMapper.Direct,
+    desc: MagicMapper.Direct,
+    img: MagicMapper.Direct,
+    repo: MagicMapper.Direct,
+    tags: MagicMapper.Direct,
+}
+
+const ContractDataIndices = {
+    Donated: 0,
+    DonationCount: 1,
+    Active: 2,
+    Owner: 3
+}
+
+function parseMachineData(contract) {
+    const helper = new ContractHelper(contract)
+    const isActive = parseInt(helper.getVariableAsDecimal(ContractDataIndices.Active)) === 1
+    const donationPlanck = helper.getVariableAsDecimal(ContractDataIndices.Donated)
+    const donationCount = helper.getVariableAsDecimal(ContractDataIndices.DonationCount)
+    const owner = helper.getVariableAsDecimal(ContractDataIndices.Owner)
+    return {
+        isActive,
+        donationPlanck,
+        donationCount,
+        owner
+    }
 }
 
 export class ApplicationToken {
     constructor(data) {
-        // Object.keys(data).map( k => this[k] = data[k] )
-        this.at = data.at
-        this.creator = data.creator
-        this.machineData = data.machineData
+        Object.keys(data).forEach(k => this[k] = data[k])
+    }
+
+    static schema() {
+        return 'at, creator, owner, name, creationBlock, donation, donationCount'
     }
 
     static mapFromContract(contract) {
         const data = mapper.map(contract, mappingSchema)
-        return new ApplicationToken(data)
+        try {
+            const info = mapper.map(JSON.parse(data.description), infoMappingSchema)
+            const state = parseMachineData(contract)
+            delete data.description
+            delete data.machineData
+            return new ApplicationToken({ ...data, ...info, ...state})
+        } catch (e) {
+            console.warn('JSON Parse error')
+            return null
+        }
     }
 }

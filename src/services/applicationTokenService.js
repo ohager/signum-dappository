@@ -10,7 +10,7 @@ export const Events = {
     Finish: 'finish',
 }
 
-const FirstAppTokenContractId = '17408006744691164004'
+const FirstAppTokenContractId = '17408006744691164004' // TODO: Make this configurable
 const MaxParallelFetches = 6
 const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name
 
@@ -22,7 +22,6 @@ export class ApplicationTokenService extends EventTarget {
         this._contractApi = BurstApi.contract
     }
 
-
     async syncTokens() {
         this._dispatch(Events.Start)
         try {
@@ -30,27 +29,28 @@ export class ApplicationTokenService extends EventTarget {
             const total = contractIds.length
             this._dispatch(Events.Progress, { total, processed: 0 })
             while (contractIds.length) {
-                let chunkedIds = []
+                const chunkedIds = []
                 for (let i = 0; i < MaxParallelFetches; ++i) {
                     chunkedIds.push(contractIds.pop())
                 }
                 const contracts = await this._fetchContractDetailsChunked(chunkedIds)
                 const appTokens = contracts
-                    .filter( c => c.name.startsWith(ApplicationTokenName))
-                    .filter( t => !t.dead)
+                    .filter(c => c.name.startsWith(ApplicationTokenName))
+                    .filter(t => !t.dead)
                     .map(ApplicationToken.mapFromContract)
-                console.log('bla', appTokens)
-                this._repository.upsertBulk(appTokens)
-
+                    .filter(m => m)
+                await this._repository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
-
-            console.log(response)
         } catch (e) {
             this._dispatch(Events.Error, e.message)
         } finally {
             this._dispatch(Events.Finish)
         }
+    }
+
+    async getTokens(filter) {
+        return await this._repository.get()
     }
 
     async _fetchContractIds() {

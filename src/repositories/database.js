@@ -30,7 +30,7 @@ const Version = 1
  */
 
 const Schema = {
-    appTokens: '++, &at, creator' // created, name, description, tags, active, donation, donationCount',
+    appTokens: ApplicationToken.schema() // created, name, description, tags, active, donation, donationCount',
 }
 
 database.version(Version).stores(Schema)

@@ -23,6 +23,7 @@
   "dependencies": {
     "@burstjs/core": "^0.4.3",
     "@burstjs/http": "^0.4.3",
+    "@burstjs/util": "^0.4.3",
     "compression": "^1.7.1",
     "dexie": "^2.0.4",
     "magic-mapper": "0.0.11",

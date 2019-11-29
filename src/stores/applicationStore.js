@@ -1,44 +1,52 @@
-import { writable } from 'svelte/store'
+import { readable, writable } from 'svelte/store'
 import { ApplicationTokenService, Events } from '../services/applicationTokenService'
 import { isClientSide } from '../utils/isClientSide'
-// when start loading, need to use indexdb as storage cache
 
-const InitialState = {
+const InitialSyncProgressState = 0
+const UpdateInterval = 60 * 1000
+const InitialTokensState = {
     filter: null,
-    apps: [],
-    syncProgress: 0,
+    items: [],
 }
 
-const store = writable(InitialState, (set) => {
-
+const syncProgress$ = readable(InitialSyncProgressState, (set) => {
     if (!isClientSide()) return
-
     const service = new ApplicationTokenService()
-    service.addEventListener(Events.Progress, ({detail}) => {
+    service.addEventListener(Events.Progress, ({ detail }) => {
         const { total, processed } = detail
-        console.log(total, processed)
-        store.update(state => ({
-            ...state,
-            syncProgress: total && processed / total,
-        }))
+        set(total && processed / total)
     })
     service.syncTokens()
+    const interval = setInterval(service.syncTokens, 60*1000)
 
     return () => {
+        clearInterval(interval)
         service.removeEventListener()
-        set(InitialState)
+        set(InitialSyncProgressState)
     }
 })
 
-const filterBy = (filter) => {
+const tokens$ = writable(InitialTokensState, (set) => {
+    if (!isClientSide()) return
+    const service = new ApplicationTokenService()
+    service.getTokens().then(tokens => {
+        tokens$.update(state => ({
+            ...state,
+            items: tokens,
+        }))
+    })
+
+    return () => {
+        set(InitialTokensState)
+    }
+})
+
+const filterTokensBy = filter => {
     // todo apply filter
-    store.update((state) => ({
-            filter, apps,
-        }),
-    )
 }
 
 export {
-    store,
-    filterBy,
+    tokens$,
+    syncProgress$,
+    filterTokensBy,
 }
