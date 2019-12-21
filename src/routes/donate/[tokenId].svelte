@@ -1,0 +1,24 @@
+<script context="module">
+    export async function preload({ params, query }) {
+        const {tokenId} = params;
+        return {tokenId}
+    }
+</script>
+
+<script>
+    import Donation from '../../features/donation/Donation.svelte'
+    import { tokens$ } from '../../stores/applicationStore'
+    import { beforeUpdate } from 'svelte'
+
+    export let tokenId
+
+    let token = {}
+
+    $: token = $tokens$.items.find( i => i.at === tokenId)
+
+
+
+</script>
+
+<Donation {token} />
+

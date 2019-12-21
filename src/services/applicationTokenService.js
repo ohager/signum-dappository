@@ -35,10 +35,10 @@ export class ApplicationTokenService extends EventTarget {
                 }
                 const contracts = await this._fetchContractDetailsChunked(chunkedIds)
                 const appTokens = contracts
-                    .filter(c => c.name.startsWith(ApplicationTokenName))
-                    .filter(t => !t.dead)
+                    .filter(contract => contract.name.startsWith(ApplicationTokenName))
+                    .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
-                    .filter(m => m)
+                    .filter(token => token && token.isActive)
                 await this._repository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
@@ -48,6 +48,15 @@ export class ApplicationTokenService extends EventTarget {
             this._dispatch(Events.Finish)
         }
     }
+
+    getCollection() {
+        return this._repository.collection
+    }
+
+    async getToken(tokenId){
+        return await this.getCollection().where('at').equals(tokenId).first()
+    }
+
 
     async getTokens(filter) {
         return await this._repository.get()
@@ -59,9 +68,15 @@ export class ApplicationTokenService extends EventTarget {
         return atIds.slice(firstContractId - 1)
     }
 
+    async toggleFavorite(id){
+        const {favorite} = await this._repository.get(id);
+        await this._repository.update(id, {favorite:!favorite})
+    }
+
     _fetchContractDetailsChunked(contractIds) {
         return Promise.all(
             contractIds.map(cid => this._contractApi.getContract(cid)),
         )
     }
+
 }

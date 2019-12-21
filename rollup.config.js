@@ -62,6 +62,9 @@ export default {
                         'composeApi',
                         'ContractHelper'
                     ],
+                    '@burstjs/contracts': [
+                        'ContractDataView',
+                    ],
                     '@burstjs/util': [
                         'convertNQTStringToNumber',
                     ],

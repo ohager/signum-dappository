@@ -1,18 +1,20 @@
 <script>
-    import Card, { Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons } from '@smui/card'
-    import Button, { Label } from '@smui/button'
-    import IconButton, { Icon } from '@smui/icon-button'
-    import List, { Item, Text } from '@smui/list'
-    import { onMount } from 'svelte'
-    import { convertNQTStringToNumber } from '@burstjs/util'
+    import Card, {ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media} from '@smui/card'
+    import Button, {Label} from '@smui/button'
+    import IconButton, {Icon} from '@smui/icon-button'
+    import { goto, prefetch } from '@sapper/app'
+    import {convertNQTStringToNumber} from '@burstjs/util'
 
     export let data = {
+        at: '',
         name: '',
         desc: '',
         repo: '',
         img: null,
         tags: [],
     }
+
+    const DonationPath = `/donate/${data.at}`
 
     const PlaceholderImage = 'https://via.placeholder.com/320x180.png?text=16x9'
 
@@ -23,7 +25,11 @@
         console.log('clicked')
     }
     const handleDonate = () => {
-        console.log('donate')
+        goto(DonationPath)
+    }
+
+    const prefetchDonate = () => {
+        prefetch(DonationPath)
     }
 </script>
 
@@ -53,7 +59,7 @@
     </PrimaryAction>
     <Actions>
         <ActionButtons>
-            <Button on:click={handleDonate}>
+            <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
                 <Label>Donate</Label>
             </Button>
         </ActionButtons>

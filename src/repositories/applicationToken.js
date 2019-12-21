@@ -22,7 +22,7 @@
  */
 
 import MagicMapper from 'magic-mapper'
-import {ContractHelper} from '@burstjs/core'
+import {ContractDataView} from '@burstjs/contracts'
 
 const mapper = new MagicMapper({ exclusive: true })
 
@@ -50,11 +50,11 @@ const ContractDataIndices = {
 }
 
 function parseMachineData(contract) {
-    const helper = new ContractHelper(contract)
-    const isActive = parseInt(helper.getVariableAsDecimal(ContractDataIndices.Active)) === 1
-    const donationPlanck = helper.getVariableAsDecimal(ContractDataIndices.Donated)
-    const donationCount = helper.getVariableAsDecimal(ContractDataIndices.DonationCount)
-    const owner = helper.getVariableAsDecimal(ContractDataIndices.Owner)
+    const view = new ContractDataView(contract)
+    const isActive = parseInt(view.getVariableAsDecimal(ContractDataIndices.Active)) === 1
+    const donationPlanck = view.getVariableAsDecimal(ContractDataIndices.Donated)
+    const donationCount = view.getVariableAsDecimal(ContractDataIndices.DonationCount)
+    const owner = view.getVariableAsDecimal(ContractDataIndices.Owner)
     return {
         isActive,
         donationPlanck,
@@ -81,8 +81,7 @@ export class ApplicationToken {
             delete data.machineData
             return new ApplicationToken({ ...data, ...info, ...state})
         } catch (e) {
-            console.warn('JSON Parse error')
-            return null
+            return null // ignore unreadable contract
         }
     }
 }

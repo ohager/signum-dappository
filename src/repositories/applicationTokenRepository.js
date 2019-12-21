@@ -7,6 +7,10 @@ export class ApplicationTokenRepository {
         this._db = db.appTokens;
     }
 
+    get collection() {
+        return this._db;
+    }
+
     async upsert(token){
         await this._db.put(token)
     }
@@ -17,8 +21,12 @@ export class ApplicationTokenRepository {
 
     async get(filter, order){
         // TODO: apply filter
-        return this._db.orderBy(order).toArray()
+        return await this._db.orderBy(order).toArray()
         // return await this._db.
+    }
+
+    async update(id, data){
+        return await this._db.update(id, data)
     }
 }
 
