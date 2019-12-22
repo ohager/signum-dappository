@@ -28,7 +28,8 @@
 
     function mountDeepLink(amount) {
         const amountPlanck = calculateTotalAmountPlanck(amount)
-        return `burst://requestBurst&receiver=${token.at}&amountNQT=${amountPlanck}&feeNQT=${suggestedFeePlanck}&immutable=true`
+        const address = convertNumericIdToAddress(token.at)
+        return `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFeePlanck}&immutable=false`
     }
 
     function calculateTotalAmountPlanck(amount, withFee = false) {
@@ -42,7 +43,7 @@
 
     function mountInfo(amount) {
         const info = []
-        info.push(['Receiver:', convertNumericIdToAddress(token.at)])
+        info.push(['Recipient:', convertNumericIdToAddress(token.at)])
         info.push(['Donation:', amount])
         info.push(['Activation Costs:', `${convertNQTStringToNumber(ActivationCostsPlanck)} (will be entirely reimbursed)`])
         info.push(['Fee:', convertNQTStringToNumber(suggestedFeePlanck)])
