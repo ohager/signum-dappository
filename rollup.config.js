@@ -53,6 +53,7 @@ export default {
             resolve({
                 browser: true,
                 dedupe,
+                preferBuiltins:false,
             }),
             postcss(postcssOptions()),
             commonjs({
@@ -67,6 +68,8 @@ export default {
                     ],
                     '@burstjs/util': [
                         'convertNQTStringToNumber',
+                        'convertNumberToNQTString',
+                        'convertNumericIdToAddress'
                     ],
                 },
             }),
