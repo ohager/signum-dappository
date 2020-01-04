@@ -69,7 +69,8 @@ export default {
                     '@burstjs/util': [
                         'convertNQTStringToNumber',
                         'convertNumberToNQTString',
-                        'convertNumericIdToAddress'
+                        'convertNumericIdToAddress',
+                        'createDeeplink'
                     ],
                 },
             }),

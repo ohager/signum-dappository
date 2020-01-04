@@ -33,19 +33,6 @@
     }
 </script>
 
-<style>
-    .headline {
-        border-radius: 4px;
-        background-color: rgba(0, 0, 0, 0.33);
-        padding: 8px;
-        color: white;
-        position: absolute;
-        top: 16px;
-        left: 16px;
-    }
-</style>
-
-
 <Card style="width: 360px;">
     <PrimaryAction on:click={handleClick}>
         <Media aspectRatio="16x9" style={mediaStyle}></Media>

@@ -1,5 +1,5 @@
 <script>
-    import ApplicationList from '../features/application/ApplicationList.svelte'
+    import ApplicationList from '../features/application/list/ApplicationList.svelte'
     import Fab, { Label, Icon } from '@smui/fab'
 </script>
 

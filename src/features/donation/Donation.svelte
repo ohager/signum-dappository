@@ -2,10 +2,15 @@
     import QrCode from 'qrcode'
     import { beforeUpdate, onMount } from 'svelte'
     import { goto } from '@sapper/app'
-    import Paper from '@smui/paper'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import { convertNumberToNQTString, convertNumericIdToAddress, convertNQTStringToNumber } from '@burstjs/util'
+    import Page from '../../components/Page.svelte'
+    import {
+        convertNumberToNQTString,
+        convertNumericIdToAddress,
+        convertNQTStringToNumber,
+        createDeeplink,
+    } from '@burstjs/util'
     import { BurstApi } from '../../utils/burstApi'
 
     export let token = {
@@ -26,11 +31,21 @@
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = QrCodeCanvas && !isEmptyAmount && isValidAmount
 
-    function mountDeepLink(amount) {
+    function mountDeepLink(amount, cip22 = false) {
         const amountPlanck = calculateTotalAmountPlanck(amount)
         const address = convertNumericIdToAddress(token.at)
-        return `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFeePlanck}&immutable=false`
+        return cip22 ? createDeeplink({
+            domain: 'payment',
+            action: 'send',
+            payload: {
+                amountPlanck,
+                receiver: address,
+                feePlanck: suggestedFeePlanck,
+                immutable: false,
+            },
+        }) : `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFeePlanck}&immutable=false`
     }
+
 
     function calculateTotalAmountPlanck(amount, withFee = false) {
         const amountPlanck = convertNumberToNQTString(amount || 0)
@@ -53,6 +68,7 @@
     }
 
     function openDeepLink() {
+        console.log(mountDeepLink(amount, true))
         goto(mountDeepLink(amount))
     }
 
@@ -83,10 +99,6 @@
 </script>
 
 <style>
-    .donation {
-        margin: 0 auto;
-        max-width: 80%;
-    }
 
     h4 {
         margin: 0.5rem
@@ -186,50 +198,48 @@
 
 </style>
 
-<div class="donation">
-    <Paper>
-        <div class="donation__header">
-            <img src="/img/donation.svg" alt="donate">
+<Page>
+    <div class="donation__header">
+        <img src="/img/donation.svg" alt="donate">
+    </div>
+    <div class="donation__form">
+        <div class="donation__form--header">
+            <img src={token.img} alt={`${token.name}-logo`}>
+            <h4 class="mdc-typography--headline4">
+                {token.name}
+            </h4>
         </div>
-        <div class="donation__form">
-            <div class="donation__form--header">
-                <img src={token.img} alt={`${token.name}-logo`}>
-                <h4 class="mdc-typography--headline4">
-                    {token.name}
-                </h4>
-            </div>
-            <div class="donation__form--input">
-                <div class="donation__form--input-field">
-                    <TextField bind:value={amount}
-                               invalid={!isEmptyAmount && !isValidAmount}
-                               label="Donation Amount"
-                    />
-                    {#if isEmptyAmount}
-                        <HelperText>Enter the amount you like to donate</HelperText>
-                    {:else}
-                        <HelperText validationMsg>Invalid Amount</HelperText>
-                    {/if}
-                </div>
-                <span class="mdc-typography--headline6">BURST</span>
-            </div>
-            <div class="donation__form--qrcode">
-                <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
-                {#if isQrCodeVisible}
-                    <section>
-                        <p>
-                            Scan the code with e.g. Phoenix Mobile Wallet,
-                            or tap/click the QR Code to open an installed wallet
-                        </p>
-
-                        <ul>
-                            {#each info as [label, value]}
-                                <li class="donation__form--qrcode-infoitem">
-                                    { `${label} ${value}` }</li>
-                            {/each}
-                        </ul>
-                    </section>
+        <div class="donation__form--input">
+            <div class="donation__form--input-field">
+                <TextField bind:value={amount}
+                           invalid={!isEmptyAmount && !isValidAmount}
+                           label="Donation Amount"
+                />
+                {#if isEmptyAmount}
+                    <HelperText>Enter the amount you like to donate</HelperText>
+                {:else}
+                    <HelperText validationMsg>Invalid Amount</HelperText>
                 {/if}
             </div>
+            <span class="mdc-typography--headline6">BURST</span>
         </div>
-    </Paper>
-</div>
+        <div class="donation__form--qrcode">
+            <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
+            {#if isQrCodeVisible}
+                <section>
+                    <p>
+                        Scan the code with e.g. Phoenix Mobile Wallet,
+                        or tap/click the QR Code to open an installed wallet
+                    </p>
+
+                    <ul>
+                        {#each info as [label, value]}
+                            <li class="donation__form--qrcode-infoitem">
+                                { `${label} ${value}` }</li>
+                        {/each}
+                    </ul>
+                </section>
+            {/if}
+        </div>
+    </div>
+</Page>
