@@ -1,5 +1,5 @@
 <script>
-    import ApplicationCreationForm from '../../features/application/new/ApplicationCreationForm.svelte'
+    import ApplicationRegistry from '../../features/application/registry/ApplicationRegistry.svelte'
 </script>
 
-<ApplicationCreationForm />
+<ApplicationRegistry />

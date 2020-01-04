@@ -4,6 +4,7 @@
     import { goto } from '@sapper/app'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
+    import Button, { Label } from '@smui/button'
     import Page from '../../components/Page.svelte'
     import {
         convertNumberToNQTString,
@@ -12,6 +13,7 @@
         createDeeplink,
     } from '@burstjs/util'
     import { BurstApi } from '../../utils/burstApi'
+    import { RouteHome } from '../../utils/routes'
 
     export let token = {
         at: '',
@@ -23,7 +25,7 @@
 
     let amount = ''
     let QrCodeCanvas = null
-    let suggestedFeePlanck = null
+    let suggestedFeePlanck = convertNumberToNQTString(0.05)
     let info = []
     let ActivationCostsPlanck = convertNumberToNQTString(100) // todo get from contract
 
@@ -65,6 +67,10 @@
         info.push(['---', ''])
         info.push(['Total:', `${convertNQTStringToNumber(calculateTotalAmountPlanck(amount, true))} BURST`])
         return info
+    }
+
+    function handleCancel() {
+        goto(RouteHome())
     }
 
     function openDeepLink() {
@@ -134,6 +140,14 @@
         padding-right: 1rem;
     }
 
+    .donation__form--footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+
+
     .donation__form--input {
         display: flex;
         align-items: center;
@@ -174,10 +188,6 @@
     }
 
     @media (max-width: 480px) {
-        .donation {
-            max-width: 100%;
-        }
-
         .donation__form--qrcode {
             flex-direction: column;
         }
@@ -240,6 +250,11 @@
                     </ul>
                 </section>
             {/if}
+        </div>
+        <div class="donation__form--footer">
+            <Button on:click={handleCancel}>
+                <Label>Cancel</Label>
+            </Button>
         </div>
     </div>
 </Page>

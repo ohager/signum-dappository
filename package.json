@@ -1,6 +1,14 @@
 {
   "name": "burst-applications",
-  "description": "TODO",
+  "description": "A decentralized application and tool registry using Burst blockchain and Smart Contracts",
+  "keywords": [
+    "blockchain",
+    "burstcoin",
+    "dApp",
+    "dWeb",
+    "smart contracts",
+    "web3.0"
+  ],
   "author": {
     "email": "ohager@burst-alliance.org",
     "name": "ohager"

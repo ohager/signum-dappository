@@ -1,6 +1,19 @@
 <script>
     import ApplicationList from '../features/application/list/ApplicationList.svelte'
     import Fab, { Label, Icon } from '@smui/fab'
+    import {goto, prefetch} from '@sapper/app'
+    import { RouteRegister } from '../utils/routes'
+
+
+    function handleGotoRegister(){
+        goto(RouteRegister())
+    }
+
+    const prefetchRegister = () => {
+        prefetch(RouteRegister())
+    }
+
+
 </script>
 
 <style>
@@ -18,7 +31,7 @@
 <div>
     <ApplicationList/>
     <div class="btn-register">
-        <Fab on:click={() => console.log('clicked')} extended>
+        <Fab on:mouseenter={prefetchRegister}  on:click={handleGotoRegister} extended>
             <Icon class="material-icons">add_to_queue</Icon>
             <Label>Register</Label>
         </Fab>

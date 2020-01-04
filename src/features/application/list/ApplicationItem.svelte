@@ -4,6 +4,7 @@
     import IconButton, {Icon} from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import {convertNQTStringToNumber} from '@burstjs/util'
+    import { RouteDonate } from '../../../utils/routes'
 
     export let data = {
         at: '',
@@ -14,7 +15,7 @@
         tags: [],
     }
 
-    const DonationPath = `/donate/${data.at}`
+    const DonationPath = RouteDonate(data.at)
 
     const PlaceholderImage = 'https://via.placeholder.com/320x180.png?text=16x9'
 
