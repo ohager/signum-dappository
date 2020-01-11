@@ -1,6 +1,7 @@
 import { applicationTokenRepository } from '../repositories/applicationTokenRepository.js'
 import { eventDispatcher } from '../utils/eventDispatcher'
 import { BurstApi } from '../utils/burstApi.js'
+import { Config } from '../config.js'
 import { ApplicationToken } from '../repositories/applicationToken'
 
 export const Events = {
@@ -10,7 +11,6 @@ export const Events = {
     Finish: 'finish',
 }
 
-const FirstAppTokenContractId = '17408006744691164004' // TODO: Make this configurable
 const MaxParallelFetches = 6
 const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name
 
@@ -57,14 +57,13 @@ export class ApplicationTokenService extends EventTarget {
         return await this.getCollection().where('at').equals(tokenId).first()
     }
 
-
     async getTokens(filter) {
         return await this._repository.get()
     }
 
     async _fetchContractIds() {
         const { atIds } = await this._contractApi.getAllContractIds(null)
-        const firstContractId = atIds.lastIndexOf(FirstAppTokenContractId)
+        const firstContractId = atIds.lastIndexOf(Config.FirstApplicationContractId)
         return atIds.slice(firstContractId - 1)
     }
 

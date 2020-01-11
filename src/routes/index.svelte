@@ -1,9 +1,9 @@
 <script>
+    // TODO: use context to inject config for dev and prod
     import ApplicationList from '../features/application/list/ApplicationList.svelte'
     import Fab, { Label, Icon } from '@smui/fab'
     import {goto, prefetch} from '@sapper/app'
     import { RouteRegister } from '../utils/routes'
-
 
     function handleGotoRegister(){
         goto(RouteRegister())

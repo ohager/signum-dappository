@@ -34,37 +34,14 @@
             || isInvalidImage
             || dataLength > MaxDataLength
 
-    // TODO: ask for Passphrase first and verify account (existence and balance)
-
-    function handleCancel() {
-        goto(RouteHome())
-    }
-
-    function handleRegister() {
-        console.log('registering')
-    }
-
 </script>
 
 <style>
-    .creation__form {
-        display: block;
-        max-width: 600px;
-        margin: 0 auto
-    }
-
     .form--input {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 1rem;
-    }
-
-    .creation__form--footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: 2rem;
     }
 
     .form--input-field {
@@ -78,9 +55,9 @@
 
 </style>
 
-<div class="creation__form">
-    <div class="creation__form--input">
-        <div class="creation__form--input-field">
+<section>
+    <div class="form--input">
+        <div class="form--input-field">
             <TextField bind:value={name}
                        invalid={isInvalidName}
                        label={nameFieldLabel}
@@ -95,8 +72,8 @@
             {/if}
         </div>
     </div>
-    <div class="creation__form--input">
-        <div class="creation__form--input-field">
+    <div class="form--input">
+        <div class="form--input-field">
             <TextField bind:value={desc}
                        invalid={isInvalidDescription}
                        label={descriptionFieldLabel}
@@ -111,8 +88,8 @@
             {/if}
         </div>
     </div>
-    <div class="creation__form--input">
-        <div class="creation__form--input-field">
+    <div class="form--input">
+        <div class="form--input-field">
             <TextField bind:value={repo}
                        invalid={isInvalidRepo}
                        label={repoFieldLabel}
@@ -126,8 +103,8 @@
             {/if}
         </div>
     </div>
-    <div class="creation__form--input">
-        <div class="creation__form--input-field">
+    <div class="form--input">
+        <div class="form--input-field">
             <TextField bind:value={img}
                        invalid={isInvalidImage}
                        label={imageFieldLabel}
@@ -143,5 +120,5 @@
     </div>
 
     <!-- TODO: License Field -->
-</div>
+</section>
 

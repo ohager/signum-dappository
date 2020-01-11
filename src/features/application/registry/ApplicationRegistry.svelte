@@ -1,6 +1,7 @@
 <script>
     import Page from '../../../components/Page.svelte'
     import ApplicationRegistryForm from './ApplicationRegistryForm.svelte'
+    import ApplicationRegistryTabForm from './ApplicationRegistryTabForm.svelte'
 </script>
 <style>
     .creation__header {
@@ -18,7 +19,7 @@
 
 <Page>
     <div class="creation__header">
-        <img src="/img/donation.svg" alt="register">
+        <img src="/img/registration.svg" alt="registration">
     </div>
-    <ApplicationRegistryForm />
+    <ApplicationRegistryTabForm />
 </Page>
