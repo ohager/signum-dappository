@@ -197,12 +197,11 @@
         }
     }
 
-
-    :global(.mdc-text-field__input) {
+    :global(.donation__form .mdc-text-field__input) {
         font-size: 2rem !important;
     }
 
-    :global(.mdc-text-field) {
+    :global(.donation__form .mdc-text-field) {
         width: 100% !important;
     }
 

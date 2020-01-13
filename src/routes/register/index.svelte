@@ -1,5 +1,5 @@
 <script>
-    import ApplicationRegistry from '../../features/application/registry/ApplicationRegistry.svelte'
+    import ApplicationRegistration from '../../features/application/registration/ApplicationRegistration.svelte'
 </script>
 
-<ApplicationRegistry />
+<ApplicationRegistration />

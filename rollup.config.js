@@ -60,8 +60,11 @@ export default {
                 namedExports: {
                     '@burstjs/core': [
                         'ApiSettings',
-                        'composeApi',
-                        'ContractHelper'
+                        'composeApi'
+                    ],
+                    '@burstjs/crypto': [
+                        'generateMasterKeys',
+                        'getAccountIdFromPublicKey'
                     ],
                     '@burstjs/contracts': [
                         'ContractDataView',
@@ -70,7 +73,9 @@ export default {
                         'convertNQTStringToNumber',
                         'convertNumberToNQTString',
                         'convertNumericIdToAddress',
-                        'createDeeplink'
+                        'convertAddressToNumericId',
+                        'createDeeplink',
+                        'isBurstAddress'
                     ],
                 },
             }),

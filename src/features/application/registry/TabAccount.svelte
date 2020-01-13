@@ -1,3 +1,0 @@
-<div>
-    Tab One
-</div>

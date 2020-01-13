@@ -7,6 +7,16 @@
     import TabAccount from './TabAccount.svelte'
     import TabApplicationInfo from './TabApplicationInfo.svelte'
     import TabContent from '../../../components/TabContent.svelte'
+    import TabConfirm from './TabConfirm.svelte'
+    import {
+        isValidAccount,
+        isValidDescription,
+        isValidImageUrl,
+        isValidName,
+        isValidPassphrase,
+        isValidRepo,
+    } from './validators'
+    import { registration$ } from './registrationStore'
 
     const TabNames = {
         Account: 'Account',
@@ -21,11 +31,15 @@
     ]
 
     let active = TabNames.Account
-    let isInvalid = false
+    let applicationInfo = null
+    let isValidApplicationInfo = false
+    let account = null
+    let passphrase = null
 
     $: currentTabIndex = Tabs.indexOf(active)
     $: isFirstTab = currentTabIndex === 0
     $: isLastTab = currentTabIndex === Tabs.length - 1
+    $: isInvalid = false
 
     function handleCancel() {
         goto(RouteHome())
@@ -38,8 +52,6 @@
     function handleNext() {
         const nextIndex = Math.min(currentTabIndex + 1, Tabs.length - 1)
         active = Tabs[nextIndex]
-
-        console.log(active, nextIndex)
     }
 
     function handlePrevious() {
@@ -47,53 +59,41 @@
         active = Tabs[prevIndex]
     }
 
+    $: isValidAccountStep = () => isValidAccount($registration$.account)
+    $: isValidApplicationInfoStep = () => isValidAccountStep()
+                        && isValidName($registration$.name)
+                        && isValidDescription($registration$.desc)
+                        && isValidImageUrl($registration$.img)
+                        && isValidRepo($registration$.repo)
+    $: isValidConfirmationStep = () => isValidApplicationInfoStep()
+                        && isValidPassphrase(passphrase, $registration$.account)
+
+    $: isNextEnabled =  () =>  {
+        switch (active) {
+            case TabNames.Account:
+                return isValidAccountStep()
+            case TabNames.AppInfo:
+                return isValidApplicationInfoStep()
+            case TabNames.Confirm:
+                return isValidConfirmationStep()
+            default:
+                return false
+        }
+    }
+
 </script>
 
-<style>
-    .creation__form {
-        display: block;
-        max-width: 600px;
-        margin: 0 auto
-    }
-
-    .form--input {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .creation__form--footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: 2rem;
-    }
-
-    .form--input-field {
-        display: block;
-        width: 100%;
-    }
-
-    :global(.mdc-text-field) {
-        width: 100% !important;
-    }
-
-</style>
-
-<div class="creation__form">
-    <div class="creation__form--header">
+<div class="registration">
+    <div class="registration--header">
         <h4 class="mdc-typography--headline4">
             Register New Application
         </h4>
     </div>
     <TabBar tabs={Tabs} let:tab bind:active>
-        <!-- Notice that the `tab` property is required! -->
         <Tab {tab}>
             <Label>{tab}</Label>
         </Tab>
     </TabBar>
-    <!-- TODO: License Field -->
 
     <TabContent>
         {#if active === TabNames.Account}
@@ -101,25 +101,25 @@
         {:else if active === TabNames.AppInfo}
             <TabApplicationInfo/>
         {:else if active === TabNames.Confirm}
-            <p>Confirm</p>
+            <TabConfirm bind:value={passphrase}/>
         {/if}
     </TabContent>
 
-    <div class="creation__form--footer">
+    <div class="registration--footer">
         <Button on:click={handleCancel}>
             <Label>Cancel</Label>
         </Button>
         {#if !isFirstTab}
-            <Button on:click={handlePrevious} disabled={isInvalid}>
+            <Button on:click={handlePrevious}>
                 <Label>Previous</Label>
             </Button>
         {/if}
         {#if isLastTab}
-            <Button on:click={handleRegister} disabled={isInvalid}>
+            <Button on:click={handleRegister} disabled={!isNextEnabled()}>
                 <Label>Register</Label>
             </Button>
         {:else}
-            <Button on:click={handleNext} disabled={isInvalid}>
+            <Button on:click={handleNext} disabled={!isNextEnabled()}>
                 <Label>Next</Label>
             </Button>
         {/if}
@@ -127,3 +127,17 @@
     </div>
 </div>
 
+<style>
+    .registration {
+        display: block;
+        max-width: 600px;
+        margin: 0 auto
+    }
+
+    .registration--footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+</style>

@@ -3,6 +3,7 @@
 </script>
 
 <style>
+
 	:global(body) {
 		margin: 0;
 	}
@@ -14,6 +15,13 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
+
+	@media (max-width: 480px) {
+		main {
+			padding: 0;
+		}
+	}
+
 </style>
 
 <Header />

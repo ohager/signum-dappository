@@ -1,33 +1,24 @@
 <script>
-    import Button, { Label } from '@smui/button'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import { hasLength } from '../../../utils/hasLength'
     import { isEmptyString } from '../../../utils/isEmptyString'
-    import { goto } from '@sapper/app'
     import { MaxDataLength, MaxDescriptionLength, MaxNameLength, MaxUrlLength } from './constants'
-    import { RouteHome } from '../../../utils/routes'
+    import { registration$, calculateDataLength } from './registrationStore'
 
     const characterCount = (text = '', max) => `${text.length}/${max}`
 
-    let name = ''
-    let desc = ''
-    let repo = ''
-    let img = ''
-    let lic = 'MIT'
-    let tags = []
+    $: isInvalidName = isEmptyString($registration$.name) || !hasLength($registration$.name, 1, MaxNameLength)
+    $: isInvalidDescription = isEmptyString($registration$.desc) || !hasLength($registration$.desc, 1, MaxDescriptionLength)
+    $: isInvalidRepo = !hasLength($registration$.repo, 0, MaxUrlLength)
+    $: isInvalidImage = isEmptyString($registration$.img) || !hasLength($registration$.img, 0, MaxUrlLength)
 
-    $: isInvalidName = isEmptyString(name) || !hasLength(name, 1, MaxNameLength)
-    $: nameFieldLabel = `Application Name (${characterCount(name, MaxNameLength)})`
-    $: isInvalidDescription = isEmptyString(desc) || !hasLength(name, 1, MaxDescriptionLength)
-    $: descriptionFieldLabel = `Description (${characterCount(desc, MaxDescriptionLength)})`
-    $: isInvalidRepo = !hasLength(repo, 0, MaxUrlLength)
-    $: repoFieldLabel = `Repository URL (${characterCount(repo, MaxUrlLength)})`
-    $: isInvalidImage = !hasLength(img, 0, MaxUrlLength)
-    $: imageFieldLabel = `Image URL (${characterCount(img, MaxUrlLength)})`
+    $: nameFieldLabel = `Application Name (${characterCount($registration$.name, MaxNameLength)})`
+    $: descriptionFieldLabel = `Description (${characterCount($registration$.desc, MaxDescriptionLength)})`
+    $: repoFieldLabel = `Repository URL (${characterCount($registration$.repo, MaxUrlLength)})`
+    $: imageFieldLabel = `Image URL (${characterCount($registration$.img, MaxUrlLength)})`
 
-    $: data = { name, desc, repo, img, tags }
-    $: dataLength = JSON.stringify(data).length
+    $: dataLength = calculateDataLength()
     $: isInvalid = isInvalidName
             || isInvalidDescription
             || isInvalidRepo
@@ -58,13 +49,13 @@
 <section>
     <div class="form--input">
         <div class="form--input-field">
-            <TextField bind:value={name}
+            <TextField bind:value={$registration$.name}
                        invalid={isInvalidName}
                        label={nameFieldLabel}
             />
             {#if isInvalidName}
                 <HelperText validationMsg>{
-                isEmptyString(name)
+                isEmptyString($registration$.name)
                 ? 'Application Name is required'
                 : `Name must not be larger than ${MaxNameLength} characters`
                 }
@@ -74,13 +65,15 @@
     </div>
     <div class="form--input">
         <div class="form--input-field">
-            <TextField bind:value={desc}
-                       invalid={isInvalidDescription}
-                       label={descriptionFieldLabel}
+            <TextField
+                    textarea
+                    bind:value={$registration$.desc}
+                    invalid={isInvalidDescription}
+                    label={descriptionFieldLabel}
             />
             {#if isInvalidDescription}
                 <HelperText validationMsg>{
-                isEmptyString(name)
+                isEmptyString($registration$.name)
                 ? 'Description is required'
                 : `Description must not be larger than ${MaxDescriptionLength} characters`
                 }
@@ -90,14 +83,16 @@
     </div>
     <div class="form--input">
         <div class="form--input-field">
-            <TextField bind:value={repo}
-                       invalid={isInvalidRepo}
-                       label={repoFieldLabel}
-                       type="URL"
+            <TextField bind:value={$registration$.img}
+                       invalid={isInvalidImage}
+                       label={imageFieldLabel}
+                       type="url"
             />
-            {#if isInvalidRepo}
+            {#if isInvalidImage}
                 <HelperText validationMsg>{
-                `Repository URL must not be larger than ${MaxUrlLength} characters`
+                isEmptyString($registration$.img)
+                ? 'Image URL is required'
+                : `Image URL must not be larger than ${MaxUrlLength} characters`
                 }
                 </HelperText>
             {/if}
@@ -105,14 +100,14 @@
     </div>
     <div class="form--input">
         <div class="form--input-field">
-            <TextField bind:value={img}
-                       invalid={isInvalidImage}
-                       label={imageFieldLabel}
-                       type="URL"
+            <TextField bind:value={$registration$.repo}
+                       invalid={isInvalidRepo}
+                       label={repoFieldLabel}
+                       type="url"
             />
-            {#if isInvalidImage}
+            {#if isInvalidRepo}
                 <HelperText validationMsg>{
-                `Image URL must not be larger than ${MaxUrlLength} characters`
+                `Repository URL must not be larger than ${MaxUrlLength} characters`
                 }
                 </HelperText>
             {/if}
