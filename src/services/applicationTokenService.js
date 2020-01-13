@@ -3,13 +3,7 @@ import { eventDispatcher } from '../utils/eventDispatcher'
 import { BurstApi } from '../utils/burstApi.js'
 import { Config } from '../config.js'
 import { ApplicationToken } from '../repositories/applicationToken'
-
-export const Events = {
-    Start: 'start',
-    Progress: 'progress',
-    Error: 'error',
-    Finish: 'finish',
-}
+import { Events } from '../utils/events'
 
 const MaxParallelFetches = 6
 const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name

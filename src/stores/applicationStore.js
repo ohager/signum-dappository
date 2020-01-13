@@ -1,6 +1,7 @@
 import { readable, writable } from 'svelte/store'
-import { ApplicationTokenService, Events } from '../services/applicationTokenService'
+import { ApplicationTokenService } from '../services/applicationTokenService'
 import { isClientSide } from '../utils/isClientSide'
+import { Events } from '../utils/events'
 
 const InitialSyncProgressState = 0
 const UpdateInterval = 60 * 1000

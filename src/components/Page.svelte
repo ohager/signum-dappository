@@ -13,6 +13,12 @@
             max-width: 100%;
         }
     }
+
+    @media (min-width: 1280px) {
+        .page {
+            max-width: 50%;
+        }
+    }
 </style>
 
 <section class="page">

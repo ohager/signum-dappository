@@ -2,7 +2,7 @@ import { isEmptyString } from '../../../utils/isEmptyString'
 import { MaxDescriptionLength, MaxNameLength, MaxUrlLength } from './constants'
 import { hasLength } from '../../../utils/hasLength'
 import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
-import { convertAddressToNumericId, isBurstAddress } from '@burstjs/util'
+import { assureAccountId } from '../../../utils/assureAccountId'
 
 const isRequiredAndHasCorrectLength = (str, maxLength) => !isEmptyString(str) || hasLength(str, 1, maxLength)
 
@@ -31,9 +31,5 @@ export const isValidImageUrl = (img) => {
 export const isValidPassphrase = (phrase, account) => {
     const { publicKey } = generateMasterKeys(phrase)
     const accountId = getAccountIdFromPublicKey(publicKey)
-    let id = account
-    if (isBurstAddress(id)) {
-        id = convertAddressToNumericId(id)
-    }
-    return accountId === id
+    return accountId === assureAccountId(account)
 }
