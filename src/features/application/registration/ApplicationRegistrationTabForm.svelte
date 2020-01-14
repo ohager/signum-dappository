@@ -17,6 +17,7 @@
         isValidRepo,
     } from './validators'
     import { registration$ } from './registrationStore'
+    import Introduction from './Introduction.svelte'
 
     const TabNames = {
         Account: 'Account',
@@ -30,6 +31,7 @@
         TabNames.Confirm,
     ]
 
+    let started = false
     let active = TabNames.Account
     let applicationInfo = null
     let isValidApplicationInfo = false
@@ -43,6 +45,10 @@
 
     function handleCancel() {
         goto(RouteHome())
+    }
+
+    function handleStart() {
+        started = true
     }
 
     function handleRegister() {
@@ -61,14 +67,14 @@
 
     $: isValidAccountStep = () => isValidAccount($registration$.account)
     $: isValidApplicationInfoStep = () => isValidAccountStep()
-                        && isValidName($registration$.name)
-                        && isValidDescription($registration$.desc)
-                        && isValidImageUrl($registration$.img)
-                        && isValidRepo($registration$.repo)
+            && isValidName($registration$.name)
+            && isValidDescription($registration$.desc)
+            && isValidImageUrl($registration$.img)
+            && isValidRepo($registration$.repo)
     $: isValidConfirmationStep = () => isValidApplicationInfoStep()
-                        && isValidPassphrase(passphrase, $registration$.account)
+            && isValidPassphrase(passphrase, $registration$.account)
 
-    $: isNextEnabled =  () =>  {
+    $: isNextEnabled = () => {
         switch (active) {
             case TabNames.Account:
                 return isValidAccountStep()
@@ -86,45 +92,56 @@
 <div class="registration">
     <div class="registration--header">
         <h4 class="mdc-typography--headline4">
-            Register New Application
+            Register A New Application
         </h4>
     </div>
-    <TabBar tabs={Tabs} let:tab bind:active>
-        <Tab {tab}>
-            <Label>{tab}</Label>
-        </Tab>
-    </TabBar>
+    {#if started}
+        <TabBar tabs={Tabs} let:tab bind:active>
+            <Tab {tab}>
+                <Label>{tab}</Label>
+            </Tab>
+        </TabBar>
 
-    <TabContent>
-        {#if active === TabNames.Account}
-            <TabAccount/>
-        {:else if active === TabNames.AppInfo}
-            <TabApplicationInfo/>
-        {:else if active === TabNames.Confirm}
-            <TabConfirm bind:value={passphrase}/>
-        {/if}
-    </TabContent>
+        <TabContent>
+            {#if active === TabNames.Account}
+                <TabAccount/>
+            {:else if active === TabNames.AppInfo}
+                <TabApplicationInfo/>
+            {:else if active === TabNames.Confirm}
+                <TabConfirm bind:value={passphrase}/>
+            {/if}
+        </TabContent>
 
-    <div class="registration--footer">
-        <Button on:click={handleCancel}>
-            <Label>Cancel</Label>
-        </Button>
-        {#if !isFirstTab}
-            <Button on:click={handlePrevious}>
-                <Label>Previous</Label>
+        <div class="registration--footer">
+            <Button on:click={handleCancel}>
+                <Label>Cancel</Label>
             </Button>
-        {/if}
-        {#if isLastTab}
-            <Button on:click={handleRegister} disabled={!isNextEnabled()}>
-                <Label>Register</Label>
+            {#if !isFirstTab}
+                <Button on:click={handlePrevious}>
+                    <Label>Previous</Label>
+                </Button>
+            {/if}
+            {#if isLastTab}
+                <Button on:click={handleRegister} disabled={!isNextEnabled()}>
+                    <Label>Register</Label>
+                </Button>
+            {:else}
+                <Button on:click={handleNext} disabled={!isNextEnabled()}>
+                    <Label>Next</Label>
+                </Button>
+            {/if}
+        </div>
+    {:else}
+        <Introduction/>
+        <div class="registration--footer">
+            <Button on:click={handleCancel}>
+                <Label>Cancel</Label>
             </Button>
-        {:else}
-            <Button on:click={handleNext} disabled={!isNextEnabled()}>
-                <Label>Next</Label>
+            <Button on:click={handleStart}>
+                <Label>Start</Label>
             </Button>
-        {/if}
-
-    </div>
+        </div>
+    {/if}
 </div>
 
 <style>

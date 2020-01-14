@@ -1,11 +1,16 @@
 <script>
     import TextField from '@smui/textfield'
+    import IconButton, { Icon } from '@smui/icon-button'
+    import Select, { Option } from '@smui/select'
+    import SelectHelperText from '@smui/select/helper-text/index'
     import HelperText from '@smui/textfield/helper-text/index'
     import { hasLength } from '../../../utils/hasLength'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { MaxDataLength, MaxDescriptionLength, MaxNameLength, MaxUrlLength } from './constants'
     import { registration$, calculateDataLength } from './registrationStore'
+    import { Licenses } from '../../../utils/licenses'
 
+    const licensesSpdx = Object.keys(Licenses)
     const characterCount = (text = '', max) => `${text.length}/${max}`
 
     $: isInvalidName = isEmptyString($registration$.name) || !hasLength($registration$.name, 1, MaxNameLength)
@@ -18,6 +23,8 @@
     $: repoFieldLabel = `Repository URL (${characterCount($registration$.repo, MaxUrlLength)})`
     $: imageFieldLabel = `Image URL (${characterCount($registration$.img, MaxUrlLength)})`
 
+    $: licenseTextUrl = Licenses[$registration$.lic].url
+
     $: dataLength = calculateDataLength()
     $: isInvalid = isInvalidName
             || isInvalidDescription
@@ -26,25 +33,6 @@
             || dataLength > MaxDataLength
 
 </script>
-
-<style>
-    .form--input {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .form--input-field {
-        display: block;
-        width: 100%;
-    }
-
-    :global(.mdc-text-field) {
-        width: 100% !important;
-    }
-
-</style>
 
 <section>
     <div class="form--input">
@@ -114,6 +102,62 @@
         </div>
     </div>
 
+    <div class="form--input">
+        <div class="inline">
+            <div class="form--input-field">
+                <Select bind:value={$registration$.lic} label="License">
+                    {#each licensesSpdx as license}
+                        <Option value={license} selected={$registration$.lic === license}>{license}</Option>
+                    {/each}
+                </Select>
+                <SelectHelperText>
+                    {#if isEmptyString(licenseTextUrl)}
+                        No License Text
+                    {:else}
+                        <a href={licenseTextUrl} target="_blank">License Text</a>
+                    {/if}
+                </SelectHelperText>
+            </div>
+            <a href="https://choosealicense.com/appendix/" target="_blank" title="Click to get help for license choice">
+                <Icon class="material-icons">help_outline</Icon>
+            </a>
+        </div>
+    </div>
+
     <!-- TODO: License Field -->
 </section>
+
+<style>
+    .form--input {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .form--input a {
+        color: gray;
+        margin-left: 0.5rem;
+    }
+
+    .form--input-field {
+        display: block;
+        width: 100%;
+    }
+
+    .form--input .inline {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%
+    }
+
+    :global(.mdc-text-field) {
+        width: 100% !important;
+    }
+
+    :global(.mdc-select) {
+        width: 100% !important;
+    }
+</style>
 

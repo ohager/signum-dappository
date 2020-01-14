@@ -1,6 +1,7 @@
 <script>
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
+    import Icon from '@smui/textfield/icon/index'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { registration$ } from './registrationStore'
     import { MinimumRegistrationFeeBurst } from './constants'
@@ -9,16 +10,18 @@
     import { onDestroy } from 'svelte'
     import { pruneErrorMessage } from '../../../utils/burstApi'
 
-    const hasSufficientBalance = async (account) => {
+    const getBalance = async (account) => {
         const accountId = assureAccountId(account)
-        const balance = await registrationService.getBalance(accountId)
-        return balance > MinimumRegistrationFeeBurst
+        return await registrationService.getBalance(accountId)
     }
 
     let balanceTimeout = null
-    let validationMessage = 'Account is required'
+    let validation = {
+        message: 'Account is required',
+        valid: false,
+    }
 
-    $: isAccountValid = isEmptyString(validationMessage)
+    $: isAccountValid = validation.valid
 
     let unsubscribe = registration$.subscribe(({ account }) => {
         if (isEmptyString(account)) return 'Account is required'
@@ -26,14 +29,23 @@
         if (!balanceTimeout) {
             balanceTimeout = setTimeout(async () => {
                 try {
-                    const ok = await hasSufficientBalance(account)
-                    validationMessage = ok ? '' : `Insufficient Balance: You need at least ${MinimumRegistrationFeeBurst} BURST`
+                    const balance = await getBalance(account)
+                    const hasSufficientBalance = balance > MinimumRegistrationFeeBurst + 0.5
+                    validation = {
+                        message: hasSufficientBalance
+                                ? `Accounts balance: ${balance.toFixed(2)}`
+                                : `Insufficient Balance (${balance.toFixed(2)} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
+                        valid: hasSufficientBalance,
+                    }
                 } catch (e) {
-                    validationMessage = pruneErrorMessage(e.message)
+                    validation = {
+                        message: pruneErrorMessage(e.message),
+                        valid: false,
+                    }
                 } finally {
                     balanceTimeout = null
                 }
-            }, 250)
+            }, 500)
         }
     })
 
@@ -41,19 +53,29 @@
         unsubscribe()
     })
 
-
 </script>
+
 <section>
     <div class="form--input">
         <div class="form--input-field">
             <TextField bind:value={$registration$.account}
-                       invalid={!isAccountValid}
+                       invalid={!validation.valid}
                        label='Account Id or Address'
-            />
-            {#if !isAccountValid}
-                <HelperText validationMsg>{validationMessage}
-                </HelperText>
+                       withTrailingIcon
+            >
+                <Icon class={`material-icons ${validation.valid ? 'green' : ''}`}>
+                    {validation.valid ? 'check_circle' : 'error'}
+                </Icon>
+            </TextField>
+            {#if !validation.valid}
+                <HelperText validationMsg>{validation.message}</HelperText>
             {/if}
         </div>
     </div>
 </section>
+
+<style>
+    :global(.mdc-text-field__icon.material-icons.green) {
+        color: green !important;
+    }
+</style>
