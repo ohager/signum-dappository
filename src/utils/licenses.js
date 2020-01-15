@@ -1,4 +1,4 @@
-const LicenseUrl = (spdx) => `https://spdx.org/licenses/${spdx}.html#licenseText`
+const LicenseUrl = (spdx) => `https://spdx.org/licenses/${spdx}.html`
 
 export const Licenses = {
     'AGPL-3.0-or-later': {

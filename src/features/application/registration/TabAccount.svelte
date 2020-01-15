@@ -10,9 +10,33 @@
     import { onDestroy } from 'svelte'
     import { pruneErrorMessage } from '../../../utils/burstApi'
 
-    const getBalance = async (account) => {
+    async function getBalance(account) {
         const accountId = assureAccountId(account)
         return await registrationService.getBalance(accountId)
+    }
+
+    async function validateAccount(account) {
+        if (balanceTimeout) return
+
+        balanceTimeout = setTimeout(async () => {
+            try {
+                const balance = await getBalance(account)
+                const hasSufficientBalance = balance > MinimumRegistrationFeeBurst + 0.5
+                validation = {
+                    message: hasSufficientBalance
+                            ? `Accounts balance: ${balance.toFixed(2)}`
+                            : `Insufficient Balance (${balance.toFixed(2)} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
+                    valid: hasSufficientBalance,
+                }
+            } catch (e) {
+                validation = {
+                    message: pruneErrorMessage(e.message),
+                    valid: false,
+                }
+            } finally {
+                balanceTimeout = null
+            }
+        }, 500)
     }
 
     let balanceTimeout = null
@@ -23,29 +47,9 @@
 
     $: isAccountValid = validation.valid
 
-    let unsubscribe = registration$.subscribe(({ account }) => {
-        if (isEmptyString(account)) return 'Account is required'
-
-        if (!balanceTimeout) {
-            balanceTimeout = setTimeout(async () => {
-                try {
-                    const balance = await getBalance(account)
-                    const hasSufficientBalance = balance > MinimumRegistrationFeeBurst + 0.5
-                    validation = {
-                        message: hasSufficientBalance
-                                ? `Accounts balance: ${balance.toFixed(2)}`
-                                : `Insufficient Balance (${balance.toFixed(2)} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
-                        valid: hasSufficientBalance,
-                    }
-                } catch (e) {
-                    validation = {
-                        message: pruneErrorMessage(e.message),
-                        valid: false,
-                    }
-                } finally {
-                    balanceTimeout = null
-                }
-            }, 500)
+    const unsubscribe = registration$.subscribe(({ account }) => {
+        if (!isEmptyString(account)) {
+            validateAccount(account)
         }
     })
 
@@ -56,6 +60,9 @@
 </script>
 
 <section>
+    <p class="mdc-typography--body1">
+        In order to register your application, you will (unfortunately) have to pay a fee of {MinimumRegistrationFeeBurst} BURST to create the token.
+    </p>
     <div class="form--input">
         <div class="form--input-field">
             <TextField bind:value={$registration$.account}
