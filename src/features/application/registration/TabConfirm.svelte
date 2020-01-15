@@ -3,13 +3,14 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
     import ApplicationItem from '../list/ApplicationItem.svelte'
-    import { registration$ } from './registrationStore'
+    import { calculateDataLength, registration$ } from './registrationStore'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { isValidPassphrase } from './validators'
+    import { MaxDataLength } from './constants'
 
-    export let value = passphrase
     let passphrase = ''
     let isPassphraseVisible = false
+    export let value = passphrase
 
     $: message = () => {
         if (isEmptyString(passphrase)) {
@@ -27,6 +28,35 @@
         isPassphraseVisible = !isPassphraseVisible
     }
 </script>
+
+<section class="confirmation">
+    <p class="mdc-typography--body1">
+        This is what your application will look like as soon as the registration is complete. Please check everything
+        carefully, because once registered applications cannot be changed anymore.
+    </p>
+    <div class="card-preview">
+        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} isPreview/>
+    </div>
+    <div class="form--input">
+        <div class="form--input-field">
+            <TextField
+                    bind:value={passphrase}
+                    invalid={isInvalid}
+                    label="Passphrase"
+                    type={isPassphraseVisible ? 'text' : 'password'}
+                    withTrailingIcon
+            >
+                <Icon class="material-icons"
+                      role="button"
+                      on:click={toggleVisibility}>{isPassphraseVisible ? 'visibility_off' : 'visibility'}
+                </Icon>
+            </TextField>
+            {#if isInvalid}
+                <HelperText validationMsg>{message()}</HelperText>
+            {/if}
+        </div>
+    </div>
+</section>
 
 <style>
     .confirmation {
@@ -58,28 +88,3 @@
     }
 
 </style>
-
-<section class="confirmation">
-    <div class="card-preview">
-        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} isPreview/>
-    </div>
-    <div class="form--input">
-        <div class="form--input-field">
-            <TextField
-                    bind:value={passphrase}
-                    invalid={isInvalid}
-                    label="Passphrase"
-                    type={isPassphraseVisible ? 'text' : 'password'}
-                    withTrailingIcon
-            >
-                <Icon class="material-icons"
-                      role="button"
-                      on:click={toggleVisibility}>{isPassphraseVisible ? 'visibility_off' : 'visibility'}
-                </Icon>
-            </TextField>
-            {#if isInvalid}
-                <HelperText validationMsg>{message()}</HelperText>
-            {/if}
-        </div>
-    </div>
-</section>

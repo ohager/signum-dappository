@@ -16,8 +16,9 @@
         isValidPassphrase,
         isValidRepo,
     } from './validators'
-    import { registration$ } from './registrationStore'
+    import { calculateDataLength, registration$ } from './registrationStore'
     import Introduction from './Introduction.svelte'
+    import { MaxDataLength } from './constants'
 
     const TabNames = {
         Account: 'Account',
@@ -73,6 +74,7 @@
             && isValidRepo($registration$.repo)
     $: isValidConfirmationStep = () => isValidApplicationInfoStep()
             && isValidPassphrase(passphrase, $registration$.account)
+            && calculateDataLength() < MaxDataLength
 
     $: isNextEnabled = () => {
         switch (active) {

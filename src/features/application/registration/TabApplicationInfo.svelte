@@ -40,13 +40,6 @@
 
     $: licenseTextUrl = Licenses[$registration$.lic].url
 
-    $: dataLength = calculateDataLength()
-    $: isInvalid = isInvalidName
-            || isInvalidDescription
-            || isInvalidRepo
-            || isInvalidImage
-            || dataLength > MaxDataLength
-
     function hasTag(t) {
         return $registration$.tags.indexOf(t.toLowerCase()) >= 0
     }
@@ -77,6 +70,10 @@
 </script>
 
 <section>
+    <p class="mdc-typography--body1">
+        Please, provide as much information as possible. Keep in mind, that the information cannot be edited once the registration is completed.
+    </p>
+
     <div class="form--input">
         <div class="form--input-field">
             <TextField bind:value={$registration$.name}

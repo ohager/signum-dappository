@@ -7,7 +7,6 @@ import { assureAccountId } from '../../../utils/assureAccountId'
 const isRequiredAndHasCorrectLength = (str, maxLength) => !isEmptyString(str) || hasLength(str, 1, maxLength)
 
 export const isValidAccount = (account) => {
-    // TODO: validate entire account - balance and publickey
     return !isEmptyString(account)
 }
 
@@ -24,7 +23,6 @@ export const isValidRepo = (repo) => {
 }
 
 export const isValidImageUrl = (img) => {
-    // TODO: check for existance
     return isRequiredAndHasCorrectLength(img, MaxUrlLength)
 }
 
