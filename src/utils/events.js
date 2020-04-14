@@ -4,4 +4,5 @@ export const Events = {
     Error: 'error',
     Finish: 'finish',
     Success: 'success',
+    SyncTokenRequest: 'sync-tokens'
 }

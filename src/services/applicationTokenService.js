@@ -8,13 +8,14 @@ import { Events } from '../utils/events'
 const MaxParallelFetches = 6
 const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name
 
-export class ApplicationTokenService extends EventTarget {
+export class ApplicationTokenService {
+
     constructor(repository = applicationTokenRepository) {
-        super()
         this._repository = repository
-        this._dispatch = eventDispatcher(this)
+        this._dispatch = eventDispatcher()
         this._contractApi = BurstApi.contract
     }
+
 
     async syncTokens() {
         this._dispatch(Events.Start)
@@ -25,7 +26,10 @@ export class ApplicationTokenService extends EventTarget {
             while (contractIds.length) {
                 const chunkedIds = []
                 for (let i = 0; i < MaxParallelFetches; ++i) {
-                    chunkedIds.push(contractIds.pop())
+                    const id = contractIds.pop()
+                    if (id) {
+                        chunkedIds.push(id)
+                    }
                 }
                 const contracts = await this._fetchContractDetailsChunked(chunkedIds)
                 const appTokens = contracts
@@ -35,6 +39,7 @@ export class ApplicationTokenService extends EventTarget {
                     .filter(token => token && token.isActive)
                 await this._repository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
+                // this._dispatch(Events.SyncTokenRequest)
             }
         } catch (e) {
             this._dispatch(Events.Error, e.message)
@@ -47,11 +52,11 @@ export class ApplicationTokenService extends EventTarget {
         return this._repository.collection
     }
 
-    async getToken(tokenId){
+    async getToken(tokenId) {
         return await this.getCollection().where('at').equals(tokenId).first()
     }
 
-    async getTokens(filter) {
+    async getTokens() {
         return await this._repository.get()
     }
 
@@ -61,9 +66,9 @@ export class ApplicationTokenService extends EventTarget {
         return atIds.slice(firstContractId - 1)
     }
 
-    async toggleFavorite(id){
-        const {favorite} = await this._repository.get(id);
-        await this._repository.update(id, {favorite:!favorite})
+    async toggleFavorite(id) {
+        const { favorite } = await this._repository.get(id)
+        await this._repository.update(id, { favorite: !favorite })
     }
 
     _fetchContractDetailsChunked(contractIds) {

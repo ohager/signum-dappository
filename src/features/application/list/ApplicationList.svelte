@@ -4,6 +4,8 @@
     import { syncProgress$, tokens$ } from '../../../stores/applicationStore'
 
     $: isProgressVisible = $syncProgress$ < 1
+
+
 </script>
 
 <style>

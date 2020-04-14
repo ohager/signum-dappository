@@ -17,13 +17,12 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
         const { total, processed } = detail
         set(total && processed / total)
     }
-    service.addEventListener(Events.Progress, updateProgress)
+    window.addEventListener(Events.Progress, updateProgress)
     service.syncTokens()
     const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
-
     return () => {
         clearInterval(interval)
-        service.removeEventListener(Events.Progress, updateProgress)
+        window.removeEventListener(Events.Progress, updateProgress)
         set(InitialSyncProgressState)
     }
 })
@@ -31,15 +30,19 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
 const tokens$ = writable(InitialTokensState, (set) => {
     if (!isClientSide()) return
     const service = new ApplicationTokenService()
-    service.getTokens().then(tokens => {
-        tokens$.update(state => ({
-            ...state,
-            items: tokens,
-        }))
-    })
-
+    const updateTokens = () => {
+        service.getTokens().then(tokens => {
+            tokens$.update(state => ({
+                ...state,
+                items: tokens,
+            }))
+        })
+    }
+    window.addEventListener(Events.Finish, updateTokens)
+    updateTokens()
     return () => {
         set(InitialTokensState)
+        window.removeEventListener(Events.Finish, updateTokens)
     }
 })
 
