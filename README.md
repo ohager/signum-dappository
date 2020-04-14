@@ -1,14 +1,14 @@
 # burst-applications
 
-Burst Applications is a platform to register tools and applications for Burst/Burstcoin. 
-This platform serves as a vitrine 
+__Burst Applications__ is a platform to register tools and applications for the [Burst](https://www.burst-coin.org/) eco-system. 
+On one hand, this platform serves as a kind of application store, but also as an exhibition center for developers. 
 
 ## Digital Asset using Burstcoin Smart Contracts
 
-Each registered entry is represented through a digital asset using Burst Smart Contracts. The registree is the initial owner of that
-asset and throughout the The smart contract offers two logics:
+Each registered entry is represented through a digital (cryptographic) asset using Burst Smart Contracts and is stored in the 
+Burst blockchain. The registree is the initial owner of that asset. Therefore, the asset is a so called [Non-Fungible Token](https://en.wikipedia.org/wiki/Non-fungible_token) (NFT):
+the asset can only be owned by one person at a time, but it's possible to transfer it to another person, e.g. by selling it.
 
-1. Donation
-2. Ownership Transfer
-
-Donations
+Furthermore, the asset aka token can receive amounts from other Burst Accounts. The received amount will be redirected 
+(subtracting an inherent contract execution fee) to the owner. The number of transactions (considered as donations) 
+is counted, and the received amounts are summed up, and kept in the Smart Contract. This can be used as a success indicator. 
