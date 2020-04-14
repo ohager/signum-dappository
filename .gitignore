@@ -68,3 +68,5 @@ yarn-error.log
 /cypress/screenshots/
 /__sapper__/
 .idea
+
+.now
