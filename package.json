@@ -38,6 +38,7 @@
     "dexie": "^2.0.4",
     "lodash.debounce": "^4.0.8",
     "magic-mapper": "0.0.11",
+    "now": "^18.0.0",
     "polka": "next",
     "qrcode": "^1.4.4",
     "sirv": "^0.4.2"

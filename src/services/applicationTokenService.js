@@ -16,7 +16,6 @@ export class ApplicationTokenService {
         this._contractApi = BurstApi.contract
     }
 
-
     async syncTokens() {
         this._dispatch(Events.Start)
         try {
