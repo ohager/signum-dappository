@@ -41,6 +41,7 @@
     "now": "^18.0.0",
     "polka": "next",
     "qrcode": "^1.4.4",
+    "sapper-environment": "^1.0.1",
     "sirv": "^0.4.2"
   },
   "devDependencies": {
