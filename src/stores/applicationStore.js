@@ -2,9 +2,10 @@ import { readable, writable } from 'svelte/store'
 import { ApplicationTokenService } from '../services/applicationTokenService'
 import { isClientSide } from '../utils/isClientSide'
 import { Events } from '../utils/events'
+import { Config } from '../config'
 
 const InitialSyncProgressState = 0
-const UpdateInterval = 60 * 1000
+const UpdateInterval = Config.ContractPollingIntervalSecs
 const InitialTokensState = {
     filter: null,
     items: [],
@@ -41,8 +42,8 @@ const tokens$ = writable(InitialTokensState, (set) => {
     window.addEventListener(Events.Finish, updateTokens)
     updateTokens()
     return () => {
-        set(InitialTokensState)
         window.removeEventListener(Events.Finish, updateTokens)
+        set(InitialTokensState)
     }
 })
 
