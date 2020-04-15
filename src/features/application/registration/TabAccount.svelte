@@ -2,6 +2,7 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
+    import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { registration$ } from './registrationStore'
     import { MinimumRegistrationFeeBurst } from './constants'
@@ -21,13 +22,17 @@
         balanceTimeout = setTimeout(async () => {
             try {
                 const balance = await getBalance(account)
-                const hasSufficientBalance = balance > MinimumRegistrationFeeBurst + 0.5
+                const minimumBalance = BurstValue.fromBurst(MinimumRegistrationFeeBurst + 0.5);
+                const hasSufficientBalance = balance.greaterOrEqual(minimumBalance)
                 validation = {
                     message: hasSufficientBalance
-                            ? `Accounts balance: ${balance}`
-                            : `Insufficient Balance (${balance} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
+                            ? `Accounts balance: ${balance.toString()}`
+                            : `Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`,
                     valid: hasSufficientBalance,
                 }
+
+                console.log('val', validation)
+
             } catch (e) {
                 validation = {
                     message: pruneErrorMessage(e.message),
@@ -74,9 +79,7 @@
                     {validation.valid ? 'check_circle' : 'error'}
                 </Icon>
             </TextField>
-            {#if !validation.valid}
-                <HelperText validationMsg>{validation.message}</HelperText>
-            {/if}
+            <HelperText validationMsg>{validation.message}</HelperText>
         </div>
     </div>
 </section>

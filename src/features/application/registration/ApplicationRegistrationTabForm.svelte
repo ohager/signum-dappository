@@ -13,12 +13,12 @@
         isValidDescription,
         isValidImageUrl,
         isValidName,
-        isValidPassphrase,
         isValidRepo,
     } from './validators'
-    import { calculateDataLength, registration$ } from './registrationStore'
+    import { calculateDataLength, registration$, tokenData } from './registrationStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
+    import { registrationService } from '../../../services/registrationService'
 
     const TabNames = {
         Account: 'Account',
@@ -53,7 +53,7 @@
     }
 
     function handleRegister() {
-        console.log('registering')
+        registrationService.registerToken(tokenData())
     }
 
     function handleNext() {

@@ -1,26 +1,35 @@
-import { eventDispatcher } from '../utils/eventDispatcher'
+import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
 import { BurstValue } from '@burstjs/util'
+import { generateMasterKeys } from '@burstjs/crypto'
 
-export class RegistrationService{
+
+
+export class RegistrationService {
     constructor() {
-        // this._dispatch = eventDispatcher(this)
+        this._dispatch = dispatchEvent
         this._accountApi = BurstApi.account
         this._contractApi = BurstApi.contract
     }
 
+    async getSuggestedFee() {
+        const fees = await BurstApi.network.suggestFee()
+        return BurstValue.fromPlanck(fees.standard.toString(10))
+    }
+
+    getKeys(passphrase) {
+        const { publicKey, signPrivateKey } = generateMasterKeys(passphrase)
+        return {
+            publicKey,
+            signPrivateKey,
+        }
+    }
+
     async getBalance(accountId) {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
-        return BurstValue.fromPlanck(balanceNQT).getBurst()
+        return BurstValue.fromPlanck(balanceNQT)
     }
 
-    async _createContract() {
-        const {} = await this._contractApi.publishContract()
-    }
-
-    async registerToken() {
-
-    }
 }
 
 export const registrationService = new RegistrationService()

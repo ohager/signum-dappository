@@ -1,5 +1,5 @@
 import { readable, writable } from 'svelte/store'
-import { ApplicationTokenService } from '../services/applicationTokenService'
+import { applicationTokenService } from '../services/applicationTokenService'
 import { isClientSide } from '../utils/isClientSide'
 import { Events } from '../utils/events'
 import { Config } from '../config'
@@ -13,7 +13,7 @@ const InitialTokensState = {
 
 const syncProgress$ = readable(InitialSyncProgressState, (set) => {
     if (!isClientSide()) return
-    const service = new ApplicationTokenService()
+    const service = applicationTokenService
     let updateProgress = ({ detail }) => {
         const { total, processed } = detail
         set(total && processed / total)
@@ -30,7 +30,7 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
 
 const tokens$ = writable(InitialTokensState, (set) => {
     if (!isClientSide()) return
-    const service = new ApplicationTokenService()
+    const service = applicationTokenService
     const updateTokens = () => {
         service.getTokens().then(tokens => {
             tokens$.update(state => ({

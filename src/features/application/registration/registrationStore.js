@@ -15,9 +15,8 @@ const InitialRegistrationState = {
 
 export const registration$ = writable(InitialRegistrationState)
 
-export const calculateDataLength = () => {
-    const mapper = new MagicMapper({ exclusive: true })
-    const mapped = mapper.map(get(registration$), {
+export const tokenData = () => new MagicMapper({ exlusive: true })
+    .map(get(registration$), {
         name: MagicMapper.Direct,
         desc: MagicMapper.Direct,
         repo: MagicMapper.Direct,
@@ -25,5 +24,7 @@ export const calculateDataLength = () => {
         lic: MagicMapper.Direct,
         tags: MagicMapper.Direct,
     })
-    return JSON.stringify(mapped).length
+
+export const calculateDataLength = () => {
+    return JSON.stringify(tokenData()).length
 }
