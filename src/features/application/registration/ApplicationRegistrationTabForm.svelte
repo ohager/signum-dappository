@@ -37,12 +37,12 @@
     let applicationInfo = null
     let isValidApplicationInfo = false
     let account = null
-    let passphrase = null
 
     $: currentTabIndex = Tabs.indexOf(active)
     $: isFirstTab = currentTabIndex === 0
     $: isLastTab = currentTabIndex === Tabs.length - 1
     $: isInvalid = false
+    $: passphrase = ''
 
     function handleCancel() {
         goto(RouteHome())
@@ -73,7 +73,7 @@
             && isValidImageUrl($registration$.img)
             && isValidRepo($registration$.repo)
     $: isValidConfirmationStep = () => isValidApplicationInfoStep()
-            && isValidPassphrase(passphrase, $registration$.account)
+            && $registration$.isPassphraseValid
             && calculateDataLength() < MaxDataLength
 
     $: isNextEnabled = () => {
@@ -110,7 +110,7 @@
             {:else if active === TabNames.AppInfo}
                 <TabApplicationInfo/>
             {:else if active === TabNames.Confirm}
-                <TabConfirm bind:value={passphrase}/>
+                <TabConfirm/>
             {/if}
         </TabContent>
 

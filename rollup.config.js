@@ -72,12 +72,11 @@ export default {
                         'ContractDataView',
                     ],
                     '@burstjs/util': [
-                        'convertNQTStringToNumber',
-                        'convertNumberToNQTString',
                         'convertNumericIdToAddress',
                         'convertAddressToNumericId',
                         'createDeeplink',
-                        'isBurstAddress'
+                        'isBurstAddress',
+                        'BurstValue',
                     ],
                 },
             }),

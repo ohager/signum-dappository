@@ -7,9 +7,8 @@
     import Button, { Label } from '@smui/button'
     import Page from '../../components/Page.svelte'
     import {
-        convertNumberToNQTString,
+        BurstValue,
         convertNumericIdToAddress,
-        convertNQTStringToNumber,
         createDeeplink,
     } from '@burstjs/util'
     import { BurstApi } from '../../utils/burstApi'
@@ -25,16 +24,17 @@
 
     let amount = ''
     let QrCodeCanvas = null
-    let suggestedFeePlanck = convertNumberToNQTString(0.05)
+    let suggestedFee = BurstValue.fromBurst(0.05) // make dynamic
     let info = []
-    let ActivationCostsPlanck = convertNumberToNQTString(100) // todo get from contract
+    let ActivationCosts = BurstValue.fromBurst(100) // todo get from contract
 
     $: isValidAmount = AmountValidationPattern.test(amount)
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = QrCodeCanvas && !isEmptyAmount && isValidAmount
 
     function mountDeepLink(amount, cip22 = false) {
-        const amountPlanck = calculateTotalAmountPlanck(amount)
+        const amountPlanck = calculateTotalAmount(amount).getPlanck()
+        const feePlanck = suggestedFee.getPlanck()
         const address = convertNumericIdToAddress(token.at)
         return cip22 ? createDeeplink({
             domain: 'payment',
@@ -42,30 +42,28 @@
             payload: {
                 amountPlanck,
                 receiver: address,
-                feePlanck: suggestedFeePlanck,
+                feePlanck,
                 immutable: false,
             },
-        }) : `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFeePlanck}&immutable=false`
+        }) : `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFee}&immutable=false`
     }
 
 
-    function calculateTotalAmountPlanck(amount, withFee = false) {
-        const amountPlanck = convertNumberToNQTString(amount || 0)
-        let totalPlanck = BigInt(amountPlanck) + BigInt(ActivationCostsPlanck)
-        if (withFee) {
-            totalPlanck += BigInt(suggestedFeePlanck)
-        }
-        return totalPlanck.toString(10)
+    function calculateTotalAmount(amount, withFee = false) {
+        return BurstValue
+                .fromBurst(amount || 0)
+                .add(ActivationCosts)
+                .add(withFee ? BurstValue.fromBurst(0) : suggestedFee)
     }
 
     function mountInfo(amount) {
         const info = []
         info.push(['Recipient:', convertNumericIdToAddress(token.at)])
         info.push(['Donation:', amount])
-        info.push(['Activation Costs:', `${convertNQTStringToNumber(ActivationCostsPlanck)} (will be entirely reimbursed)`])
-        info.push(['Fee:', convertNQTStringToNumber(suggestedFeePlanck)])
+        info.push(['Activation Costs:', `${ActivationCosts.getBurst()} (will be entirely reimbursed)`])
+        info.push(['Fee:', suggestedFee.getBurst()])
         info.push(['---', ''])
-        info.push(['Total:', `${convertNQTStringToNumber(calculateTotalAmountPlanck(amount, true))} BURST`])
+        info.push(['Total:', `${calculateTotalAmount(amount, true).getBurst()} BURST`])
         return info
     }
 
@@ -80,7 +78,7 @@
 
     onMount(async () => {
         const fees = await BurstApi.network.suggestFee()
-        suggestedFeePlanck = fees.standard
+        suggestedFee = BurstValue.fromPlanck(fees.standard.toString(10))
     })
 
 

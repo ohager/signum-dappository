@@ -9,13 +9,13 @@ const InitialRegistrationState = {
     img: '',
     lic: 'MIT',
     tags: [],
+    isPassphraseValid: false,
     isValid: false,
 }
 
 export const registration$ = writable(InitialRegistrationState)
 
 export const calculateDataLength = () => {
-    console.log('calculateDataLength')
     const mapper = new MagicMapper({ exclusive: true })
     const mapped = mapper.map(get(registration$), {
         name: MagicMapper.Direct,

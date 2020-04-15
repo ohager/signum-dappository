@@ -3,22 +3,33 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
     import ApplicationItem from '../list/ApplicationItem.svelte'
-    import { calculateDataLength, registration$ } from './registrationStore'
+    import { registration$ } from './registrationStore'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { isValidPassphrase } from './validators'
     import { MaxDataLength } from './constants'
 
-    let passphrase = ''
     let isPassphraseVisible = false
-    export let value = passphrase
+    let passphrase = ''
+    let isPassphraseValid = false
 
     $: message = () => {
+
+        // this check avoids flicker while typing
+        if($registration$.isPassphraseValid !== isPassphraseValid){
+            $registration$.isPassphraseValid = false
+        }
+
         if (isEmptyString(passphrase)) {
+            isPassphraseValid = false
             return 'Please enter your passphrase to confirm your applications registration'
         }
+
         if (!isValidPassphrase(passphrase, $registration$.account)) {
+            isPassphraseValid = false
             return 'Passphrase does not match given account'
         }
+        $registration$.isPassphraseValid = true
+        isPassphraseValid = true
         return ''
     }
 

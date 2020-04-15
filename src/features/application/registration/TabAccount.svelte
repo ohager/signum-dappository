@@ -24,8 +24,8 @@
                 const hasSufficientBalance = balance > MinimumRegistrationFeeBurst + 0.5
                 validation = {
                     message: hasSufficientBalance
-                            ? `Accounts balance: ${balance.toFixed(2)}`
-                            : `Insufficient Balance (${balance.toFixed(2)} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
+                            ? `Accounts balance: ${balance}`
+                            : `Insufficient Balance (${balance} BURST): You need at least ${MinimumRegistrationFeeBurst} BURST`,
                     valid: hasSufficientBalance,
                 }
             } catch (e) {

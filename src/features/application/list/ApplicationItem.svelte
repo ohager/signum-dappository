@@ -3,7 +3,7 @@
     import Button, { Label } from '@smui/button'
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
-    import { convertNQTStringToNumber } from '@burstjs/util'
+    import { BurstValue } from '@burstjs/util'
     import { RouteDonate } from '../../../utils/routes'
     import Stamp from '../../../components/Stamp.svelte'
 
@@ -22,6 +22,7 @@
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
 
+    $: donation = BurstValue.fromPlanck(data.donationPlanck).getBurst()
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
         background-image: url(${imageUrl});
@@ -63,17 +64,17 @@
 <Card style="position:relative; width: 360px;">
     {#if isPreview}
         <div class='stamp-wrapper'>
-            <Stamp text='Preview'></Stamp>
+            <Stamp text='Preview'/>
         </div>
     {/if}
     <PrimaryAction on:click={handleClick}>
         <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!" />
-        <Media aspectRatio="16x9" style={mediaStyle}></Media>
+        <Media aspectRatio="16x9" style={mediaStyle}/>
         <Content class="mdc-typography--body2">
             <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
             {data.desc}
             <div>
-                <small>Donated: {convertNQTStringToNumber(data.donationPlanck)} BURST</small>
+                <small>Donated: {donation} BURST</small>
             </div>
         </Content>
     </PrimaryAction>
