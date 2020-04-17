@@ -10,12 +10,13 @@ const InitialRegistrationState = {
     lic: 'MIT',
     tags: [],
     isPassphraseValid: false,
+    passphrase: '',
     isValid: false,
 }
 
 export const registration$ = writable(InitialRegistrationState)
 
-export const tokenData = () => new MagicMapper({ exlusive: true })
+export const tokenData = () => new MagicMapper({ exclusive: true })
     .map(get(registration$), {
         name: MagicMapper.Direct,
         desc: MagicMapper.Direct,

@@ -1,11 +1,9 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
 import { BurstValue } from '@burstjs/util'
-import { generateMasterKeys } from '@burstjs/crypto'
+import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
 
-
-
-export class RegistrationService {
+export class AccountService {
     constructor() {
         this._dispatch = dispatchEvent
         this._accountApi = BurstApi.account
@@ -25,6 +23,11 @@ export class RegistrationService {
         }
     }
 
+    getAccountIdFromPassphrase(passphrase) {
+        const {publicKey} = this.getKeys(passphrase)
+        return getAccountIdFromPublicKey(publicKey)
+    }
+
     async getBalance(accountId) {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
         return BurstValue.fromPlanck(balanceNQT)
@@ -32,4 +35,4 @@ export class RegistrationService {
 
 }
 
-export const registrationService = new RegistrationService()
+export const accountService = new AccountService()

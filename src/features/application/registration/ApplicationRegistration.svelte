@@ -13,7 +13,6 @@
         width: 96px;
         text-align: center;
     }
-
 </style>
 
 <Page>

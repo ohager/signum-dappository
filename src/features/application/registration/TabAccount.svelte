@@ -6,14 +6,14 @@
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { registration$ } from './registrationStore'
     import { MinimumRegistrationFeeBurst } from './constants'
-    import { registrationService } from '../../../services/registrationService'
     import { assureAccountId } from '../../../utils/assureAccountId'
     import { onDestroy } from 'svelte'
     import { pruneErrorMessage } from '../../../utils/burstApi'
+    import { accountService } from '../../../services/accountService'
 
     async function getBalance(account) {
         const accountId = assureAccountId(account)
-        return await registrationService.getBalance(accountId)
+        return await accountService.getBalance(accountId)
     }
 
     async function validateAccount(account) {
@@ -30,9 +30,6 @@
                             : `Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`,
                     valid: hasSufficientBalance,
                 }
-
-                console.log('val', validation)
-
             } catch (e) {
                 validation = {
                     message: pruneErrorMessage(e.message),

@@ -1,5 +1,6 @@
 <script>
 	import Header from '../components/Header.svelte'
+	import Message from '../components/Message.svelte'
 </script>
 
 <style>
@@ -25,7 +26,8 @@
 </style>
 
 <Header />
+<Message/>
 
 <main>
-	<slot></slot>
+	<slot />
 </main>

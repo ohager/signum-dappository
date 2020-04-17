@@ -18,7 +18,7 @@
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
-    import { registrationService } from '../../../services/registrationService'
+    import { applicationTokenService } from '../../../services/applicationTokenService'
 
     const TabNames = {
         Account: 'Account',
@@ -42,7 +42,6 @@
     $: isFirstTab = currentTabIndex === 0
     $: isLastTab = currentTabIndex === Tabs.length - 1
     $: isInvalid = false
-    $: passphrase = ''
 
     function handleCancel() {
         goto(RouteHome())
@@ -53,7 +52,7 @@
     }
 
     function handleRegister() {
-        registrationService.registerToken(tokenData())
+        applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
     }
 
     function handleNext() {
@@ -110,7 +109,7 @@
             {:else if active === TabNames.AppInfo}
                 <TabApplicationInfo/>
             {:else if active === TabNames.Confirm}
-                <TabConfirm/>
+                <TabConfirm />
             {/if}
         </TabContent>
 

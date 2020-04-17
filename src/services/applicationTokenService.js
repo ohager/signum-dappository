@@ -4,9 +4,11 @@ import { BurstApi } from '../utils/burstApi.js'
 import { Config } from '../config.js'
 import { ApplicationToken } from '../repositories/applicationToken'
 import { Events } from '../utils/events'
+import { accountService } from './accountService'
+import { BurstValue } from '@burstjs/util'
+import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 
 const MaxParallelFetches = 6
-const ApplicationTokenName = 'AppRegistry' // TODO: define a nice name
 
 export const Contract = {
     Version: 1,
@@ -25,30 +27,16 @@ export class ApplicationTokenService {
     constructor(repository = applicationTokenRepository) {
         this._repository = repository
         this._dispatch = dispatchEvent
-        this._contractApi = BurstApi.contract
-    }
-
-    async _getSuggestedFee() {
-        const fees = await BurstApi.network.suggestFee()
-        return BurstValue.fromPlanck(fees.standard.toString(10))
-    }
-
-    _getKeys(passphrase) {
-        const { publicKey, signPrivateKey } = generateMasterKeys(passphrase)
-        return {
-            publicKey,
-            signPrivateKey,
-        }
     }
 
     _fetchContractDetailsChunked(contractIds) {
         return Promise.all(
-            contractIds.map(cid => this._contractApi.getContract(cid)),
+            contractIds.map(cid => BurstApi.contract.getContract(cid)),
         )
     }
 
     async _fetchContractIds() {
-        const { atIds } = await this._contractApi.getAllContractIds(null)
+        const { atIds } = await BurstApi.contract.getAllContractIds(null)
         const firstContractId = atIds.lastIndexOf(Config.FirstApplicationContractId)
         return atIds.slice(firstContractId - 1)
     }
@@ -95,7 +83,6 @@ export class ApplicationTokenService {
         return await this._repository.get()
     }
 
-
     async toggleFavorite(id) {
         const { favorite } = await this._repository.get(id)
         await this._repository.update(id, { favorite: !favorite })
@@ -103,9 +90,9 @@ export class ApplicationTokenService {
 
     async deactivateToken(contractId, passphrase) {
         try {
-            const {signPrivateKey, publicKey}  = this.getKeys(passphrase)
-            const feeValue = await this.getSuggestedFee()
-            await this._contractApi.callContractMethod({
+            const {signPrivateKey, publicKey}  = accountService.getKeys(passphrase)
+            const feeValue = await accountService.getSuggestedFee()
+            await BurstApi.contract.callContractMethod({
                 amountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
                 contractId,
                 feePlanck: feeValue.getPlanck(),
@@ -122,7 +109,7 @@ export class ApplicationTokenService {
         try {
             const {signPrivateKey, publicKey}  = this._getKeys(passphrase)
             const feeValue = await this._getSuggestedFee()
-            await this._contractApi.callContractMethod({
+            await BurstApi.contract.callContractMethod({
                 amountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
                 contractId,
                 feePlanck: feeValue.getPlanck(),
@@ -135,15 +122,20 @@ export class ApplicationTokenService {
         }
     }
 
+    getMinimumRegistrationBalance() {
+        return BurstValue.fromBurst(Contract.CreationFee + 0.5)
+    }
+
     async registerToken(tokenData, passphrase) {
         try {
-            let balanceBurst = await this.getBalance()
-            const minimumBalance = BurstValue.fromBurst(Contract.CreationFee + 0.5)
+            const { publicKey, signPrivateKey } = accountService.getKeys(passphrase)
+            const accountId = getAccountIdFromPublicKey(publicKey)
+            const balanceBurst = await accountService.getBalance(accountId)
+            const minimumBalance = this.getMinimumRegistrationBalance()
             if (balanceBurst.less(minimumBalance)) {
                 throw new Error(`Accounts balance needs at least ${minimumBalance.toString()}`)
             }
-            let { publicKey, signPrivateKey } = this.getKeys(passphrase)
-            await this._contractApi.publishContract({
+            await BurstApi.contract.publishContract({
                 codeHex: Contract.Bytecode,
                 activationAmountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
                 description: JSON.stringify(tokenData),

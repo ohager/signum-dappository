@@ -29,6 +29,7 @@
             return 'Passphrase does not match given account'
         }
         $registration$.isPassphraseValid = true
+        $registration$.passphrase = passphrase
         isPassphraseValid = true
         return ''
     }

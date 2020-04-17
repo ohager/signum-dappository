@@ -66,7 +66,7 @@ export default {
                     ],
                     '@burstjs/crypto': [
                         'generateMasterKeys',
-                        'getAccountIdFromPublicKey'
+                        'getAccountIdFromPublicKey',
                     ],
                     '@burstjs/contracts': [
                         'ContractDataView',
