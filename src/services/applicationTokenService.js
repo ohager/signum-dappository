@@ -7,6 +7,8 @@ import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { BurstValue } from '@burstjs/util'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
+import { ProxyApi } from '../utils/proxyApi'
+import { signTransaction } from '../utils/signTransaction'
 
 const MaxParallelFetches = 6
 
@@ -60,7 +62,8 @@ export class ApplicationTokenService {
                     .filter(contract => contract.name.startsWith(Contract.Name))
                     .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
-                    .filter(token => token && token.isActive)
+                    .forEach(console.log)
+                    // .filter(token => token && token.isActive)
                 await this._repository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
@@ -90,7 +93,7 @@ export class ApplicationTokenService {
 
     async deactivateToken(contractId, passphrase) {
         try {
-            const {signPrivateKey, publicKey}  = accountService.getKeys(passphrase)
+            const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const feeValue = await accountService.getSuggestedFee()
             await BurstApi.contract.callContractMethod({
                 amountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
@@ -98,7 +101,7 @@ export class ApplicationTokenService {
                 feePlanck: feeValue.getPlanck(),
                 methodHash: Contract.MethodHash.deactivate,
                 senderPrivateKey: signPrivateKey,
-                senderPublicKey: publicKey
+                senderPublicKey: publicKey,
             })
         } catch (e) {
             this._dispatch(Events.Error, e.message)
@@ -107,7 +110,7 @@ export class ApplicationTokenService {
 
     async transferToken(contractId, passphrase) {
         try {
-            const {signPrivateKey, publicKey}  = this._getKeys(passphrase)
+            const { signPrivateKey, publicKey } = this._getKeys(passphrase)
             const feeValue = await this._getSuggestedFee()
             await BurstApi.contract.callContractMethod({
                 amountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
@@ -115,7 +118,7 @@ export class ApplicationTokenService {
                 feePlanck: feeValue.getPlanck(),
                 methodHash: Contract.MethodHash.deactivate,
                 senderPrivateKey: signPrivateKey,
-                senderPublicKey: publicKey
+                senderPublicKey: publicKey,
             })
         } catch (e) {
             this._dispatch(Events.Error, e.message)
@@ -135,14 +138,17 @@ export class ApplicationTokenService {
             if (balanceBurst.less(minimumBalance)) {
                 throw new Error(`Accounts balance needs at least ${minimumBalance.toString()}`)
             }
-            await BurstApi.contract.publishContract({
-                codeHex: Contract.Bytecode,
-                activationAmountPlanck: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
+            let unsignedMessage = await ProxyApi.createContract({
+                code: Contract.Bytecode,
+                minActivationAmountNQT: BurstValue.fromBurst(Contract.ExecutionCosts).getPlanck(),
                 description: JSON.stringify(tokenData),
                 name: Contract.Name,
-                senderPrivateKey: signPrivateKey,
-                senderPublicKey: publicKey,
+                publicKey,
             })
+            let signedTransaction = signTransaction(unsignedMessage, publicKey, signPrivateKey)
+            const transactionId = await ProxyApi.broadcastTransaction(signedTransaction)
+            console.log('Transaction:', transactionId)
+            this._dispatch(Events.Success, "Token successfully generated")
         } catch (e) {
             this._dispatch(Events.Error, e.message)
         }

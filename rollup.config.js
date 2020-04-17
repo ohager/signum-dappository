@@ -62,11 +62,16 @@ export default {
                 namedExports: {
                     '@burstjs/core': [
                         'ApiSettings',
-                        'composeApi'
+                        'composeApi',
+                        'broadcastTransaction',
+                        'BurstService',
                     ],
                     '@burstjs/crypto': [
                         'generateMasterKeys',
                         'getAccountIdFromPublicKey',
+                        'generateSignedTransactionBytes',
+                        'verifySignature',
+                        'generateSignature',
                     ],
                     '@burstjs/contracts': [
                         'ContractDataView',
