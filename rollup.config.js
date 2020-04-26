@@ -75,6 +75,7 @@ export default {
                     ],
                     '@burstjs/contracts': [
                         'ContractDataView',
+                        'calculateMinimumCreationFee',
                     ],
                     '@burstjs/util': [
                         'convertNumericIdToAddress',

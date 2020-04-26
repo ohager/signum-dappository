@@ -4,6 +4,5 @@ export const MaxTagCount = 4
 export const MaxDescriptionLength = 384
 export const MaxUrlLength = 128
 export const MaxDataLength = 1000
-export const MinimumRegistrationFeeBurst = 40 // Obsolete. use contract data
 
 

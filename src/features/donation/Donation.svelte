@@ -250,7 +250,7 @@
         </div>
         <div class="donation__form--footer">
             <Button on:click={handleCancel}>
-                <Label>Cancel</Label>
+                <Label>Back</Label>
             </Button>
         </div>
     </div>

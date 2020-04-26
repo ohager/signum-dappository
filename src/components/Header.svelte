@@ -1,6 +1,10 @@
 <script>
-    import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
-    import IconButton from '@smui/icon-button';
+    import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
+    import IconButton from '@smui/icon-button'
+    import { inactiveTokens$ } from '../stores/inactiveTokensStore'
+
+    $: hasInactiveTokens = $inactiveTokens$.tokens.length > 0
+
 </script>
 
 <style>
@@ -16,10 +20,10 @@
             <img class="burst-logo" src="img/burst-white.svg" alt="Burst"/>
             <Title>Applications</Title>
         </Section>
-<!--        <Section align="end" toolbar>-->
-<!--            <IconButton class="material-icons" aria-label="Download">file_download</IconButton>-->
-<!--            <IconButton class="material-icons" aria-label="Print this page">print</IconButton>-->
-<!--            <IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>-->
-<!--        </Section>-->
+        <Section align="end" toolbar>
+            {#if hasInactiveTokens}
+                <IconButton ripple={false} class="material-icons animation-pulse" aria-label="New Tokens Available">new_releases</IconButton>
+            {/if}
+        </Section>
     </Row>
 </TopAppBar>

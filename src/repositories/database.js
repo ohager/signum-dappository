@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 import { ApplicationToken } from './applicationToken'
-import { Favorite } from './favorite'
+import { InactiveTokens } from './inactiveTokens'
 
 const database = new Dexie('app-store')
 
@@ -8,11 +8,11 @@ const Version = 1
 
 const Schema = {
     appTokens: ApplicationToken.schema(),
-    favorites: Favorite.schema()
+    inactiveTokens: InactiveTokens.schema(),
 }
 
 database.version(Version).stores(Schema)
 database.appTokens.mapToClass(ApplicationToken)
-database.appTokens.mapToClass(Favorite)
+database.inactiveTokens.mapToClass(InactiveTokens)
 
 export const db = database

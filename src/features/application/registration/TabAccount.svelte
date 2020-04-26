@@ -2,14 +2,13 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
-    import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { registration$ } from './registrationStore'
-    import { MinimumRegistrationFeeBurst } from './constants'
     import { assureAccountId } from '../../../utils/assureAccountId'
     import { onDestroy } from 'svelte'
     import { pruneErrorMessage } from '../../../utils/burstApi'
     import { accountService } from '../../../services/accountService'
+    import { TokenContract } from '../../../services/tokenContract'
 
     async function getBalance(account) {
         const accountId = assureAccountId(account)
@@ -22,8 +21,7 @@
         balanceTimeout = setTimeout(async () => {
             try {
                 const balance = await getBalance(account)
-                const minimumBalance = BurstValue.fromBurst(MinimumRegistrationFeeBurst + 0.5);
-                const hasSufficientBalance = balance.greaterOrEqual(minimumBalance)
+                const hasSufficientBalance = balance.greaterOrEqual(TokenContract.CreationFee)
                 validation = {
                     message: hasSufficientBalance
                             ? `Accounts balance: ${balance.toString()}`
@@ -63,7 +61,7 @@
 
 <section>
     <p class="mdc-typography--body1">
-        In order to register your application, you must provide a Burst account to which donations will be forwarded. You will also have to pay a fee of {MinimumRegistrationFeeBurst} BURST to create the token. This fee is used exclusively to create the token and no third party will receive anything.
+        In order to register your application, you must provide a Burst account to which donations will be forwarded. You will also have to pay a fee of {TokenContract.ActivationCosts.toString()} to create the token. This fee is used exclusively to create the token and no third party will receive anything.
     </p>
     <div class="form--input">
         <div class="form--input-field">

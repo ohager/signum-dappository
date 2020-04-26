@@ -1,6 +1,6 @@
-export class Favorite {
+export class InactiveTokens {
     constructor(data) {
-        this.isFavorite = data.isFavorite
+        this.at = data.at
     }
 
     static schema() {

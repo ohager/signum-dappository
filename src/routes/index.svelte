@@ -4,6 +4,7 @@
     import Fab, { Label, Icon } from '@smui/fab'
     import {goto, prefetch} from '@sapper/app'
     import { RouteRegister } from '../utils/routes'
+    import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
 
     function handleGotoRegister(){
         goto(RouteRegister())
@@ -13,7 +14,7 @@
         prefetch(RouteRegister())
     }
 
-
+    //inactiveTokensRepository.insert('test')
 </script>
 
 <style>

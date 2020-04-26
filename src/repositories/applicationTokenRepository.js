@@ -21,8 +21,7 @@ export class ApplicationTokenRepository {
 
     async get(filter, order){
         // TODO: apply filter
-        return await this._db.orderBy(order).toArray()
-        // return await this._db.
+        return this._db.orderBy(order).toArray()
     }
 
     async update(id, data){
