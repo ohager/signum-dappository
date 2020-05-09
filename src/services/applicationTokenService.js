@@ -122,16 +122,17 @@ export class ApplicationTokenService {
                 throw new Error(`Accounts balance needs at least ${TokenContract.CreationFee.toString()}`)
             }
 
-            const unsignedMessage = await ProxyApi.createContract({
-                code: TokenContract.Bytecode,
-                minActivationAmountNQT: TokenContract.ActivationCosts.getPlanck(),
+            let { transaction } = await BurstApi.contract.publishContract({
+                codeHex: TokenContract.Bytecode,
+                activationAmountPlanck: TokenContract.ActivationCosts.getPlanck(),
                 description: JSON.stringify(tokenData),
                 name: TokenContract.Name,
-                publicKey,
+                senderPrivateKey: signPrivateKey,
+                senderPublicKey: publicKey,
+                isCIP20Active: true,
             })
-            const signedTransaction = signTransaction(unsignedMessage, publicKey, signPrivateKey)
-            const transactionId = await ProxyApi.broadcastTransaction(signedTransaction)
-            await inactiveTokensRepository.insert(transactionId)
+
+            await inactiveTokensRepository.insert(transaction)
             this._dispatch(Events.Success, "Token successfully generated")
         } catch (e) {
             this._dispatch(Events.Error, e.message)
