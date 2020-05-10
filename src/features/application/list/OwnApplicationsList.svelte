@@ -1,7 +1,7 @@
 <script>
     import ApplicationItem from './ApplicationItem.svelte'
     import { ApplicationItemVariant } from './constants'
-    import { tokens$ } from '../../../stores/applicationStore'
+    import { tokens$ } from '../../../stores/applicationTokenStore'
 
     export let ownerId
 

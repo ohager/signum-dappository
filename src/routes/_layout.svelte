@@ -2,7 +2,6 @@
     import Header from '../components/Header.svelte'
     import Message from '../components/Message.svelte'
     import AccountDialog from '../components/AccountDialog.svelte'
-
 </script>
 
 <Header/>

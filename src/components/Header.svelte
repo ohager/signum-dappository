@@ -2,11 +2,12 @@
     import { goto, prefetch } from '@sapper/app'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
-    import { RouteOwner, RouteOwnerTokens } from '../utils/routes'
+    import { RouteOwner, RouteOwnerTokens, RouteHome } from '../utils/routes'
     import { isEmptyString } from '../utils/isEmptyString'
     import { dispatchEvent } from '../utils/dispatchEvent'
-    import { account$ } from '../stores/accountStore'
+    import { account$, clearAccount } from '../stores/accountStore'
     import { Events } from '../utils/events'
+    import { convertNumericIdToAddress } from '@burstjs/util'
 
     $: currentAccount = $account$.accountId
     $: hasAccount = !isEmptyString(currentAccount)
@@ -19,13 +20,12 @@
         }
     }
 
-</script>
-
-<style>
-    .burst-logo {
-        height: 48px
+    function unsetAccount() {
+        clearAccount()
+        goto(RouteHome())
     }
-</style>
+
+</script>
 
 <TopAppBar variant="static" dense color='primary'>
     <Row>
@@ -36,7 +36,15 @@
         </Section>
         <Section align="end" toolbar>
             {#if hasAccount}
-                <div class="account-address">{currentAccount}</div>
+                <div class="current-account" title="Clear Account">
+                    <div class="mdc-typography--body1">{convertNumericIdToAddress(currentAccount)}</div>
+                    <IconButton ripple={false}
+                                class="material-icons"
+                                aria-label="Unset Account"
+                                on:click={unsetAccount} >
+                                clear
+                    </IconButton>
+                </div>
             {:else}
                 <div title="Enter as your account">
                     <IconButton ripple={false}
@@ -51,3 +59,17 @@
         </Section>
     </Row>
 </TopAppBar>
+
+<style>
+    .burst-logo {
+        height: 48px
+    }
+    .current-account {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .current-account .mdc-typography--body1 {
+        margin-right: 1rem;
+    }
+</style>

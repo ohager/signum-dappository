@@ -1,4 +1,4 @@
-import { readable, writable } from 'svelte/store'
+import { readable, writable, get } from 'svelte/store'
 import { applicationTokenService } from '../services/applicationTokenService'
 import { isClientSide } from '../utils/isClientSide'
 import { Events } from '../utils/events'
@@ -7,8 +7,8 @@ import { Config } from '../config'
 const InitialSyncProgressState = 0
 const UpdateInterval = Config.ContractPollingIntervalSecs
 const InitialTokensState = {
-    filter: null,
     items: [],
+    isFirstSync: true,
 }
 
 const syncProgress$ = readable(InitialSyncProgressState, (set) => {
@@ -19,10 +19,10 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
         set(total && processed / total)
     }
     window.addEventListener(Events.Progress, updateProgress)
-    // service.syncTokens()
-    // const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
+    service.syncTokens()
+    const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
     return () => {
-        // clearInterval(interval)
+        clearInterval(interval)
         window.removeEventListener(Events.Progress, updateProgress)
         set(InitialSyncProgressState)
     }
@@ -31,7 +31,7 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
 const tokens$ = writable(InitialTokensState, (set) => {
     if (!isClientSide()) return
     const service = applicationTokenService
-    const updateTokens = () => {
+    const updateTokens = (progress) => {
         service.getTokens().then(tokens => {
             tokens$.update(state => ({
                 ...state,
@@ -39,20 +39,26 @@ const tokens$ = writable(InitialTokensState, (set) => {
             }))
         })
     }
-    window.addEventListener(Events.Finish, updateTokens)
+
+    const updateSyncState = () => {
+        tokens$.update(state => ({
+            ...state,
+            isFirstSync: false,
+        }))
+    }
+
+    window.addEventListener(Events.Progress, updateTokens)
+    window.addEventListener(Events.Finish, updateSyncState)
     updateTokens()
+
     return () => {
-        window.removeEventListener(Events.Finish, updateTokens)
+        window.removeEventListener(Events.Progress, updateTokens)
+        window.removeEventListener(Events.Finish, updateSyncState)
         set(InitialTokensState)
     }
 })
 
-const filterTokensBy = filter => {
-    // todo apply filter
-}
-
 export {
     tokens$,
     syncProgress$,
-    filterTokensBy,
 }

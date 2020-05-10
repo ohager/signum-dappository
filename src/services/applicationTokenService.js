@@ -2,15 +2,12 @@ import { applicationTokenRepository } from '../repositories/applicationTokenRepo
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
 import { Config } from '../config.js'
-import { ApplicationToken } from '../repositories/applicationToken'
+import { ApplicationToken } from '../repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
-import { ProxyApi } from '../utils/proxyApi'
-import { signTransaction } from '../utils/signTransaction'
 import { TokenContract } from './tokenContract'
 import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
-import { voidFn } from '../utils/voidFn'
 
 const MaxParallelFetches = 6
 

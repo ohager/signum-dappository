@@ -63,7 +63,7 @@
         <p>
             In the Account Zone you can see the tokens of a single account. This is especially useful for the token
             owners, because there are more functions like (de)activation and transfer available. Please note that
-            the passphrase is required.
+            for these actions the passphrase is required.
         </p>
 
         <TextField bind:value={account}
