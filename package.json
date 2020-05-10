@@ -20,7 +20,7 @@
   },
   "version": "0.0.1",
   "scripts": {
-    "dev": "sapper dev",
+    "dev": "sapper dev -p 3001",
     "build": "sapper build --legacy",
     "export": "SAPPER_SW_TIMESTAMP=$(date +%s%3N) sapper export --legacy",
     "start": "node __sapper__/build",

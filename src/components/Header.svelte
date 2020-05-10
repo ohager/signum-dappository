@@ -1,9 +1,23 @@
 <script>
+    import { goto, prefetch } from '@sapper/app'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
-    import { inactiveTokens$ } from '../stores/inactiveTokensStore'
+    import { RouteOwner, RouteOwnerTokens } from '../utils/routes'
+    import { isEmptyString } from '../utils/isEmptyString'
+    import { dispatchEvent } from '../utils/dispatchEvent'
+    import { account$ } from '../stores/accountStore'
+    import { Events } from '../utils/events'
 
-    $: hasInactiveTokens = $inactiveTokens$.tokens.length > 0
+    $: currentAccount = $account$.accountId
+    $: hasAccount = !isEmptyString(currentAccount)
+
+    function gotoOwnerPage() {
+        if (hasAccount) {
+            goto(RouteOwnerTokens(currentAccount))
+        } else {
+            dispatchEvent(Events.ShowAccountDialog, true)
+        }
+    }
 
 </script>
 
@@ -21,8 +35,18 @@
             <Title>Applications</Title>
         </Section>
         <Section align="end" toolbar>
-            {#if hasInactiveTokens}
-                <IconButton ripple={false} class="material-icons animation-pulse" aria-label="New Tokens Available">new_releases</IconButton>
+            {#if hasAccount}
+                <div class="account-address">{currentAccount}</div>
+            {:else}
+                <div title="Enter as your account">
+                    <IconButton ripple={false}
+                                class="material-icons"
+                                aria-label="Your Account"
+                                on:click={gotoOwnerPage}
+                    >
+                        account_box
+                    </IconButton>
+                </div>
             {/if}
         </Section>
     </Row>

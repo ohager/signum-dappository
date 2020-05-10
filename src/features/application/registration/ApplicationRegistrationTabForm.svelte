@@ -52,7 +52,12 @@
     }
 
     function handleRegister() {
-        applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
+        try{
+            applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
+            goto('/register/success')
+        }catch(e){
+            // noop yet
+        }
     }
 
     function handleNext() {

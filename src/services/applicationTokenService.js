@@ -10,6 +10,7 @@ import { ProxyApi } from '../utils/proxyApi'
 import { signTransaction } from '../utils/signTransaction'
 import { TokenContract } from './tokenContract'
 import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
+import { voidFn } from '../utils/voidFn'
 
 const MaxParallelFetches = 6
 
@@ -51,7 +52,6 @@ export class ApplicationTokenService {
                     .filter(contract => contract.name.startsWith(TokenContract.Name))
                     .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
-                    .filter(token => token && token.isActive)
                 await this._repository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
@@ -136,6 +136,7 @@ export class ApplicationTokenService {
             this._dispatch(Events.Success, "Token successfully generated")
         } catch (e) {
             this._dispatch(Events.Error, e.message)
+            throw e
         }
     }
 }

@@ -23,8 +23,21 @@ export class AccountService {
         }
     }
 
+    async getAccount(accountId) {
+        return await BurstApi.account.getAccount(accountId)
+    }
+
+    async existsAccount(accountId) {
+        try {
+            await this.getAccount(accountId)
+            return true
+        } catch (e) {
+            return Promise.resolve(false)
+        }
+    }
+
     getAccountIdFromPassphrase(passphrase) {
-        const {publicKey} = this.getKeys(passphrase)
+        const { publicKey } = this.getKeys(passphrase)
         return getAccountIdFromPublicKey(publicKey)
     }
 

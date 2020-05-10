@@ -72,7 +72,6 @@
     }
 
     function openDeepLink() {
-        console.log(mountDeepLink(amount, true))
         goto(mountDeepLink(amount))
     }
 

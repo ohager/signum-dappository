@@ -3,6 +3,7 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
     import ApplicationItem from '../list/ApplicationItem.svelte'
+    import { ApplicationItemVariant } from '../list/constants'
     import { registration$ } from './registrationStore'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { isValidPassphrase } from './validators'
@@ -47,7 +48,7 @@
         carefully, because once registered applications cannot be changed anymore.
     </p>
     <div class="card-preview">
-        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} isPreview/>
+        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} viewMode={ApplicationItemVariant.Preview}/>
     </div>
     <div class="form--input">
         <div class="form--input-field">

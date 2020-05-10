@@ -13,8 +13,6 @@
     const prefetchRegister = () => {
         prefetch(RouteRegister())
     }
-
-    //inactiveTokensRepository.insert('test')
 </script>
 
 <style>

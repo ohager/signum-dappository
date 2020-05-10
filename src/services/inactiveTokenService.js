@@ -1,8 +1,5 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
-import { BurstValue } from '@burstjs/util'
-import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
-import { TokenContract } from './tokenContract'
 import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
 
 export class InactiveTokenService {
@@ -11,8 +8,13 @@ export class InactiveTokenService {
         this._repository = repository
     }
 
-    async getTokens() {
+    async getTokenIds() {
         return this._repository.get()
+    }
+
+    async fetchTokens() {
+        const tokenIds = await this.getTokenIds()
+        return await Promise.all(tokenIds.map( ({at}) => BurstApi.contract.getContract(at) ))
     }
 
     async addToken(at) {

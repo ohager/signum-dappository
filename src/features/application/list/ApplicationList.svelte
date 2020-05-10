@@ -3,8 +3,8 @@
     import ApplicationItem from './ApplicationItem.svelte'
     import { syncProgress$, tokens$ } from '../../../stores/applicationStore'
 
+    $: activeTokens = $tokens$.items.filter( t => t.isActive )
     $: isProgressVisible = $syncProgress$ < 1
-
 
 </script>
 
@@ -33,9 +33,9 @@
             <LinearProgress progress={$syncProgress$}/>
         </div>
     {/if}
-    {#each $tokens$.items as data}
+    {#each activeTokens as data}
         <div class="item">
-            <ApplicationItem {data}/>
+            <ApplicationItem {data} />
         </div>
     {/each}
 </div>

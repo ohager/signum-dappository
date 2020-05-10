@@ -9,15 +9,9 @@
     import Donation from '../../features/donation/Donation.svelte'
     import { tokens$ } from '../../stores/applicationStore'
     import { beforeUpdate } from 'svelte'
-
     export let tokenId
 
-    let token = {}
-
     $: token = $tokens$.items.find( i => i.at === tokenId)
-
-
-
 </script>
 
 <Donation {token} />

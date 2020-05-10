@@ -19,10 +19,10 @@ const syncProgress$ = readable(InitialSyncProgressState, (set) => {
         set(total && processed / total)
     }
     window.addEventListener(Events.Progress, updateProgress)
-    service.syncTokens()
-    const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
+    // service.syncTokens()
+    // const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
     return () => {
-        clearInterval(interval)
+        // clearInterval(interval)
         window.removeEventListener(Events.Progress, updateProgress)
         set(InitialSyncProgressState)
     }
