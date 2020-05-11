@@ -8,7 +8,6 @@ const InitialSyncProgressState = 0
 const UpdateInterval = Config.ContractPollingIntervalSecs
 const InitialTokensState = {
     items: [],
-    isFirstSync: true,
 }
 
 const syncProgress$ = readable(InitialSyncProgressState, (set) => {
@@ -40,20 +39,11 @@ const tokens$ = writable(InitialTokensState, (set) => {
         })
     }
 
-    const updateSyncState = () => {
-        tokens$.update(state => ({
-            ...state,
-            isFirstSync: false,
-        }))
-    }
-
     window.addEventListener(Events.Progress, updateTokens)
-    window.addEventListener(Events.Finish, updateSyncState)
     updateTokens()
 
     return () => {
         window.removeEventListener(Events.Progress, updateTokens)
-        window.removeEventListener(Events.Finish, updateSyncState)
         set(InitialTokensState)
     }
 })

@@ -3,6 +3,7 @@
     import ApplicationItem from './ApplicationItem.svelte'
     import { syncProgress$, tokens$ } from '../../../stores/applicationTokenStore'
     import Searchbar from '../../../components/Searchbar.svelte'
+    import ApplicationItemLoadingIndicator from './ApplicationItemLoadingIndicator.svelte'
 
     let searchTerm = ''
 
@@ -13,32 +14,30 @@
             || hasText(desc, filter)
 
     $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
+    $: hasTokens = activeTokens.length > 0
     $: progress = $syncProgress$
-    $: progressPercent = ($syncProgress$ * 100).toFixed(0)
-    $: isFirstTime = $tokens$.isFirstSync
-    $: isProgressVisible = progress < 1 && isFirstTime
+    $: isSyncing = progress < 1
 
 </script>
 
 <div class="container">
 
-    {#if isProgressVisible}
+    {#if isSyncing}
         <div class="sync-progressbar">
             <LinearProgress progress={progress}/>
         </div>
     {/if}
 
     <section class="header">
-        {#if isFirstTime}
-            <div>
-                <h2>{`Syncing...please wait until finished - ${progressPercent} %`}</h2>
-            </div>
-        {:else}
-            <Searchbar bind:value={searchTerm}/>
-        {/if}
+        <Searchbar bind:value={searchTerm}/>
     </section>
 
     <section class="body">
+        {#if !hasTokens}
+        <div class="loading">
+            <ApplicationItemLoadingIndicator/>
+        </div>
+        {/if}
         <div class="item-list">
             {#each activeTokens as data}
                 <div class="item">
@@ -80,5 +79,12 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+    }
+
+    .body .loading {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

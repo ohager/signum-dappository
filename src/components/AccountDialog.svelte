@@ -4,7 +4,7 @@
     import Button, { Label } from '@smui/button'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import { RouteOwnerTokens } from '../utils/routes'
+    import { RouteHome, RouteOwnerTokens } from '../utils/routes'
     import { Events } from '../utils/events'
     import { assureAccountId } from '../utils/assureAccountId'
     import { dispatchEvent } from '../utils/dispatchEvent'
@@ -42,6 +42,11 @@
         }, 500)
     }
 
+    function handleCancel() {
+        dispatchEvent(Events.ShowAccountDialog, false)
+        goto(RouteHome())
+    }
+
     function showDialog({ detail: isVisible }) {
         if (isVisible) {
             dialog.open()
@@ -77,6 +82,9 @@
         {/if}
     </Content>
     <Actions>
+        <Button on:click={handleCancel}>
+            <Label>Cancel</Label>
+        </Button>
         <Button on:click={handleEnter} disabled={!isValid || isValidating}>
             <Label>{isValidating ? 'Checking...' : 'Enter'}</Label>
         </Button>
