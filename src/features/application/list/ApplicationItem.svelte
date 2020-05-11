@@ -79,17 +79,9 @@
 
 </script>
 
-<style>
-    .stamp-wrapper {
-        top: 50%;
-        left: 25%;
-        position: absolute;
-        opacity: 0.33;
-        z-index: 10;
-    }
-</style>
 
-<Card style="position:relative; width: 360px;">
+
+<Card>
     {#if variant === ApplicationItemVariant.Preview}
         <div class='stamp-wrapper'>
             <Stamp text='Preview'/>
@@ -142,3 +134,14 @@
         {/if}
     </Actions>
 </Card>
+
+
+<style>
+    .stamp-wrapper {
+        top: 50%;
+        left: 25%;
+        position: absolute;
+        opacity: 0.33;
+        z-index: 10;
+    }
+</style>

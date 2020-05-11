@@ -73,6 +73,7 @@
 
     .body .item {
         padding: 0.5rem;
+        width: 360px;
     }
 
     .body .item-list {
@@ -87,4 +88,11 @@
         align-items: center;
         justify-content: center;
     }
+
+    @media (max-width: 768px){
+        .body .item{
+            width: calc(100vw - 16px)
+        }
+    }
+
 </style>
