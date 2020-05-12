@@ -1,8 +1,8 @@
 import { readable, writable, get } from 'svelte/store'
-import { applicationTokenService } from '../services/applicationTokenService'
-import { isClientSide } from '../utils/isClientSide'
-import { Events } from '../utils/events'
-import { Config } from '../config'
+import { applicationTokenService } from '../../../services/applicationTokenService'
+import { isClientSide } from '../../../utils/isClientSide'
+import { Events } from '../../../utils/events'
+import { Config } from '../../../config'
 
 const InitialSyncProgressState = 0
 const UpdateInterval = Config.ContractPollingIntervalSecs

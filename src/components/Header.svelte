@@ -5,7 +5,7 @@
     import { RouteOwner, RouteOwnerTokens, RouteHome } from '../utils/routes'
     import { isEmptyString } from '../utils/isEmptyString'
     import { dispatchEvent } from '../utils/dispatchEvent'
-    import { account$, clearAccount } from '../stores/accountStore'
+    import { account$, clearAccount } from '../routes/account/accountStore'
     import { Events } from '../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
 

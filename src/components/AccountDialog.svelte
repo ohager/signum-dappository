@@ -11,7 +11,7 @@
     import debounce from 'lodash.debounce'
     import { accountService } from '../services/accountService'
     import { isEmptyString } from '../utils/isEmptyString'
-    import { setAccount } from '../stores/accountStore'
+    import { setAccount } from '../routes/account/accountStore'
 
     let account = ''
     let isOpen = false

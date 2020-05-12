@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
-import { isClientSide } from '../utils/isClientSide'
-import { SettingsKeys, settingsService } from '../services/settingsService'
+import { isClientSide } from '../../utils/isClientSide'
+import { SettingsKeys, settingsService } from '../../services/settingsService'
 
 const InitialAccountState = {
     accountId: '',
@@ -9,13 +9,10 @@ const InitialAccountState = {
 const account$ = writable(InitialAccountState, (set) => {
     if (!isClientSide()) return
 
-    // fetch the account in index db
     settingsService.getValue(SettingsKeys.CurrentAccount).then(accountId => {
         if(accountId){
             set({ accountId })
         }
-    }).catch(e => {
-        console.log('not found')
     })
 
     return () => {
@@ -35,7 +32,7 @@ function setAccount(accountId) {
 
 function clearAccount() {
     settingsService.removeValue(SettingsKeys.CurrentAccount)
-    account$.update(state => InitialAccountState)
+    account$.update(() => InitialAccountState)
 }
 
 export {

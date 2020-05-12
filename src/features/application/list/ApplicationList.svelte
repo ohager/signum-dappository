@@ -1,7 +1,7 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
     import ApplicationItem from './ApplicationItem.svelte'
-    import { syncProgress$, tokens$ } from '../../../stores/applicationTokenStore'
+    import { syncProgress$, tokens$ } from './applicationTokenStore'
     import Searchbar from '../../../components/Searchbar.svelte'
     import ApplicationItemLoadingIndicator from './ApplicationItemLoadingIndicator.svelte'
 

@@ -7,7 +7,7 @@
 
 <script>
     import Donation from '../../features/donation/Donation.svelte'
-    import { tokens$ } from '../../stores/applicationTokenStore'
+    import { tokens$ } from '../../features/application/list/applicationTokenStore'
     import { beforeUpdate } from 'svelte'
     export let tokenId
 

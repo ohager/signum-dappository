@@ -12,8 +12,8 @@ export class SettingsService {
     }
 
     async getValue(key) {
-        const { value } = await this._repository.get(key)
-        return value
+        const result = await this._repository.get(key)
+        return result && result.value
     }
 
     async removeValue(key) {
