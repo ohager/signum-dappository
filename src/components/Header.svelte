@@ -2,10 +2,10 @@
     import { goto, prefetch } from '@sapper/app'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
-    import { RouteOwner, RouteOwnerTokens, RouteHome } from '../utils/routes'
+    import { RouteAccountTokens, RouteHome } from '../utils/routes'
     import { isEmptyString } from '../utils/isEmptyString'
     import { dispatchEvent } from '../utils/dispatchEvent'
-    import { account$, clearAccount } from '../routes/account/accountStore'
+    import { account$, clearAccount } from '../features/account/accountStore'
     import { Events } from '../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
 
@@ -14,7 +14,7 @@
 
     function gotoOwnerPage() {
         if (hasAccount) {
-            goto(RouteOwnerTokens(currentAccount))
+            goto(RouteAccountTokens(currentAccount))
         } else {
             dispatchEvent(Events.ShowAccountDialog, true)
         }

@@ -1,4 +1,3 @@
-import { dispatchEvent } from '../utils/dispatchEvent'
 import { settingsRepository } from '../repositories/settingsRepository'
 
 export const SettingsKeys = {
@@ -7,8 +6,7 @@ export const SettingsKeys = {
 
 export class SettingsService {
     constructor(repository = settingsRepository) {
-        this._dispatch = dispatchEvent
-        this._repository = settingsRepository
+        this._repository = repository
     }
 
     async getValue(key) {

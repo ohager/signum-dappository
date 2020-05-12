@@ -4,14 +4,14 @@
     import Button, { Label } from '@smui/button'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import { RouteHome, RouteOwnerTokens } from '../utils/routes'
+    import { RouteHome, RouteAccountTokens } from '../utils/routes'
     import { Events } from '../utils/events'
     import { assureAccountId } from '../utils/assureAccountId'
     import { dispatchEvent } from '../utils/dispatchEvent'
     import debounce from 'lodash.debounce'
     import { accountService } from '../services/accountService'
     import { isEmptyString } from '../utils/isEmptyString'
-    import { setAccount } from '../routes/account/accountStore'
+    import { setAccount } from '../features/account/accountStore'
 
     let account = ''
     let isOpen = false
@@ -34,11 +34,11 @@
     }
 
     function handleEnter() {
-        prefetch(RouteOwnerTokens(accountId))
+        prefetch(RouteAccountTokens(accountId))
         dispatchEvent(Events.ShowAccountDialog, false)
         setAccount(accountId)
         setTimeout(() => {
-            goto(RouteOwnerTokens(accountId))
+            goto(RouteAccountTokens(accountId))
         }, 500)
     }
 

@@ -1,4 +1,7 @@
 <script>
+    import Page from '../../components/Page.svelte'
 </script>
 
-<h2>success</h2>
+<Page>
+    <h2>success</h2>
+</Page>

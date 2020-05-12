@@ -8,6 +8,7 @@ const InitialSyncProgressState = 0
 const UpdateInterval = Config.ContractPollingIntervalSecs
 const InitialTokensState = {
     items: [],
+    unconfirmedItems: [],
 }
 
 const syncProgress$ = readable(InitialSyncProgressState, (set) => {
@@ -47,8 +48,33 @@ const tokens$ = writable(InitialTokensState, (set) => {
         set(InitialTokensState)
     }
 })
+//
+//
+// const unconfirmedTokens$ = writable(InitialTokensState, (set) => {
+//     if (!isClientSide()) return
+//
+//     const service =
+//     const updateTokens = (progress) => {
+//         unconfirmedTokenService..then(tokens => {
+//             tokens$.update(state => ({
+//                 ...state,
+//                 items: tokens,
+//             }))
+//         })
+//     }
+//
+//     window.addEventListener(Events.Progress, updateTokens)
+//     updateTokens()
+//
+//     return () => {
+//         window.removeEventListener(Events.Progress, updateTokens)
+//         set(InitialTokensState)
+//     }
+// })
+//
 
 export {
     tokens$,
+    // unconfirmedTokens$,
     syncProgress$,
 }

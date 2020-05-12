@@ -3,9 +3,9 @@
     import { ApplicationItemVariant } from './constants'
     import { tokens$ } from './applicationTokenStore'
 
-    export let ownerId
+    export let accountId
 
-    $: tokens = $tokens$.items.filter(i => i.creator === ownerId)
+    $: tokens = $tokens$.items.filter(i => i.creator === accountId)
 </script>
 
 <style>
@@ -16,14 +16,8 @@
     }
 
     .item {
-        padding: 1rem;
-    }
-
-    .sync-progressbar {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        top: 0;
+        padding: 0.5rem;
+        width: 360px;
     }
 </style>
 

@@ -1,9 +1,9 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
-import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
+import { unconfirmedTokensRepository } from '../repositories/unconfirmedTokensRepository'
 
-export class InactiveTokenService {
-    constructor(repository = inactiveTokensRepository) {
+export class UnconfirmedTokenService {
+    constructor(repository = unconfirmedTokensRepository) {
         this._dispatch = dispatchEvent
         this._repository = repository
     }
@@ -30,4 +30,4 @@ export class InactiveTokenService {
     }
 }
 
-export const inactiveTokenService = new InactiveTokenService()
+export const unconfirmedTokenService = new UnconfirmedTokenService()

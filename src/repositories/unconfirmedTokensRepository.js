@@ -2,17 +2,17 @@ import { db } from './database'
 
 const DefaultDatabase = db
 
-export class InactiveTokensRepository {
+export class UnconfirmedTokensRepository {
     constructor(db = DefaultDatabase) {
-        this._db = db.inactiveTokens
+        this._db = db.unconfirmedTokens
     }
 
     async get(){
         return this._db.toArray()
     }
 
-    async insert(at) {
-        await this._db.put({ at })
+    async insert(tokenData) {
+        await this._db.put(tokenData)
     }
 
     async remove(at) {
@@ -20,4 +20,4 @@ export class InactiveTokensRepository {
     }
 }
 
-export const inactiveTokensRepository = new InactiveTokensRepository()
+export const unconfirmedTokensRepository = new UnconfirmedTokensRepository()

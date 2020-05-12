@@ -7,14 +7,15 @@ import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 import { TokenContract } from './tokenContract'
-import { inactiveTokensRepository } from '../repositories/inactiveTokensRepository'
+import { unconfirmedTokensRepository } from '../repositories/unconfirmedTokensRepository'
+import { UnconfirmedTokenService } from './unconfirmedTokenService'
 
 const MaxParallelFetches = 6
 
 export class ApplicationTokenService {
 
-    constructor(repository = applicationTokenRepository) {
-        this._repository = repository
+    constructor(tokenRepository = applicationTokenRepository) {
+        this._tokenRepository = tokenRepository
         this._dispatch = dispatchEvent
     }
 
@@ -49,7 +50,7 @@ export class ApplicationTokenService {
                     .filter(contract => contract.name.startsWith(TokenContract.Name))
                     .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
-                await this._repository.upsertBulk(appTokens)
+                await this._tokenRepository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }
         } catch (e) {
@@ -60,7 +61,7 @@ export class ApplicationTokenService {
     }
 
     getCollection() {
-        return this._repository.collection
+        return this._tokenRepository.collection
     }
 
     async getToken(tokenId) {
@@ -68,12 +69,12 @@ export class ApplicationTokenService {
     }
 
     async getTokens() {
-        return await this._repository.get()
+        return await this._tokenRepository.get()
     }
 
     async toggleFavorite(id) {
-        const { favorite } = await this._repository.get(id)
-        await this._repository.update(id, { favorite: !favorite })
+        const { favorite } = await this._tokenRepository.get(id)
+        await this._tokenRepository.update(id, { favorite: !favorite })
     }
 
     async deactivateToken(contractId, passphrase) {
@@ -119,7 +120,7 @@ export class ApplicationTokenService {
                 throw new Error(`Accounts balance needs at least ${TokenContract.CreationFee.toString()}`)
             }
 
-            let { transaction } = await BurstApi.contract.publishContract({
+            let { transaction: unconfirmedTokenId } = await BurstApi.contract.publishContract({
                 codeHex: TokenContract.Bytecode,
                 activationAmountPlanck: TokenContract.ActivationCosts.getPlanck(),
                 description: JSON.stringify(tokenData),
@@ -129,8 +130,10 @@ export class ApplicationTokenService {
                 isCIP20Active: true,
             })
 
-            await inactiveTokensRepository.insert(transaction)
+            const unconfirmedTokenService =  new UnconfirmedTokenService()
+            await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, ...tokenData })
             this._dispatch(Events.Success, "Token successfully generated")
+            return unconfirmedTokenId;
         } catch (e) {
             this._dispatch(Events.Error, e.message)
             throw e

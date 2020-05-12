@@ -51,9 +51,9 @@
         started = true
     }
 
-    function handleRegister() {
+    async function handleRegister() {
         try{
-            applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
+            const tokenId = await applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
             goto('/register/success')
         }catch(e){
             // noop yet

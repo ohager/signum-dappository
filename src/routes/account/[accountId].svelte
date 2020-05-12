@@ -1,14 +1,27 @@
 <script context="module">
-    export async function preload({ params }) {
+    export async function preload({ params, query }) {
         const { accountId } = params
+        console.log('query', query)
         return { accountId }
     }
 </script>
 
 <script>
-    import OwnApplicationsList from '../../features/application/list/OwnApplicationsList.svelte'
+    import AccountApplicationsList from '../../features/application/list/AccountApplicationsList.svelte'
+    import RegisterFabButton from '../../components/RegisterFabButton.svelte'
+
+
+    function handleClick() {
+    }
+
+    const prefetchRoute = () => {
+    }
+
 
     export let accountId
 </script>
 
-<OwnApplicationsList {accountId}/>
+<div>
+    <AccountApplicationsList {accountId}/>
+    <RegisterFabButton on:mouseenter={prefetchRoute} on:click={handleClick}/>
+</div>

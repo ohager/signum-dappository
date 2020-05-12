@@ -5,6 +5,7 @@
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
     import { RouteDonate, RouteActivate, RouteTransfer } from '../../../utils/routes'
+    import { isEmptyString } from '../../../utils/isEmptyString'
     import Stamp from '../../../components/Stamp.svelte'
     import { ApplicationItemVariant } from './constants'
 
@@ -31,10 +32,24 @@
     $: mediaStyle = `
         background-image: url(${imageUrl});
     `
+    $: isUnconfirmed = variant === ApplicationItemVariant.Unconfirmed
 
     const ifNotPreview = (fn) => () => {
         if (variant === ApplicationItemVariant.Preview) return
         fn()
+    }
+
+    const getStampText = () => {
+        if (variant === ApplicationItemVariant.Preview) {
+            return 'Preview'
+        }
+        if (variant === ApplicationItemVariant.Unconfirmed) {
+            return 'Unconfirmed'
+        }
+        if (!data.isActive) {
+            return 'Inactive'
+        }
+        return ''
     }
 
     const handleClick = ifNotPreview(() => {
@@ -77,71 +92,88 @@
         prefetch(TransferPath)
     })
 
+
+    const stampText = getStampText()
 </script>
 
+<div class="item-container">
 
-
-<Card>
-    {#if variant === ApplicationItemVariant.Preview}
+    {#if !isEmptyString(stampText) }
         <div class='stamp-wrapper'>
-            <Stamp text='Preview'/>
+            <Stamp text={stampText}/>
         </div>
     {/if}
-    {#if !data.isActive}
-        <div class='stamp-wrapper'>
-            <Stamp text='Inactive'/>
-        </div>
-    {/if}
-    <PrimaryAction on:click={handleClick}>
-        <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
-        <Media aspectRatio="16x9" style={mediaStyle}/>
-        <Content class="mdc-typography--body2">
-            <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
-            {data.desc}
-            <div>
-                <small>Donated: {donation} BURST</small>
-            </div>
-        </Content>
-    </PrimaryAction>
-    <Actions>
-        <ActionButtons>
-            {#if variant === ApplicationItemVariant.Owner && !data.isActive}
-                <Button on:mouseenter={prefetchActivate} on:click={handleActivate}>
-                    <Label>Activate</Label>
-                </Button>
-            {:else if variant === ApplicationItemVariant.Owner && data.isActive}
-                <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
-                    <Label>Deactivate</Label>
-                </Button>
-                <Button on:mouseenter={prefetchTransfer} on:click={handleTransfer}>
-                    <Label>Transfer</Label>
-                </Button>
-            {:else}
-                <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
-                    <Label>Donate</Label>
-                </Button>
+
+    <div class:is-unconfirmed={isUnconfirmed}
+         class:animation-fading={isUnconfirmed}
+         class="item-wrapper">
+        <Card>
+            <PrimaryAction on:click={handleClick}>
+                <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
+                <Media aspectRatio="16x9" style={mediaStyle}/>
+                <Content class="mdc-typography--body2">
+                    <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
+                    {data.desc}
+                    <div>
+                        <small>Donated: {donation} BURST</small>
+                    </div>
+                </Content>
+            </PrimaryAction>
+            {#if variant !== ApplicationItemVariant.Unconfirmed}
+                <Actions>
+                    <ActionButtons>
+                        {#if variant === ApplicationItemVariant.Owner && !data.isActive}
+                            <Button on:mouseenter={prefetchActivate} on:click={handleActivate}>
+                                <Label>Activate</Label>
+                            </Button>
+                        {:else if variant === ApplicationItemVariant.Owner && data.isActive}
+                            <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
+                                <Label>Deactivate</Label>
+                            </Button>
+                            <Button on:mouseenter={prefetchTransfer} on:click={handleTransfer}>
+                                <Label>Transfer</Label>
+                            </Button>
+                        {:else}
+                            <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
+                                <Label>Donate</Label>
+                            </Button>
+                        {/if}
+                    </ActionButtons>
+                    {#if variant !== ApplicationItemVariant.Owner}
+                        <ActionIcons>
+                            <IconButton on:click={handleClick} toggle aria-label="Add to favorites"
+                                        title="Add to favorites">
+                                <Icon class="material-icons" on>favorite</Icon>
+                                <Icon class="material-icons">favorite_border</Icon>
+                            </IconButton>
+                            <IconButton class="material-icons" on:click={handleClick} title="Share">share</IconButton>
+                            <IconButton class="material-icons" on:click={handleClick} title="More options">more_vert
+                            </IconButton>
+                        </ActionIcons>
+                    {/if}
+                </Actions>
             {/if}
-        </ActionButtons>
-        {#if variant !== ApplicationItemVariant.Owner}
-            <ActionIcons>
-                <IconButton on:click={handleClick} toggle aria-label="Add to favorites" title="Add to favorites">
-                    <Icon class="material-icons" on>favorite</Icon>
-                    <Icon class="material-icons">favorite_border</Icon>
-                </IconButton>
-                <IconButton class="material-icons" on:click={handleClick} title="Share">share</IconButton>
-                <IconButton class="material-icons" on:click={handleClick} title="More options">more_vert</IconButton>
-            </ActionIcons>
-        {/if}
-    </Actions>
-</Card>
+        </Card>
+    </div>
+</div>
 
 
 <style>
+    .is-unconfirmed {
+        opacity: 0.5;
+        filter: grayscale(1);
+    }
+
+    .item-wrapper,
+    .item-container {
+        position: relative;
+    }
+
     .stamp-wrapper {
         top: 50%;
         left: 25%;
         position: absolute;
-        opacity: 0.33;
+        opacity: 0.5;
         z-index: 10;
     }
 </style>
