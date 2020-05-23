@@ -3,4 +3,5 @@ export const ApplicationItemVariant = {
     Preview: 'preview',
     Owner: 'owner',
     Unconfirmed: 'unconfirmed',
+    NoActions: 'no-actions'
 }

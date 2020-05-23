@@ -1,5 +1,6 @@
 <script>
     import { goto, prefetch } from '@sapper/app'
+    import Button, { Label } from '@smui/button'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
     import { RouteAccountTokens, RouteHome } from '../utils/routes'
@@ -16,7 +17,7 @@
         if (hasAccount) {
             goto(RouteAccountTokens(currentAccount))
         } else {
-            dispatchEvent(Events.ShowAccountDialog, true)
+            dispatchEvent(Events.ShowAccountDialog, { isVisible: true })
         }
     }
 
@@ -36,13 +37,18 @@
         </Section>
         <Section align="end" toolbar>
             {#if hasAccount}
-                <div class="current-account" title="Clear Account">
-                    <div class="mdc-typography--body1">{convertNumericIdToAddress(currentAccount)}</div>
+                <div class="current-account">
+                    <Button title="Goto Account Page"
+                            on:click={gotoOwnerPage}
+                    >
+                        <Label style="color: white">{convertNumericIdToAddress(currentAccount)}</Label>
+                    </Button>
                     <IconButton ripple={false}
                                 class="material-icons"
                                 aria-label="Unset Account"
-                                on:click={unsetAccount} >
-                                clear
+                                title="Unset Account"
+                                on:click={unsetAccount}>
+                        clear
                     </IconButton>
                 </div>
             {:else}
@@ -64,11 +70,14 @@
     .burst-logo {
         height: 48px
     }
+
     .current-account {
         display: flex;
         flex-direction: row;
         align-items: center;
+        color: white !important;
     }
+
     .current-account .mdc-typography--body1 {
         margin-right: 1rem;
     }

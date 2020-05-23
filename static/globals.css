@@ -2,6 +2,10 @@
     width: 100% !important;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .animation-pulse {
     animation: pulse 2s infinite;
 }

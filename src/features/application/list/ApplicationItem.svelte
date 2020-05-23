@@ -121,7 +121,7 @@
                     </div>
                 </Content>
             </PrimaryAction>
-            {#if variant !== ApplicationItemVariant.Unconfirmed}
+            {#if variant !== ApplicationItemVariant.Unconfirmed && variant !== ApplicationItemVariant.NoActions}
                 <Actions>
                     <ActionButtons>
                         {#if variant === ApplicationItemVariant.Owner && !data.isActive}

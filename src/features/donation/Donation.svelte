@@ -13,11 +13,18 @@
     } from '@burstjs/util'
     import { BurstApi } from '../../utils/burstApi'
     import { RouteHome } from '../../utils/routes'
+    import ApplicationItem from '../application/list/ApplicationItem.svelte'
+    import { ApplicationItemVariant } from '../application/list/constants'
 
     export let token = {
         at: '',
         name: '',
-        img: '',
+        desc: '',
+        repo: '',
+        img: null,
+        tags: [],
+        donationPlanck: '0',
+        isActive: true,
     }
 
     const AmountValidationPattern = /^[1-9]\d*$/
@@ -53,7 +60,7 @@
         return BurstValue
                 .fromBurst(amount || 0)
                 .add(ActivationCosts)
-                .add(withFee ? BurstValue.fromBurst(0) : suggestedFee)
+                .add(withFee ? suggestedFee : BurstValue.fromBurst(0))
     }
 
     function mountInfo(amount) {
@@ -101,11 +108,62 @@
 
 </script>
 
-<style>
 
-    h4 {
-        margin: 0.5rem
-    }
+<Page>
+    <div class="donation__header">
+        <img src="/img/donation.svg" alt="donate">
+    </div>
+    <div class="donation__form">
+        <div class="donation__form--header">
+            <div class="item-wrapper">
+                <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
+            </div>
+            <p class="mdc-typography--body1">
+                Great Attitude. Donating not only helps the project itself and fills the owner with pride through the experienced recognition, but also helps the Burst community. Thank you very much for your support.
+            </p>
+        </div>
+        <div class="donation__form--input">
+            <div class="donation__form--input-field">
+                <TextField bind:value={amount}
+                           invalid={!isEmptyAmount && !isValidAmount}
+                           label="Donation Amount"
+                />
+                {#if isEmptyAmount}
+                    <HelperText>Enter the amount you like to donate</HelperText>
+                {:else}
+                    <HelperText validationMsg>Invalid Amount</HelperText>
+                {/if}
+            </div>
+            <span class="mdc-typography--headline6">BURST</span>
+        </div>
+        <div class="donation__form--qrcode">
+            <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
+            {#if isQrCodeVisible}
+                <section>
+                    <p>
+                        Scan the code with e.g. Phoenix Mobile Wallet,
+                        or tap/click the QR Code to open an installed wallet
+                    </p>
+
+                    <ul>
+                        {#each info as [label, value]}
+                            <li class="donation__form--qrcode-infoitem">
+                                { `${label} ${value}` }</li>
+                        {/each}
+                    </ul>
+                </section>
+            {/if}
+        </div>
+        <div class="donation__form--footer">
+            <Button on:click={handleCancel}>
+                <Label>Back</Label>
+            </Button>
+        </div>
+    </div>
+</Page>
+
+
+<style>
 
     .donation__header {
         text-align: center;
@@ -127,10 +185,19 @@
     .donation__form--header {
         display: flex;
         flex-direction: row;
-        align-items: center;
-        margin-bottom: 1rem;
+        align-items: flex-start;
+        margin-bottom: 2rem;
     }
 
+    .donation__form--header > p {
+        width: 50%;
+        margin: 0;
+    }
+
+    .donation__form--header > .item-wrapper {
+        margin-right: 1rem;
+        width: 50%;
+    }
     .donation__form--header img {
         height: 64px;
         width: 64px;
@@ -143,7 +210,6 @@
         justify-content: space-between;
         margin-top: 2rem;
     }
-
 
     .donation__form--input {
         display: flex;
@@ -203,54 +269,3 @@
     }
 
 </style>
-
-<Page>
-    <div class="donation__header">
-        <img src="/img/donation.svg" alt="donate">
-    </div>
-    <div class="donation__form">
-        <div class="donation__form--header">
-            <img src={token.img} alt={`${token.name}-logo`}>
-            <h4 class="mdc-typography--headline4">
-                {token.name}
-            </h4>
-        </div>
-        <div class="donation__form--input">
-            <div class="donation__form--input-field">
-                <TextField bind:value={amount}
-                           invalid={!isEmptyAmount && !isValidAmount}
-                           label="Donation Amount"
-                />
-                {#if isEmptyAmount}
-                    <HelperText>Enter the amount you like to donate</HelperText>
-                {:else}
-                    <HelperText validationMsg>Invalid Amount</HelperText>
-                {/if}
-            </div>
-            <span class="mdc-typography--headline6">BURST</span>
-        </div>
-        <div class="donation__form--qrcode">
-            <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
-            {#if isQrCodeVisible}
-                <section>
-                    <p>
-                        Scan the code with e.g. Phoenix Mobile Wallet,
-                        or tap/click the QR Code to open an installed wallet
-                    </p>
-
-                    <ul>
-                        {#each info as [label, value]}
-                            <li class="donation__form--qrcode-infoitem">
-                                { `${label} ${value}` }</li>
-                        {/each}
-                    </ul>
-                </section>
-            {/if}
-        </div>
-        <div class="donation__form--footer">
-            <Button on:click={handleCancel}>
-                <Label>Back</Label>
-            </Button>
-        </div>
-    </div>
-</Page>
