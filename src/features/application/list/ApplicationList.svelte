@@ -1,7 +1,7 @@
 <script>
-    import LinearProgress from '@smui/linear-progress'
     import ApplicationItem from './ApplicationItem.svelte'
-    import { syncProgress$, tokens$ } from './applicationTokenStore'
+    import LinearProgress from '@smui/linear-progress'
+    import { tokens$ } from '../applicationTokenStore'
     import Searchbar from '../../../components/Searchbar.svelte'
     import ApplicationItemLoadingIndicator from './ApplicationItemLoadingIndicator.svelte'
 
@@ -15,18 +15,11 @@
 
     $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
     $: hasTokens = activeTokens.length > 0
-    $: progress = $syncProgress$
-    $: isSyncing = progress < 1
 
 </script>
 
 <div class="container">
 
-    {#if isSyncing}
-        <div class="sync-progressbar">
-            <LinearProgress progress={progress}/>
-        </div>
-    {/if}
 
     <section class="header">
         <Searchbar bind:value={searchTerm}/>
@@ -34,9 +27,9 @@
 
     <section class="body">
         {#if !hasTokens}
-        <div class="loading">
-            <ApplicationItemLoadingIndicator/>
-        </div>
+            <div class="loading">
+                <ApplicationItemLoadingIndicator/>
+            </div>
         {/if}
         <div class="item-list">
             {#each activeTokens as data}
@@ -55,13 +48,6 @@
         flex-direction: column;
         flex-wrap: wrap;
         margin-inline-start: 0;
-    }
-
-    .sync-progressbar {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        top: 0;
     }
 
     .header {
@@ -89,8 +75,8 @@
         justify-content: center;
     }
 
-    @media (max-width: 768px){
-        .body .item{
+    @media (max-width: 768px) {
+        .body .item {
             width: calc(100vw - 16px)
         }
     }

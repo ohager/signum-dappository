@@ -2,13 +2,14 @@
     import Header from '../components/Header.svelte'
     import Message from '../components/Message.svelte'
     import AccountDialog from '../components/AccountDialog.svelte'
+    import SyncProgressBar from '../features/application/tokenSync/SyncProgressBar.svelte'
 </script>
 
 <Header/>
 <Message/>
 <AccountDialog/>
-
 <main>
+    <SyncProgressBar/>
     <slot/>
 </main>
 
