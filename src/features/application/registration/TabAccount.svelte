@@ -9,6 +9,7 @@
     import { pruneErrorMessage } from '../../../utils/burstApi'
     import { accountService } from '../../../services/accountService'
     import { TokenContract } from '../../../services/tokenContract'
+    import { convertNumericIdToAddress } from '@burstjs/util'
 
     export let accountId = ''
 
@@ -52,6 +53,7 @@
     }
 
     $: isAccountValid = validation.valid
+    $: accountAddress = isAccountValid ? convertNumericIdToAddress($registration$.account) : ''
 
     const unsubscribe = registration$.subscribe(({ account }) => {
         if (!isEmptyString(account)) {
@@ -67,10 +69,12 @@
 
 <section>
     <p class="mdc-typography--body1">
-        In order to register your application, you must provide a Burst account to which donations will be forwarded. You will also have to pay a fee of {TokenContract.ActivationCosts.toString()} to create the token. This fee is used exclusively to create the token and no third party will receive anything.
+        In order to register your application, you must provide a Burst account to which donations will be forwarded.
+        You will also have to pay a fee of {TokenContract.ActivationCosts.toString()} to create the token. This fee is
+        used exclusively to create the token and no third party will receive anything.
     </p>
     <div class="form--input">
-        <div class="form--input-field">cho que hoje ainda nao faz
+        <div class="form--input-field">
             <TextField bind:value={$registration$.account}
                        invalid={!validation.valid}
                        label='Account Id or Address'
@@ -79,6 +83,9 @@
                 <Icon class={`material-icons ${validation.valid ? 'green' : ''}`}>
                     {validation.valid ? 'check_circle' : 'error'}
                 </Icon>
+                <div class="address">
+                    {accountAddress}
+                </div>
             </TextField>
             <HelperText validationMsg>{validation.message}</HelperText>
         </div>
@@ -88,5 +95,14 @@
 <style>
     :global(.mdc-text-field__icon.material-icons.green) {
         color: green !important;
+    }
+
+    .address {
+        position: absolute;
+        top: 24px;
+        right: 32px;
+        font-size: 75%;
+        font-family: monospace;
+        color: rgba(0,0,0,.6);
     }
 </style>
