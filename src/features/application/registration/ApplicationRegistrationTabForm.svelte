@@ -16,6 +16,7 @@
         isValidRepo,
     } from './validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
+    import { account$ } from '../../account/accountStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
     import { applicationTokenService } from '../../../services/applicationTokenService'
@@ -110,7 +111,7 @@
 
         <TabContent>
             {#if active === TabNames.Account}
-                <TabAccount/>
+                <TabAccount accountId={$account$.accountId}/>
             {:else if active === TabNames.AppInfo}
                 <TabApplicationInfo/>
             {:else if active === TabNames.Confirm}

@@ -12,7 +12,9 @@ const InitialTokensState = {
 }
 
 const syncProgress$ = readable(InitialSyncProgressState, (set) => {
+    const currentProgress = get(syncProgress$)
     if (!isClientSide()) return
+
     const service = applicationTokenService
     let updateProgress = ({ detail }) => {
         const { total, processed } = detail

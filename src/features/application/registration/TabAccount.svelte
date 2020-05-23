@@ -5,10 +5,16 @@
     import { isEmptyString } from '../../../utils/isEmptyString'
     import { registration$ } from './registrationStore'
     import { assureAccountId } from '../../../utils/assureAccountId'
-    import { onDestroy } from 'svelte'
+    import { onDestroy, onMount } from 'svelte'
     import { pruneErrorMessage } from '../../../utils/burstApi'
     import { accountService } from '../../../services/accountService'
     import { TokenContract } from '../../../services/tokenContract'
+
+    export let accountId = ''
+
+    onMount(() => {
+        $registration$.account = accountId
+    })
 
     async function getBalance(account) {
         const accountId = assureAccountId(account)
@@ -64,7 +70,7 @@
         In order to register your application, you must provide a Burst account to which donations will be forwarded. You will also have to pay a fee of {TokenContract.ActivationCosts.toString()} to create the token. This fee is used exclusively to create the token and no third party will receive anything.
     </p>
     <div class="form--input">
-        <div class="form--input-field">
+        <div class="form--input-field">cho que hoje ainda nao faz
             <TextField bind:value={$registration$.account}
                        invalid={!validation.valid}
                        label='Account Id or Address'

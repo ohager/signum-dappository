@@ -4,7 +4,7 @@
     import Button, { Label } from '@smui/button'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import { RouteHome, RouteAccountTokens } from '../utils/routes'
+    import { RouteHome, RouteAccountTokens, RouteRegister } from '../utils/routes'
     import { Events } from '../utils/events'
     import { assureAccountId } from '../utils/assureAccountId'
     import { dispatchEvent } from '../utils/dispatchEvent'
@@ -13,6 +13,7 @@
     import { isEmptyString } from '../utils/isEmptyString'
     import { setAccount } from '../features/account/accountStore'
 
+    let isRegistering = false
     let account = ''
     let isOpen = false
     let isValidating = false
@@ -42,12 +43,23 @@
         }, 500)
     }
 
+    function handleRegister() {
+        setAccount(accountId)
+        prefetch(RouteRegister())
+        dispatchEvent(Events.ShowAccountDialog, false)
+        setTimeout(() => {
+            goto(RouteRegister())
+        }, 500)
+    }
+
     function handleCancel() {
         dispatchEvent(Events.ShowAccountDialog, false)
         goto(RouteHome())
     }
 
-    function showDialog({ detail: isVisible }) {
+    function showDialog({ detail }) {
+        const {isVisible, wantsRegister = false} = detail
+        isRegistering = wantsRegister
         if (isVisible) {
             dialog.open()
         } else {
@@ -85,7 +97,7 @@
         <Button on:click={handleCancel}>
             <Label>Cancel</Label>
         </Button>
-        <Button on:click={handleEnter} disabled={!isValid || isValidating}>
+        <Button on:click={isRegistering ? handleRegister : handleEnter} disabled={!isValid || isValidating}>
             <Label>{isValidating ? 'Checking...' : 'Enter'}</Label>
         </Button>
     </Actions>

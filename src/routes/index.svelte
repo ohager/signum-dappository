@@ -2,7 +2,7 @@
     // TODO: use context to inject config for dev and prod
     import ApplicationList from '../features/application/list/ApplicationList.svelte'
     import { goto, prefetch } from '@sapper/app'
-    import { RouteRegister, RouteAccountTokens } from '../utils/routes'
+    import { RouteRegister } from '../utils/routes'
     import { account$ } from '../features/account/accountStore'
     import { isEmptyString } from '../utils/isEmptyString'
     import { Events } from '../utils/events'
@@ -14,15 +14,15 @@
 
     function handleClick() {
         if (hasAccount) {
-            goto(RouteAccountTokens(accountId, true))
+            goto(RouteRegister(accountId))
         } else {
-            dispatchEvent(Events.ShowAccountDialog, true)
+            dispatchEvent(Events.ShowAccountDialog, { isVisible: true, wantsRegister: true })
         }
     }
 
     const prefetchRoute = () => {
         if (hasAccount) {
-            prefetch(RouteAccountTokens(accountId))
+            prefetch(RouteRegister(accountId))
         }
     }
 
