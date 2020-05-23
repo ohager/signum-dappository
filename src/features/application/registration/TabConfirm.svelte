@@ -48,7 +48,7 @@
         carefully, because once registered applications cannot be changed anymore.
     </p>
     <div class="card-preview">
-        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} viewMode={ApplicationItemVariant.Preview}/>
+        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} variant={ApplicationItemVariant.Preview}/>
     </div>
     <div class="form--input">
         <div class="form--input-field">

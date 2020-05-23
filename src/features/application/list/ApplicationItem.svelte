@@ -1,4 +1,5 @@
 <script>
+    import { beforeUpdate } from 'svelte'
     import Card, { ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media } from '@smui/card'
     import Button, { Label } from '@smui/button'
     import IconButton, { Icon } from '@smui/icon-button'
@@ -26,6 +27,7 @@
     const TransferPath = RouteTransfer(data.at)
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
+    let stampText = ''
 
     $: donation = BurstValue.fromPlanck(data.donationPlanck).getBurst()
     $: imageUrl = data.img || PlaceholderImage
@@ -33,6 +35,17 @@
         background-image: url(${imageUrl});
     `
     $: isUnconfirmed = variant === ApplicationItemVariant.Unconfirmed
+    $: {
+        if (variant === ApplicationItemVariant.Preview) {
+            stampText = 'Preview'
+        } else if (variant === ApplicationItemVariant.Unconfirmed) {
+            stampText = 'Unconfirmed'
+        } else if (!data.isActive) {
+            stampText = 'Inactive'
+        } else {
+            stampText = ''
+        }
+    }
 
     const ifNotPreview = (fn) => () => {
         if (variant === ApplicationItemVariant.Preview) return
@@ -40,16 +53,7 @@
     }
 
     const getStampText = () => {
-        if (variant === ApplicationItemVariant.Preview) {
-            return 'Preview'
-        }
-        if (variant === ApplicationItemVariant.Unconfirmed) {
-            return 'Unconfirmed'
-        }
-        if (!data.isActive) {
-            return 'Inactive'
-        }
-        return ''
+
     }
 
     const handleClick = ifNotPreview(() => {
@@ -92,8 +96,6 @@
         prefetch(TransferPath)
     })
 
-
-    const stampText = getStampText()
 </script>
 
 <div class="item-container">
