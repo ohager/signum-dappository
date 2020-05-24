@@ -83,6 +83,7 @@ export default {
                         'createDeeplink',
                         'isBurstAddress',
                         'BurstValue',
+                        'FeeQuantPlanck',
                     ],
                 },
             }),

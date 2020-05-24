@@ -1,6 +1,6 @@
 <script>
     import QrCode from 'qrcode'
-    import { beforeUpdate, onMount } from 'svelte'
+    import { beforeUpdate } from 'svelte'
     import { goto } from '@sapper/app'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
@@ -9,12 +9,13 @@
     import {
         BurstValue,
         convertNumericIdToAddress,
-        createDeeplink,
     } from '@burstjs/util'
-    import { BurstApi } from '../../utils/burstApi'
     import { RouteHome } from '../../utils/routes'
     import ApplicationItem from '../application/list/ApplicationItem.svelte'
     import { ApplicationItemVariant } from '../application/list/constants'
+    import { mountLegacyDeepLink } from '../../utils/deeplink'
+    import { TokenContract } from '../../services/tokenContract'
+    import { burstFee$ } from '../burstFeeStore'
 
     export let token = {
         at: '',
@@ -31,35 +32,27 @@
 
     let amount = ''
     let QrCodeCanvas = null
-    let suggestedFee = BurstValue.fromBurst(0.05) // make dynamic
     let info = []
-    let ActivationCosts = BurstValue.fromBurst(100) // todo get from contract
+    let eligibility = TokenContract.DonationEntitlement
 
     $: isValidAmount = AmountValidationPattern.test(amount)
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = QrCodeCanvas && !isEmptyAmount && isValidAmount
+    $: suggestedFee = $burstFee$
 
-    function mountDeepLink(amount, cip22 = false) {
-        const amountPlanck = calculateTotalAmount(amount).getPlanck()
-        const feePlanck = suggestedFee.getPlanck()
-        const address = convertNumericIdToAddress(token.at)
-        return cip22 ? createDeeplink({
-            domain: 'payment',
-            action: 'send',
-            payload: {
-                amountPlanck,
-                receiver: address,
-                feePlanck,
-                immutable: false,
-            },
-        }) : `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${suggestedFee}&immutable=false`
+    function generateDeepLink(amount) {
+        return mountLegacyDeepLink(
+                token.at,
+                calculateTotalAmount(amount),
+                suggestedFee,
+        )
     }
 
 
     function calculateTotalAmount(amount, withFee = false) {
         return BurstValue
                 .fromBurst(amount || 0)
-                .add(ActivationCosts)
+                .add(eligibility)
                 .add(withFee ? suggestedFee : BurstValue.fromBurst(0))
     }
 
@@ -67,7 +60,7 @@
         const info = []
         info.push(['Recipient:', convertNumericIdToAddress(token.at)])
         info.push(['Donation:', amount])
-        info.push(['Activation Costs:', `${ActivationCosts.getBurst()} (will be entirely reimbursed)`])
+        info.push(['Entitlement:', `${eligibility.getBurst()} (will be entirely reimbursed)`])
         info.push(['Fee:', suggestedFee.getBurst()])
         info.push(['---', ''])
         info.push(['Total:', `${calculateTotalAmount(amount, true).getBurst()} BURST`])
@@ -75,18 +68,12 @@
     }
 
     function handleCancel() {
-        goto(RouteHome())
+        history.back()
     }
 
     function openDeepLink() {
-        goto(mountDeepLink(amount))
+        goto(generateDeepLink(amount))
     }
-
-    onMount(async () => {
-        const fees = await BurstApi.network.suggestFee()
-        suggestedFee = BurstValue.fromPlanck(fees.standard.toString(10))
-    })
-
 
     beforeUpdate(() => {
         if (isEmptyAmount && QrCodeCanvas) {
@@ -100,7 +87,7 @@
             return
         }
 
-        QrCode.toCanvas(QrCodeCanvas, mountDeepLink(amount), {
+        QrCode.toCanvas(QrCodeCanvas, generateDeepLink(amount), {
             width: 256,
         })
         info = mountInfo(amount)
@@ -119,7 +106,8 @@
                 <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
             </div>
             <p class="mdc-typography--body1">
-                Great Attitude. Donating not only helps the project itself and fills the owner with pride through the experienced recognition, but also helps the Burst community. Thank you very much for your support.
+                Great Attitude. Donating not only helps the project itself and fills the owner with pride through the
+                experienced recognition, but also helps the Burst community. Thank you very much for your support.
             </p>
         </div>
         <div class="donation__form--input">
@@ -165,63 +153,65 @@
 
 <style>
 
-    .donation__header {
+    .header {
         text-align: center;
         margin-bottom: 1rem;
     }
 
-    .donation__header img {
+    .header img {
         height: 96px;
         width: 96px;
         text-align: center;
     }
 
-    .donation__form {
+    .form {
         display: block;
         max-width: 600px;
         margin: 0 auto
     }
 
-    .donation__form--header {
+    .form--header {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
         margin-bottom: 2rem;
     }
 
-    .donation__form--header > p {
+    .form--header > p {
+        text-align: justify;
         width: 50%;
         margin: 0;
     }
 
-    .donation__form--header > .item-wrapper {
+    .form--header > .item-wrapper {
         margin-right: 1rem;
         width: 50%;
     }
-    .donation__form--header img {
+
+    .form--header img {
         height: 64px;
         width: 64px;
         padding-right: 1rem;
     }
 
-    .donation__form--footer {
+    .form--footer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-top: 2rem;
     }
 
-    .donation__form--input {
+    .form--input {
         display: flex;
         align-items: center;
     }
 
-    .donation__form--input-field {
+    .form--input-field {
         display: block;
         width: 100%;
     }
 
-    .donation__form--qrcode {
+    .form--qrcode {
         text-align: center;
         display: flex;
         flex-direction: row;
@@ -229,11 +219,11 @@
         align-items: center;
     }
 
-    .donation__form--qrcode > canvas {
+    .form--qrcode > canvas {
         cursor: pointer;
     }
 
-    .donation__form--qrcode > section {
+    .form--qrcode > section {
         text-align: justify;
         font-size: 0.75rem;
         font-family: sans-serif;
@@ -241,30 +231,43 @@
         line-height: 1rem;
     }
 
-    .donation__form--qrcode > section > ul {
+    .form--qrcode > section > ul {
         margin: 0;
         padding: 0;
     }
 
-    .donation__form--qrcode-infoitem {
+    .form--qrcode-infoitem {
         list-style: none;
     }
 
     @media (max-width: 480px) {
-        .donation__form--qrcode {
+        .form--header {
             flex-direction: column;
         }
 
-        .donation__form--qrcode > section > ul {
+        .form--header > p {
+            width: 100%;
+        }
+
+        .form--header > .item-wrapper {
+            margin: 1rem 0;
+            width: 100%;
+        }
+
+        .form--qrcode {
+            flex-direction: column;
+        }
+
+        .form--qrcode > section > ul {
             text-align: center;
         }
     }
 
-    :global(.donation__form .mdc-text-field__input) {
+    :global(.form .mdc-text-field__input) {
         font-size: 2rem !important;
     }
 
-    :global(.donation__form .mdc-text-field) {
+    :global(.form .mdc-text-field) {
         width: 100% !important;
     }
 

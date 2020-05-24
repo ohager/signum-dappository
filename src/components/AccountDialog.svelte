@@ -54,7 +54,6 @@
 
     function handleCancel() {
         dispatchEvent(Events.ShowAccountDialog, false)
-        goto(RouteHome())
     }
 
     function showDialog({ detail }) {

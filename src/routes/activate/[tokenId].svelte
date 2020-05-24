@@ -6,12 +6,13 @@
 </script>
 
 <script>
-    import Donation from '../../features/operations/Donation.svelte'
+    import Activation from '../../features/operations/Activation.svelte'
     import { tokens$ } from '../../features/application/applicationTokenStore'
+
     export let tokenId
 
-    $: token = $tokens$.items.find( i => i.at === tokenId)
+    $: token = $tokens$.items.find(i => i.at === tokenId)
 </script>
 
-<Donation {token} />
+<Activation {token} />
 

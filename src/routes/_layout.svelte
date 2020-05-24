@@ -22,10 +22,11 @@
 
     main {
         position: relative;
-        background-color: white;
+        background-color: #eee;
         padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;
+        height: calc(100vh - 48px);
     }
 
     @media (max-width: 480px) {
