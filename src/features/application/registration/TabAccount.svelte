@@ -70,7 +70,7 @@
 <section>
     <p class="mdc-typography--body1">
         In order to register your application, you must provide a Burst account to which donations will be forwarded.
-        You will also have to pay a fee of {TokenContract.ActivationCosts.toString()} to create the token. This fee is
+        You will also have to pay a fee of {TokenContract.ActivationCosts} BURST to create the token. This fee is
         used exclusively to create the token and no third party will receive anything.
     </p>
     <div class="form--input">

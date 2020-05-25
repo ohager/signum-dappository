@@ -9,8 +9,8 @@ const TokenContract = {
         transfer: '-8011735560658290665',
         deactivate: '-327803124352370',
     },
-    ActivationCosts: BurstValue.fromBurst(5),
-    DonationEntitlement: BurstValue.fromBurst(100),
+    ActivationCosts: 5,
+    DonationEntitlement: 100,
     CreationFee: null,
 }
 

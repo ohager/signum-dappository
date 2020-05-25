@@ -11,7 +11,7 @@ const InitialTokensState = {
 export const tokens$ = writable(InitialTokensState, (set) => {
     if (!isClientSide()) return
     const service = applicationTokenService
-    const updateTokens = (progress) => {
+    const updateTokens = () => {
         service.getTokens().then(tokens => {
             tokens$.update(state => ({
                 ...state,

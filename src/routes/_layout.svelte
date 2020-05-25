@@ -16,6 +16,8 @@
 
 <style>
 
+
+
     :global(body) {
         margin: 0;
     }
@@ -26,7 +28,7 @@
         padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;
-        height: calc(100vh - 48px);
+        height: fit-content;
     }
 
     @media (max-width: 480px) {

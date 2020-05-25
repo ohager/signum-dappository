@@ -97,11 +97,11 @@
 
 
 <Page>
-    <div class="donation__header">
+    <div class="header">
         <img src="/img/donation.svg" alt="donate">
     </div>
-    <div class="donation__form">
-        <div class="donation__form--header">
+    <div class="form">
+        <div class="form--header">
             <div class="item-wrapper">
                 <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
             </div>
@@ -110,8 +110,8 @@
                 experienced recognition, but also helps the Burst community. Thank you very much for your support.
             </p>
         </div>
-        <div class="donation__form--input">
-            <div class="donation__form--input-field">
+        <div class="form--input">
+            <div class="form--input-field">
                 <TextField bind:value={amount}
                            invalid={!isEmptyAmount && !isValidAmount}
                            label="Donation Amount"
@@ -124,7 +124,7 @@
             </div>
             <span class="mdc-typography--headline6">BURST</span>
         </div>
-        <div class="donation__form--qrcode">
+        <div class="form--qrcode">
             <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
             {#if isQrCodeVisible}
                 <section>
@@ -135,14 +135,14 @@
 
                     <ul>
                         {#each info as [label, value]}
-                            <li class="donation__form--qrcode-infoitem">
+                            <li class="form--qrcode-infoitem">
                                 { `${label} ${value}` }</li>
                         {/each}
                     </ul>
                 </section>
             {/if}
         </div>
-        <div class="donation__form--footer">
+        <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
             </Button>

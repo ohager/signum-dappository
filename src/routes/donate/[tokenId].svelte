@@ -1,17 +1,18 @@
 <script context="module">
     export async function preload({ params, query }) {
-        const {tokenId} = params;
-        return {tokenId}
+        const { tokenId } = params
+        return { tokenId }
     }
 </script>
 
 <script>
     import Donation from '../../features/operations/Donation.svelte'
     import { tokens$ } from '../../features/application/applicationTokenStore'
+
     export let tokenId
 
-    $: token = $tokens$.items.find( i => i.at === tokenId)
+    $: token = $tokens$.items.find(i => i.at === tokenId)
 </script>
 
-<Donation {token} />
+<Donation {token}/>
 

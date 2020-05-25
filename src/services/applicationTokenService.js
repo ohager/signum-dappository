@@ -7,8 +7,8 @@ import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 import { TokenContract } from './tokenContract'
-import { unconfirmedTokensRepository } from '../repositories/unconfirmedTokensRepository'
 import { UnconfirmedTokenService } from './unconfirmedTokenService'
+import { BurstValue } from '@burstjs/util'
 
 const MaxParallelFetches = 6
 
@@ -77,12 +77,16 @@ export class ApplicationTokenService {
         await this._tokenRepository.update(id, { favorite: !favorite })
     }
 
+    getActivationCostsPlanck() {
+        return BurstValue.fromBurst(TokenContract.ActivationCosts).getPlanck()
+    }
+
     async deactivateToken(contractId, passphrase) {
         try {
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const feeValue = await accountService.getSuggestedFee()
             await BurstApi.contract.callContractMethod({
-                amountPlanck: TokenContract.ActivationCosts.getPlanck(),
+                amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 feePlanck: feeValue.getPlanck(),
                 methodHash: TokenContract.MethodHash.deactivate,
@@ -99,7 +103,7 @@ export class ApplicationTokenService {
             const { signPrivateKey, publicKey } = this._getKeys(passphrase)
             const feeValue = await this._getSuggestedFee()
             await BurstApi.contract.callContractMethod({
-                amountPlanck: TokenContract.ActivationCosts.getPlanck(),
+                amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 feePlanck: feeValue.getPlanck(),
                 methodHash: TokenContract.MethodHash.deactivate,
@@ -122,7 +126,7 @@ export class ApplicationTokenService {
 
             let { transaction: unconfirmedTokenId } = await BurstApi.contract.publishContract({
                 codeHex: TokenContract.Bytecode,
-                activationAmountPlanck: TokenContract.ActivationCosts.getPlanck(),
+                activationAmountPlanck: this.getActivationCostsPlanck(),
                 description: JSON.stringify(tokenData),
                 name: TokenContract.Name,
                 senderPrivateKey: signPrivateKey,

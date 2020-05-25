@@ -10,9 +10,7 @@
     import { tokens$ } from '../../features/application/applicationTokenStore'
 
     export let tokenId
-
     $: token = $tokens$.items.find(i => i.at === tokenId)
 </script>
 
 <Activation {token} />
-

@@ -4,23 +4,32 @@
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import Page from '../../components/Page.svelte'
-    import {
-        BurstValue,
-        convertNumericIdToAddress,
-    } from '@burstjs/util'
+    import { convertNumericIdToAddress } from '@burstjs/util'
     import ApplicationItem from '../application/list/ApplicationItem.svelte'
     import { ApplicationItemVariant } from '../application/list/constants'
     import { mountLegacyDeepLink } from '../../utils/deeplink'
     import { TokenContract } from '../../services/tokenContract'
     import { EmptyToken } from '../../utils/emptyToken'
     import { burstFee$ } from '../burstFeeStore'
+    import { BurstValue } from '@burstjs/util'
 
     export let token = EmptyToken
 
-    let amount = TokenContract.ActivationCosts
+    const amount = BurstValue.fromBurst(TokenContract.ActivationCosts)
+
     let QrCodeCanvas = null
     let suggestedFee = $burstFee$
     let info = []
+
+    $: address = token.at
+    $: info = mountInfo(address)
+    $: {
+        if (QrCodeCanvas !== null) {
+            QrCode.toCanvas(QrCodeCanvas, generateDeepLink(), {
+                width: 256,
+            })
+        }
+    }
 
     function generateDeepLink() {
         return mountLegacyDeepLink(
@@ -30,20 +39,15 @@
         )
     }
 
-    function calculateTotalAmount(amountValue, withFee = false) {
-        return amountValue.add(withFee ? suggestedFee : BurstValue.fromBurst(0))
-    }
-
-    function mountInfo(amount) {
+    function mountInfo(recipient) {
         const info = []
 
-        console.log('mountInfo', token)
-
-        info.push(['Recipient:', convertNumericIdToAddress(token.at)])
+        const total = BurstValue.fromBurst(TokenContract.ActivationCosts).add(suggestedFee)
+        info.push(['Recipient:', convertNumericIdToAddress(recipient)])
         info.push(['Activation Fee:', amount])
         info.push(['Fee:', suggestedFee])
         info.push(['---', ''])
-        info.push(['Total:', amount.add(suggestedFee)])
+        info.push(['Total:', total])
         return info
     }
 
@@ -54,14 +58,6 @@
     function openDeepLink() {
         goto(generateDeepLink())
     }
-
-    onMount(async () => {
-        QrCode.toCanvas(QrCodeCanvas, generateDeepLink(), {
-            width: 256,
-        })
-        info = mountInfo(amount)
-    })
-
 </script>
 
 
@@ -75,26 +71,25 @@
                 <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
             </div>
             <p class="mdc-typography--body1">
-                Great Attitude. Donating not only helps the project itself and fills the owner with pride through the
-                experienced recognition, but also helps the Burst community. Thank you very much for your support.
+                Before you can receive your first donations, the token must first be activated. Unfortunately there is a small fee for this, but it is not too much. Mind that the activation may take a few moments. Good luck with your app.
             </p>
         </div>
 
         <div class="form--qrcode">
             <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
-                <section>
-                    <p>
-                        Scan the code with e.g. Phoenix Mobile Wallet,
-                        or tap/click the QR Code to open an installed wallet
-                    </p>
+            <section>
+                <p>
+                    Scan the code with e.g. Phoenix Mobile Wallet,
+                    or tap/click the QR Code to open an installed wallet
+                </p>
 
-                    <ul>
-                        {#each info as [label, value]}
-                            <li class="form--qrcode-infoitem">
-                                { `${label} ${value}` }</li>
-                        {/each}
-                    </ul>
-                </section>
+                <ul>
+                    {#each info as [label, value]}
+                        <li class="form--qrcode-infoitem">
+                            { `${label} ${value}` }</li>
+                    {/each}
+                </ul>
+            </section>
         </div>
         <div class="form--footer">
             <Button on:click={handleCancel}>
@@ -188,6 +183,7 @@
         .form--header {
             flex-direction: column;
         }
+
         .form--header > p {
             width: 100%;
         }
