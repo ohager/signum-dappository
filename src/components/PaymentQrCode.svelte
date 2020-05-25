@@ -1,0 +1,106 @@
+<script>
+    import QrCode from 'qrcode'
+    import { BurstValue, convertNumericIdToAddress } from '@burstjs/util'
+    import { burstFee$ } from '../features/burstFeeStore'
+    import { mountLegacyDeepLink } from '../utils/deeplink'
+    import { assureAccountId } from '../utils/assureAccountId'
+    import { goto } from '@sapper/app'
+
+    export let recipient
+    export let costs = []
+    export let fee = $burstFee$
+
+    let QrCodeCanvas = null
+    let info = []
+
+    $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), BurstValue.fromBurst(0))
+    $: {
+        info = []
+        const recipientAddress = convertNumericIdToAddress(assureAccountId(recipient))
+        info.push(['Recipient:', recipientAddress])
+        info.push(...costs)
+        info.push(['Fee:', fee])
+        info.push(['---', ''])
+        info.push(['Total:', totalCosts.add(fee)])
+    }
+
+    $: {
+        if (QrCodeCanvas !== null) {
+            QrCode.toCanvas(QrCodeCanvas, generateDeepLink(totalCosts), {
+                width: 256,
+            })
+        }
+    }
+
+    function generateDeepLink(amount) {
+        return mountLegacyDeepLink(
+                recipient,
+                amount,
+                fee,
+        )
+    }
+
+    function openDeepLink() {
+        goto(generateDeepLink(totalCosts))
+    }
+</script>
+
+<div class="form--qrcode">
+    <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
+    <section>
+        <p>
+            Scan the code with e.g. Phoenix Mobile Wallet,
+            or tap/click the QR Code to open an installed wallet
+        </p>
+
+        <ul>
+            {#each info as [label, value]}
+                <li class="form--qrcode-infoitem">
+                    { `${label} ${value}` }</li>
+            {/each}
+        </ul>
+    </section>
+</div>
+
+<style>
+    .form--qrcode {
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form--qrcode > canvas {
+        cursor: pointer;
+    }
+
+    .form--qrcode > section {
+        text-align: justify;
+        font-size: 0.75rem;
+        font-family: sans-serif;
+        color: gray;
+        line-height: 1rem;
+    }
+
+    .form--qrcode > section > ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .form--qrcode-infoitem {
+        list-style: none;
+    }
+
+    @media (max-width: 480px) {
+
+        .form--qrcode {
+            flex-direction: column;
+        }
+
+        .form--qrcode > section > ul {
+            text-align: center;
+        }
+    }
+
+</style>

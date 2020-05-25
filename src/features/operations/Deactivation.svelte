@@ -8,17 +8,23 @@
     import { EmptyToken } from '../../utils/emptyToken'
     import { burstFee$ } from '../burstFeeStore'
     import { BurstValue } from '@burstjs/util'
-    import PaymentQrCode from '../../components/PaymentQrCode.svelte'
     import { isEmptyString } from '../../utils/isEmptyString'
+    import PassphraseInput from '../../components/PassphraseInput.svelte'
+    import { account$ } from '../account/accountStore'
 
     export let token = EmptyToken
+    let isPassphraseValid = false
 
     function handleCancel() {
         history.back()
     }
 
+    function handleDeactivate() {
+        console.log('isDeactivating')
+    }
+
     function getCosts() {
-        return [['Activation Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
+        return [['Deactivation Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
     }
 
 </script>
@@ -26,31 +32,38 @@
 
 <Page>
     <div class="header">
-        <img src="/img/activation.svg" alt="activate">
+        <img src="/img/deactivation.svg" alt="activate">
     </div>
     <div class="form">
         <div class="form--header">
-            <p class="mdc-typography--body1">
-                Before you can receive your first donations, the token must first be activated. Unfortunately there is a
-                small fee for this, but it is not too much. Mind that the activation may take a few moments. Good luck
-                with your app.
-            </p>
+            <article class="description">
+                <p class="mdc-typography--body1">
+                    Do you really want to <b>deactivate</b> your App Token?
+                </p>
+                <p class="mdc-typography--body1">
+                    Once deactivated, you cannot reactivate the token, receive donations or transfer it.
+                    In addition, it is no longer listed in the general overview.
+                    Any remaining balance of the token will be credited to your account in full.
+                </p>
+                <p class="mdc-typography--body1">
+                    This action turns your token worthless and is irrevocable.
+                    Mind that you'll be charged a small fee for contract execution.
+                </p>
+            </article>
             <div class="item-wrapper">
                 <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
             </div>
         </div>
 
-        {#if !isEmptyString(token.at)}
-            <PaymentQrCode
-                    costs={getCosts()}
-                    fee={$burstFee$}
-                    recipient={token.at}
-            />
-        {/if}
+        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid}/>
 
         <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
+            </Button>
+
+            <Button on:click={handleDeactivate} disabled={!isPassphraseValid}>
+                <Label>Deactivate</Label>
             </Button>
         </div>
     </div>
@@ -83,10 +96,18 @@
         margin-bottom: 2rem;
     }
 
-    .form--header > p {
+    .form--header > .description {
         text-align: justify;
         width: 50%;
         margin: 0;
+    }
+
+    .form--header p:first-child {
+        margin: 0;
+    }
+
+    .form--header p {
+        margin: 0.5rem 0 0;
     }
 
     .form--header > .item-wrapper {
@@ -106,7 +127,7 @@
             flex-direction: column;
         }
 
-        .form--header > p {
+        .form--header p {
             width: 100%;
         }
 

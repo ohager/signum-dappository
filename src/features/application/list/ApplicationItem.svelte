@@ -5,7 +5,7 @@
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer } from '../../../utils/routes'
+    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate } from '../../../utils/routes'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import Stamp from '../../../components/Stamp.svelte'
     import { ApplicationItemVariant } from './constants'
@@ -24,6 +24,7 @@
 
     const DonationPath = RouteDonate(data.at)
     const ActivationPath = RouteActivate(data.at)
+    const DeactivationPath = RouteDeactivate(data.at)
     const TransferPath = RouteTransfer(data.at)
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
@@ -57,7 +58,9 @@
     }
 
     const handleClick = ifNotPreview(() => {
-        console.log('clicked')
+        if(data.repo){
+            window.open(data.repo, "_blank")
+        }
     })
 
     const handleDonate = ifNotPreview(() => {
@@ -81,11 +84,11 @@
     })
 
     const handleDeactivate = ifNotPreview(() => {
-        goto(ActivationPath)
+        goto(DeactivationPath)
     })
 
     const prefetchDeactivate = ifNotPreview(() => {
-        prefetch(ActivationPath)
+        prefetch(DeactivationPath)
     })
 
     const handleTransfer = ifNotPreview(() => {

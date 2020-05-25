@@ -20,7 +20,6 @@
 
 <div class="container">
 
-
     <section class="header">
         <Searchbar bind:value={searchTerm}/>
     </section>
@@ -43,6 +42,10 @@
 
 
 <style>
+    :root{
+
+    }
+
     .container {
         display: flex;
         flex-direction: column;
@@ -66,6 +69,8 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+        height: calc(100vh - 48px - 90px - 16px);
+        overflow: auto;
     }
 
     .body .loading {

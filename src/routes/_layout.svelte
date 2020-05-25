@@ -15,16 +15,18 @@
 
 
 <style>
-
-
-
     :global(body) {
         margin: 0;
+        overflow: hidden;
+    }
+
+    html {
+        background-color: #eee;
     }
 
     main {
         position: relative;
-        background-color: #eee;
+        /*background-color: #eee;*/
         padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;
