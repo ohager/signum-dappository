@@ -26,7 +26,6 @@
 
     main {
         position: relative;
-        /*background-color: #eee;*/
         padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;

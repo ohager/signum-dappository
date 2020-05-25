@@ -1,0 +1,140 @@
+<script>
+    import { goto } from '@sapper/app'
+    import Button, { Label } from '@smui/button'
+    import Page from '../../components/Page.svelte'
+    import ApplicationItem from '../application/list/ApplicationItem.svelte'
+    import { ApplicationItemVariant } from '../application/list/constants'
+    import { TokenContract } from '../../services/tokenContract'
+    import { EmptyToken } from '../../utils/emptyToken'
+    import { burstFee$ } from '../burstFeeStore'
+    import { BurstValue } from '@burstjs/util'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import PassphraseInput from '../../components/PassphraseInput.svelte'
+    import { account$ } from '../account/accountStore'
+
+    export let token = EmptyToken
+    let isPassphraseValid = false
+
+    function handleCancel() {
+        history.back()
+    }
+
+    function handleTransfer() {
+        console.log('isTransferring')
+    }
+
+    function getCosts() {
+        return [['Transfer Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
+    }
+
+</script>
+
+
+<Page>
+    <div class="header">
+        <img src="/img/transfer.svg" alt="activate">
+    </div>
+    <div class="form">
+        <div class="form--header">
+            <article class="description">
+                <p class="mdc-typography--body1">
+                    Do you really want to transfer your App Token?
+                </p>
+                <p class="mdc-typography--body1">
+                    This means that you no longer own and/or control the token. You will not receive any more donations for the token and you will not be able to deactivate it. The existing balance will not be paid to you and will be transferred to the new owner.
+                </p>
+                <p class="mdc-typography--body1">
+                    This action is irrevocable.
+                    Mind that you'll be charged a small fee for contract execution.
+                </p>
+            </article>
+            <div class="item-wrapper">
+                <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
+            </div>
+        </div>
+
+        <h1> TODO Recipient Account </h1>
+
+        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid}/>
+
+        <div class="form--footer">
+            <Button on:click={handleCancel}>
+                <Label>Back</Label>
+            </Button>
+
+            <Button on:click={handleTransfer} disabled={!isPassphraseValid}>
+                <Label>Transfer</Label>
+            </Button>
+        </div>
+    </div>
+</Page>
+
+
+<style>
+
+    .header {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .header img {
+        height: 96px;
+        width: 96px;
+        text-align: center;
+    }
+
+    .form {
+        display: block;
+        max-width: 600px;
+        margin: 0 auto
+    }
+
+    .form--header {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+
+    .form--header > .description {
+        text-align: justify;
+        width: 50%;
+        margin: 0;
+    }
+
+    .form--header p:first-child {
+        margin: 0;
+    }
+
+    .form--header p {
+        margin: 0.5rem 0 0;
+    }
+
+    .form--header > .item-wrapper {
+        margin-left: 1rem;
+        width: 50%;
+    }
+
+    .form--footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 480px) {
+        .form--header {
+            flex-direction: column;
+        }
+
+        .form--header p {
+            width: 100%;
+        }
+
+        .form--header > .item-wrapper {
+            margin: 1rem 0;
+            width: 100%;
+        }
+    }
+
+</style>
