@@ -2,8 +2,9 @@
     import ApplicationItem from './ApplicationItem.svelte'
     import LinearProgress from '@smui/linear-progress'
     import { tokens$ } from '../applicationTokenStore'
+    import { syncProgress$ } from '../tokenSync/syncProgressStore'
     import Searchbar from '../../../components/Searchbar.svelte'
-    import ApplicationItemLoadingIndicator from './ApplicationItemLoadingIndicator.svelte'
+    import ApplicationItemMessageCard from './ApplicationItemMessageCard.svelte'
 
     let searchTerm = ''
 
@@ -14,6 +15,7 @@
             || hasText(desc, filter)
 
     $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
+    $: isSyncing = $syncProgress$ < 1
     $: hasTokens = activeTokens.length > 0
 
 </script>
@@ -25,24 +27,42 @@
     </section>
 
     <section class="body">
-        {#if !hasTokens}
-            <div class="loading">
-                <ApplicationItemLoadingIndicator/>
+        {#if isSyncing && !hasTokens}
+            <div class="centered">
+                <ApplicationItemMessageCard
+                        animated
+                        icon="/img/synchronization.svg"
+                >
+                    <div class="mdc-typography--body2">Synchronizing...</div>
+                </ApplicationItemMessageCard>
             </div>
         {/if}
-        <div class="item-list">
-            {#each activeTokens as data}
-                <div class="item">
-                    <ApplicationItem {data}/>
-                </div>
-            {/each}
-        </div>
+        {#if !isSyncing && !hasTokens}
+            <div class="centered">
+                <ApplicationItemMessageCard
+                        icon="/img/empty.svg"
+                        text="No Tokens available yet. Be the first to register one! 👑"
+
+                >
+                    <div class="mdc-typography--body1">No Tokens available yet.</div>
+                    <div class="mdc-typography--body2">Be the first to register one! 👑</div>
+                </ApplicationItemMessageCard>
+            </div>
+        {:else}
+            <div class="item-list">
+                {#each activeTokens as data}
+                    <div class="item">
+                        <ApplicationItem {data}/>
+                    </div>
+                {/each}
+            </div>
+        {/if}
     </section>
 </div>
 
 
 <style>
-    :root{
+    :root {
 
     }
 
@@ -73,7 +93,7 @@
         overflow: auto;
     }
 
-    .body .loading {
+    .body .centered {
         padding: 1rem;
         display: flex;
         align-items: center;
