@@ -7,7 +7,7 @@ import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 import { TokenContract } from './tokenContract'
-import { UnconfirmedTokenService } from './unconfirmedTokenService'
+import { unconfirmedTokenService } from './unconfirmedTokenService'
 import { BurstValue } from '@burstjs/util'
 
 const MaxParallelFetches = 6
@@ -134,8 +134,7 @@ export class ApplicationTokenService {
                 isCIP20Active: true,
             })
 
-            const unconfirmedTokenService =  new UnconfirmedTokenService()
-            await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, ...tokenData })
+            await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, creator: accountId, ...tokenData })
             this._dispatch(Events.Success, "Token successfully generated")
             return unconfirmedTokenId;
         } catch (e) {

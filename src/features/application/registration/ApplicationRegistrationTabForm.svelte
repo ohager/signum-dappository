@@ -3,7 +3,7 @@
     import TabBar from '@smui/tab-bar'
     import Button from '@smui/button'
     import { goto } from '@sapper/app'
-    import { RouteHome } from '../../../utils/routes'
+    import { RouteAccountTokens, RouteHome } from '../../../utils/routes'
     import TabAccount from './TabAccount.svelte'
     import TabApplicationInfo from './TabApplicationInfo.svelte'
     import TabContent from '../../../components/TabContent.svelte'
@@ -55,7 +55,7 @@
     async function handleRegister() {
         try{
             const tokenId = await applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
-            goto('/register/success')
+            goto(RouteAccountTokens($account$.accountId))
         }catch(e){
             // noop yet
         }

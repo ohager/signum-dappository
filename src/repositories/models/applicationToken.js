@@ -43,19 +43,23 @@ const infoMappingSchema = {
 }
 
 const ContractDataIndices = {
-    Donated: 0,
-    DonationCount: 1,
-    Active: 2,
-    Owner: 3
+    Version: 0,
+    Active: 1,
+    Inventor: 2,
+    Donated: 3,
+    DonationCount: 4,
+    Owner: 5
 }
 
 function parseMachineData(contract) {
     const view = new ContractDataView(contract)
+    const version = parseInt(view.getVariableAsDecimal(ContractDataIndices.Version))
     const isActive = parseInt(view.getVariableAsDecimal(ContractDataIndices.Active)) === 1
     const donationPlanck = view.getVariableAsDecimal(ContractDataIndices.Donated)
     const donationCount = view.getVariableAsDecimal(ContractDataIndices.DonationCount)
     const owner = view.getVariableAsDecimal(ContractDataIndices.Owner)
     return {
+        version,
         isActive,
         donationPlanck,
         donationCount,

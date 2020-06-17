@@ -30,7 +30,7 @@
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
 
-    $: donation = BurstValue.fromPlanck(data.donationPlanck).getBurst()
+    $: donation = BurstValue.fromPlanck(data.donationPlanck || '0').getBurst()
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
         background-image: url(${imageUrl});

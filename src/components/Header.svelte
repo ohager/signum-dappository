@@ -28,7 +28,7 @@
 
 </script>
 
-<TopAppBar variant="static" dense color='primary'>
+<TopAppBar variant="fixed" dense color='primary'>
     <Row>
         <Section>
             <IconButton class="material-icons">menu</IconButton>

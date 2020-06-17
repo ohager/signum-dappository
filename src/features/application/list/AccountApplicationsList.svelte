@@ -6,6 +6,8 @@
     export let accountId
 
     $: tokens = $tokens$.items.filter(i => i.creator === accountId)
+    $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(i => i.creator === accountId)
+
 </script>
 
 <style>
@@ -22,6 +24,11 @@
 </style>
 
 <div class="container">
+    {#each unconfirmedTokens as data}
+        <div class="item">
+            <ApplicationItem {data} variant={ApplicationItemVariant.Unconfirmed}/>
+        </div>
+    {/each}
     {#each tokens as data}
         <div class="item">
             <ApplicationItem {data} variant={ApplicationItemVariant.Owner}/>

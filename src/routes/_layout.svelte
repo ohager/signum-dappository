@@ -17,7 +17,6 @@
 <style>
     :global(body) {
         margin: 0;
-        overflow: hidden;
     }
 
     html {
@@ -30,6 +29,7 @@
         margin: 0 auto;
         box-sizing: border-box;
         height: fit-content;
+        top: 48px;
     }
 
     @media (max-width: 480px) {

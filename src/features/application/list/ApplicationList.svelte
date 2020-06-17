@@ -1,5 +1,6 @@
 <script>
     import ApplicationItem from './ApplicationItem.svelte'
+    import { ApplicationItemVariant } from './constants'
     import LinearProgress from '@smui/linear-progress'
     import { tokens$ } from '../applicationTokenStore'
     import { syncProgress$ } from '../tokenSync/syncProgressStore'
@@ -15,6 +16,7 @@
             || hasText(desc, filter)
 
     $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
+    $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(searchFilter(searchTerm))
     $: isSyncing = $syncProgress$ < 1
     $: hasTokens = activeTokens.length > 0
 
@@ -22,28 +24,22 @@
 
 <div class="container">
 
-    <section class="header">
-        <Searchbar bind:value={searchTerm}/>
-    </section>
-
+    {#if hasTokens}
+        <section class="header">
+            <Searchbar bind:value={searchTerm}/>
+        </section>
+    {/if}
     <section class="body">
         {#if isSyncing && !hasTokens}
             <div class="centered">
-                <ApplicationItemMessageCard
-                        animated
-                        icon="/img/synchronization.svg"
-                >
+                <ApplicationItemMessageCard animated icon="/img/synchronization.svg">
                     <div class="mdc-typography--body2">Synchronizing...</div>
                 </ApplicationItemMessageCard>
             </div>
         {/if}
         {#if !isSyncing && !hasTokens}
             <div class="centered">
-                <ApplicationItemMessageCard
-                        icon="/img/empty.svg"
-                        text="No Tokens available yet. Be the first to register one! 👑"
-
-                >
+                <ApplicationItemMessageCard icon="/img/empty.svg">
                     <div class="mdc-typography--body1">No Tokens available yet.</div>
                     <div class="mdc-typography--body2">Be the first to register one! 👑</div>
                 </ApplicationItemMessageCard>
