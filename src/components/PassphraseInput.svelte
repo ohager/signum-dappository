@@ -7,8 +7,8 @@
 
     export let valid = false
     export let account = ''
+    export let passphrase = ''
     let isPassphraseVisible = false
-    let passphrase = ''
     let isPassphraseValid = false
 
     $: message = () => {

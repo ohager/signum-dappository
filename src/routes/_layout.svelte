@@ -3,12 +3,14 @@
     import Message from '../components/Message.svelte'
     import AccountDialog from '../components/AccountDialog.svelte'
     import SyncProgressBar from '../features/application/tokenSync/SyncProgressBar.svelte'
+    import LoadingBar from '../components/LoadingBar.svelte'
 </script>
 
 <Header/>
 <Message/>
 <AccountDialog/>
 <main>
+    <LoadingBar/>
     <SyncProgressBar/>
     <slot/>
 </main>
@@ -17,6 +19,10 @@
 <style>
     :global(body) {
         margin: 0;
+    }
+
+    :global(.mdc-top-app-bar){
+        z-index: 100 !important;
     }
 
     html {

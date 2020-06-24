@@ -11,20 +11,23 @@
     import { isEmptyString } from '../../utils/isEmptyString'
     import PassphraseInput from '../../components/PassphraseInput.svelte'
     import { account$ } from '../account/accountStore'
+    import { applicationTokenService } from '../../services/applicationTokenService'
+    import { RouteAccountTokens } from '../../utils/routes'
 
     export let token = EmptyToken
     let isPassphraseValid = false
+    let passphrase = ''
 
     function handleCancel() {
         history.back()
     }
 
     function handleDeactivate() {
-        console.log('isDeactivating')
-    }
-
-    function getCosts() {
-        return [['Deactivation Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
+        applicationTokenService
+                .deactivateToken(token.at, passphrase)
+                .then(() => {
+                    goto(RouteAccountTokens($account$.accountId))
+                })
     }
 
 </script>
@@ -55,7 +58,7 @@
             </div>
         </div>
 
-        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid}/>
+        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid} bind:passphrase={passphrase}/>
 
         <div class="form--footer">
             <Button on:click={handleCancel}>
@@ -63,6 +66,7 @@
             </Button>
 
             <Button on:click={handleDeactivate} disabled={!isPassphraseValid}>
+
                 <Label>Deactivate</Label>
             </Button>
         </div>

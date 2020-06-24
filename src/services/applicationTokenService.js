@@ -9,6 +9,7 @@ import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 import { TokenContract } from './tokenContract'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
 import { BurstValue } from '@burstjs/util'
+import { finishLoading, startLoading } from '../components/appStore'
 
 const MaxParallelFetches = 6
 
@@ -83,6 +84,7 @@ export class ApplicationTokenService {
 
     async deactivateToken(contractId, passphrase) {
         try {
+            startLoading()
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const feeValue = await accountService.getSuggestedFee()
             await BurstApi.contract.callContractMethod({
@@ -93,8 +95,11 @@ export class ApplicationTokenService {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
+            this._dispatch(Events.Success, "Token deactivated")
         } catch (e) {
             this._dispatch(Events.Error, e.message)
+        } finally {
+            finishLoading()
         }
     }
 
@@ -117,6 +122,7 @@ export class ApplicationTokenService {
 
     async registerToken(tokenData, passphrase) {
         try {
+            startLoading()
             const { publicKey, signPrivateKey } = accountService.getKeys(passphrase)
             const accountId = getAccountIdFromPublicKey(publicKey)
             const balanceBurst = await accountService.getBalance(accountId)
@@ -140,6 +146,8 @@ export class ApplicationTokenService {
         } catch (e) {
             this._dispatch(Events.Error, e.message)
             throw e
+        } finally {
+            finishLoading()
         }
     }
 }
