@@ -5,8 +5,11 @@
 
     export let accountId
 
-    $: tokens = $tokens$.items.filter(i => i.creator === accountId)
-    $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(i => i.creator === accountId)
+    const isNotDeactivated  = i => i.version === 0 || (i.version > 0 && i.isActive)
+    const isOwnToken = i => i.creator === accountId
+
+    $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
+    $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
 
 </script>
 
