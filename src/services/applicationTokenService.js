@@ -82,7 +82,7 @@ export class ApplicationTokenService {
         return BurstValue.fromBurst(TokenContract.ActivationCosts).getPlanck()
     }
 
-    async deactivateToken(contractId, passphrase) {
+    async _callContractMethod(contractId, passphrase, methodHash, methodArgs) {
         try {
             startLoading()
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
@@ -90,34 +90,33 @@ export class ApplicationTokenService {
             await BurstApi.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
+                methodHash,
+                methodArgs,
                 feePlanck: feeValue.getPlanck(),
-                methodHash: TokenContract.MethodHash.deactivate,
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
-            this._dispatch(Events.Success, "Token deactivated")
         } catch (e) {
             this._dispatch(Events.Error, e.message)
         } finally {
             finishLoading()
         }
+
     }
 
-    async transferToken(contractId, passphrase) {
-        try {
-            const { signPrivateKey, publicKey } = this._getKeys(passphrase)
-            const feeValue = await this._getSuggestedFee()
-            await BurstApi.contract.callContractMethod({
-                amountPlanck: this.getActivationCostsPlanck(),
-                contractId,
-                feePlanck: feeValue.getPlanck(),
-                methodHash: TokenContract.MethodHash.deactivate,
-                senderPrivateKey: signPrivateKey,
-                senderPublicKey: publicKey,
-            })
-        } catch (e) {
-            this._dispatch(Events.Error, e.message)
-        }
+    async deactivateToken(contractId, passphrase) {
+        await this._callContractMethod(contractId, passphrase, TokenContract.MethodHash.deactivate)
+        this._dispatch(Events.Success, 'Token deactivated')
+    }
+
+    async transferToken(contractId, passphrase, newOwnerId) {
+        await this._callContractMethod(
+            contractId,
+            passphrase,
+            TokenContract.MethodHash.deactivate,
+            [newOwnerId]
+        )
+        this._dispatch(Events.Success, 'Token transferred successfully')
     }
 
     async registerToken(tokenData, passphrase) {
@@ -141,8 +140,8 @@ export class ApplicationTokenService {
             })
 
             await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, creator: accountId, ...tokenData })
-            this._dispatch(Events.Success, "Token successfully generated")
-            return unconfirmedTokenId;
+            this._dispatch(Events.Success, 'Token successfully generated')
+            return unconfirmedTokenId
         } catch (e) {
             this._dispatch(Events.Error, e.message)
             throw e
