@@ -40,7 +40,7 @@
         if (variant === ApplicationItemVariant.Preview) {
             stampText = 'Preview'
         } else if (variant === ApplicationItemVariant.Unconfirmed) {
-            stampText = 'Unconfirmed'
+            stampText = 'Confirming'
         } else if (!data.isActive) {
             stampText = 'Inactive'
         } else {

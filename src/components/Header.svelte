@@ -21,6 +21,10 @@
         }
     }
 
+    function gotoHomePage() {
+        goto(RouteHome())
+    }
+
     function unsetAccount() {
         clearAccount()
         goto(RouteHome())
@@ -31,7 +35,7 @@
 <TopAppBar variant="fixed" dense color='primary'>
     <Row>
         <Section>
-            <IconButton class="material-icons">menu</IconButton>
+            <IconButton class="material-icons" on:click={gotoHomePage}>home</IconButton>
             <img class="burst-logo" src="img/burst-white.svg" alt="Burst"/>
             <Title>Applications</Title>
         </Section>

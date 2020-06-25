@@ -24,7 +24,7 @@
 
     function handleDeactivate() {
         applicationTokenService
-                .deactivateToken(token.at, passphrase)
+                .deactivateToken(token, passphrase)
                 .then(() => {
                     goto(RouteAccountTokens($account$.accountId))
                 })

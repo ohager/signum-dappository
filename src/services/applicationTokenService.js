@@ -82,10 +82,12 @@ export class ApplicationTokenService {
         return BurstValue.fromBurst(TokenContract.ActivationCosts).getPlanck()
     }
 
-    async _callContractMethod(contractId, passphrase, methodHash, methodArgs) {
+    async _callContractMethod(token, passphrase, methodHash, methodArgs) {
         try {
             startLoading()
+            const  contractId = token.at
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
+            const accountId = getAccountIdFromPublicKey(publicKey)
             const feeValue = await accountService.getSuggestedFee()
             await BurstApi.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
@@ -96,6 +98,7 @@ export class ApplicationTokenService {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
+            await unconfirmedTokenService.addToken({ at: contractId, creator: accountId, ...token })
         } catch (e) {
             this._dispatch(Events.Error, e.message)
         } finally {
@@ -104,8 +107,8 @@ export class ApplicationTokenService {
 
     }
 
-    async deactivateToken(contractId, passphrase) {
-        await this._callContractMethod(contractId, passphrase, TokenContract.MethodHash.deactivate)
+    async deactivateToken(token, passphrase) {
+        await this._callContractMethod(token, passphrase, TokenContract.MethodHash.deactivate)
         this._dispatch(Events.Success, 'Token deactivated')
     }
 

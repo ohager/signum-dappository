@@ -40,7 +40,7 @@
         {#if !isSyncing && !hasTokens}
             <div class="centered">
                 <ApplicationItemMessageCard icon="/img/empty.svg">
-                    <div class="mdc-typography--body1">No Tokens available yet.</div>
+                    <div class="mdc-typography--body1">No active Tokens available yet.</div>
                     <div class="mdc-typography--body2">Be the first to register one! 👑</div>
                 </ApplicationItemMessageCard>
             </div>
