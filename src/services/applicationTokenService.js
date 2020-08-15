@@ -66,7 +66,7 @@ export class ApplicationTokenService {
     }
 
     async getToken(tokenId) {
-        return await this.getCollection().where('at').equals(tokenId).first()
+        return this.getCollection().where('at').equals(tokenId).first()
     }
 
     async getTokens() {
@@ -89,7 +89,7 @@ export class ApplicationTokenService {
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const accountId = getAccountIdFromPublicKey(publicKey)
             const feeValue = await accountService.getSuggestedFee()
-            await BurstApi.contract.callContractMethod({
+            let transactionId = await BurstApi.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 methodHash,
@@ -98,6 +98,7 @@ export class ApplicationTokenService {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
+
             await unconfirmedTokenService.addToken({ at: contractId, creator: accountId, ...token })
         } catch (e) {
             this._dispatch(Events.Error, e.message)

@@ -82,7 +82,8 @@
         {#if isQrCodeVisible}
             <PaymentQrCode recipient={token.at}
                            costs={costs}
-                           fee={$burstFee$}/>
+                           fee={$burstFee$}
+            />
         {/if}
 
         <div class="form--footer">

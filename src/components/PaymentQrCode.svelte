@@ -1,14 +1,13 @@
 <script>
     import QrCode from 'qrcode'
-    import { BurstValue, convertNumericIdToAddress } from '@burstjs/util'
-    import { burstFee$ } from '../features/burstFeeStore'
+    import { BurstValue, convertNumericIdToAddress, FeeQuantPlanck } from '@burstjs/util'
     import { mountLegacyDeepLink } from '../utils/deeplink'
     import { assureAccountId } from '../utils/assureAccountId'
-    import { goto } from '@sapper/app'
 
     export let recipient
     export let costs = []
-    export let fee = $burstFee$
+    export let fee = BurstValue.fromPlanck(FeeQuantPlanck.toString())
+    export let message = null
 
     let QrCodeCanvas = null
     let info = []
@@ -21,32 +20,25 @@
         info.push(...costs)
         info.push(['Fee:', fee])
         info.push(['---', ''])
-        info.push(['Total:', totalCosts.add(fee)])
+        info.push(['Total:', BurstValue.fromBurst(totalCosts.getBurst()).add(fee)])
     }
+
+    $: deepLink =  mountLegacyDeepLink(recipient, totalCosts, fee, message)
 
     $: {
         if (QrCodeCanvas !== null) {
-            QrCode.toCanvas(QrCodeCanvas, generateDeepLink(totalCosts), {
+            QrCode.toCanvas(QrCodeCanvas, deepLink, {
                 width: 256,
             })
         }
     }
 
-    function generateDeepLink(amount) {
-        return mountLegacyDeepLink(
-                recipient,
-                amount,
-                fee,
-        )
-    }
-
-    function openDeepLink() {
-        goto(generateDeepLink(totalCosts))
-    }
 </script>
 
 <div class="form--qrcode">
-    <canvas bind:this={QrCodeCanvas} on:click={openDeepLink}/>
+    <a href={deepLink}>
+        <canvas bind:this={QrCodeCanvas}/>
+    </a>
     <section>
         <p>
             Scan the code with e.g. Phoenix Mobile Wallet,

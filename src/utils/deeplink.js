@@ -1,24 +1,29 @@
 import { convertNumericIdToAddress, createDeeplink } from '@burstjs/util'
+import {Config} from '../config'
 
-export function mountLegacyDeepLink(recipientId, amountValue, feeValue) {
+const redirectable = targetUrl => Config.DeeplinkRedirectServiceUrl + encodeURIComponent(targetUrl)
+
+export function mountLegacyDeepLink(recipientId, amountValue, feeValue, message = '') {
     const amountPlanck = amountValue.getPlanck()
     const feePlanck = feeValue.getPlanck()
     const address = convertNumericIdToAddress(recipientId)
-    return `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${feePlanck}&immutable=false`
+    const link = `burst://requestBurst?receiver=${address}&amountNQT=${amountPlanck}&feeNQT=${feePlanck}&immutable=false`
+    return redirectable(message ? `${link}&message=${message}` : link)
 }
 
 export function mountDeepLink(recipientId, amountValue, feeValue) {
     const amountPlanck = amountValue.getPlanck()
     const feePlanck = feeValue.getPlanck()
     const receiver = convertNumericIdToAddress(recipientId)
-    return createDeeplink({
-        domain: 'payment',
-        action: 'send',
-        payload: {
-            amountPlanck,
-            receiver,
-            feePlanck,
-            immutable: false,
-        },
-    })
+    return redirectable(createDeeplink({
+            domain: 'payment',
+            action: 'send',
+            payload: {
+                amountPlanck,
+                receiver,
+                feePlanck,
+                immutable: false,
+            },
+        }),
+    )
 }

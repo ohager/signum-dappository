@@ -17,6 +17,11 @@
         history.back()
     }
 
+    function handlePaid() {
+        // see what else should be done
+        history.back()
+    }
+
     function getCosts() {
         return [['Activation Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
     }
@@ -51,6 +56,9 @@
         <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
+            </Button>
+            <Button on:click={handlePaid}>
+                <Label>Payment Done</Label>
             </Button>
         </div>
     </div>
