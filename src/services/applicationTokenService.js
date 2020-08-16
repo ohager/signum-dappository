@@ -85,7 +85,7 @@ export class ApplicationTokenService {
     async _callContractMethod(token, passphrase, methodHash, methodArgs) {
         try {
             startLoading()
-            const  contractId = token.at
+            const contractId = token.at
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const accountId = getAccountIdFromPublicKey(publicKey)
             const feeValue = await accountService.getSuggestedFee()
@@ -102,6 +102,7 @@ export class ApplicationTokenService {
             await unconfirmedTokenService.addToken({ at: contractId, creator: accountId, ...token })
         } catch (e) {
             this._dispatch(Events.Error, e.message)
+            throw e
         } finally {
             finishLoading()
         }
@@ -113,12 +114,12 @@ export class ApplicationTokenService {
         this._dispatch(Events.Success, 'Token deactivated')
     }
 
-    async transferToken(contractId, passphrase, newOwnerId) {
+    async transferToken(token, passphrase, newOwnerId) {
         await this._callContractMethod(
-            contractId,
+            token,
             passphrase,
-            TokenContract.MethodHash.deactivate,
-            [newOwnerId]
+            TokenContract.MethodHash.transfer,
+            [newOwnerId],
         )
         this._dispatch(Events.Success, 'Token transferred successfully')
     }

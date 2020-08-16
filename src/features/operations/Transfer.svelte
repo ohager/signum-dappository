@@ -5,26 +5,46 @@
     import ApplicationItem from '../application/list/ApplicationItem.svelte'
     import { ApplicationItemVariant } from '../application/list/constants'
     import { TokenContract } from '../../services/tokenContract'
+    import { applicationTokenService } from '../../services/applicationTokenService'
     import { EmptyToken } from '../../utils/emptyToken'
     import { burstFee$ } from '../burstFeeStore'
     import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../utils/isEmptyString'
     import PassphraseInput from '../../components/PassphraseInput.svelte'
     import { account$ } from '../account/accountStore'
+    import AccountInput from '../../components/AccountInput.svelte'
+    import { RouteAccountTokens } from '../../utils/routes'
 
     export let token = EmptyToken
     let isPassphraseValid = false
+    let isAccountValid = false
+    let targetAccount = ''
+    let passphrase = ''
+
+    $: ownerId = $account$.accountId
+    $: canTransfer = isAccountValid && isPassphraseValid
 
     function handleCancel() {
         history.back()
     }
 
     function handleTransfer() {
-        console.log('isTransferring')
+        applicationTokenService
+            .transferToken(token, passphrase, targetAccount)
+            .then(() => {
+                goto(RouteAccountTokens(ownerId))
+            })
     }
 
-    function getCosts() {
-        return [['Transfer Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
+    function validateAccount(accountId) {
+        return new Promise(((resolve, reject) => {
+            if(ownerId !== accountId){
+                resolve()
+            }
+            else{
+                reject('Accounts must not be equal')
+            }
+        }))
     }
 
 </script>
@@ -32,7 +52,8 @@
 
 <Page>
     <div class="header">
-        <img src="/img/transfer.svg" alt="activate">
+        <img src="/img/transfer.svg" alt="transfer token">
+        <div class="mdc-typography--headline6">Transfer Token</div>
     </div>
     <div class="form">
         <div class="form--header">
@@ -53,16 +74,22 @@
             </div>
         </div>
 
-        <h1> TODO Recipient Account </h1>
+        <AccountInput bind:account={targetAccount}
+                      bind:valid={isAccountValid}
+                      validate={validateAccount}
+        />
 
-        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid}/>
+        <PassphraseInput bind:valid={isPassphraseValid}
+                         bind:passphrase={passphrase}
+                        account={$account$.accountId}
+        />
 
         <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
             </Button>
 
-            <Button on:click={handleTransfer} disabled={!isPassphraseValid}>
+            <Button on:click={handleTransfer} disabled={!canTransfer}>
                 <Label>Transfer</Label>
             </Button>
         </div>

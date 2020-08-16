@@ -35,7 +35,8 @@
 
 <Page>
     <div class="header">
-        <img src="/img/deactivation.svg" alt="activate">
+        <img src="/img/deactivation.svg" alt="deactivate token">
+        <div class="mdc-typography--headline6">Deactivate Token</div>
     </div>
     <div class="form">
         <div class="form--header">

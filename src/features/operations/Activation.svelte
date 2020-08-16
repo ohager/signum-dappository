@@ -32,6 +32,7 @@
 <Page>
     <div class="header">
         <img src="/img/activation.svg" alt="activate">
+        <div class="mdc-typography--headline6">Activate Token</div>
     </div>
     <div class="form">
         <div class="form--header">
