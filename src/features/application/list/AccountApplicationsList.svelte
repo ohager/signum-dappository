@@ -2,6 +2,7 @@
     import ApplicationItem from './ApplicationItem.svelte'
     import { ApplicationItemVariant } from './constants'
     import { tokens$ } from '../applicationTokenStore'
+    import { unconfirmedTransactions$ } from '../unconfirmedTransactionStore'
 
     export let accountId
 
@@ -10,6 +11,7 @@
 
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
+    $: unconfirmedTx = $unconfirmedTransactions$
 
 </script>
 

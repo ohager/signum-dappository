@@ -4,6 +4,6 @@ export class UnconfirmedTransactions {
     }
 
     static schema() {
-        return 'id, recipient'
+        return 'transaction, recipient, sender'
     }
 }

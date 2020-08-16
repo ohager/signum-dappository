@@ -40,7 +40,7 @@ export class AccountService {
         const { publicKey } = this.getKeys(passphrase)
         return getAccountIdFromPublicKey(publicKey)
     }
-
+    
     async getBalance(accountId) {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
         return BurstValue.fromPlanck(balanceNQT)

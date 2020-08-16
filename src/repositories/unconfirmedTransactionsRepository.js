@@ -7,6 +7,10 @@ export class UnconfirmedTransactionsRepository {
         this._db = db.unconfirmedTransactions
     }
 
+    async clear() {
+        await this._db.clear()
+    }
+
     async get(){
         return this._db.toArray()
     }
@@ -15,8 +19,12 @@ export class UnconfirmedTransactionsRepository {
         await this._db.put(utx)
     }
 
-    async remove(txid) {
-        return await this._db.delete(id)
+    async upsertBulk(utxList){
+        await this._db.bulkPut(utxList)
+    }
+
+    async remove(utxid) {
+        return await this._db.delete(utxid)
     }
 }
 

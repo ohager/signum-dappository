@@ -1,5 +1,6 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { unconfirmedTokensRepository } from '../repositories/unconfirmedTokensRepository'
+import { unconfirmedTransactionsRepository } from '../repositories/unconfirmedTransactionsRepository'
+import { BurstApi } from '../utils/burstApi'
 
 export class UnconfirmedTransactionService {
     constructor(repository = unconfirmedTransactionsRepository) {
@@ -7,25 +8,14 @@ export class UnconfirmedTransactionService {
         this._repository = repository
     }
 
-    async getTokens() {
+    async syncUnconfirmedTransactions() {
+        const { unconfirmedTransactions } = await BurstApi.transaction.getUnconfirmedTransactions()
+        await this._repository.clear()
+        await this._repository.upsertBulk(unconfirmedTransactions)
+    }
+
+    async getUnconfirmedTransactions() {
         return this._repository.get()
-    }
-
-    async addTransaction(txid) {
-        await this._repository.insert(txid)
-    }
-
-    async removeTransaction(txid) {
-        await this._repository.remove(txid)
-    }
-
-    async prune(unconfirmedTransactions) {
-        let unconfirmedTokens = await this.getTokens()
-        for (const { at } of unconfirmedTokens) {
-            if(confirmedTokenIds.includes(at)){
-                await this.removeToken(at)
-            }
-        }
     }
 }
 
