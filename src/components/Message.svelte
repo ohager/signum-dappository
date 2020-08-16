@@ -41,11 +41,19 @@
     .mdc-typography--button.success {
         color: #2a9d00 !important;
     }
+    .mdc-typography--button.warning {
+        color: #f6b900 !important;
+    }
+    .mdc-typography--button.info {
+        color: #008bf6 !important;
+    }
 </style>
 
 <svelte:window
         on:error={showError}
         on:success={showSuccess}
+        on:warning={showWarning}
+        on:info={showInformation}
 />
 
 <Snackbar leading bind:this={snackbar}>

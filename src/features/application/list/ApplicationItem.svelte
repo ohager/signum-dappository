@@ -10,6 +10,8 @@
     import { isEmptyString } from '../../../utils/isEmptyString'
     import Stamp from '../../../components/Stamp.svelte'
     import { ApplicationItemVariant } from './constants'
+    import { Events } from '../../../utils/events'
+    import { dispatchEvent } from '../../../utils/dispatchEvent'
 
     export let variant = ApplicationItemVariant.Normal
     export let data = {
@@ -54,13 +56,12 @@
         fn()
     }
 
-    const getStampText = () => {
-
-    }
-
     const handleClick = ifNotPreview(() => {
         if(data.repo){
             window.open(data.repo, "_blank")
+        } else
+        {
+            dispatchEvent(Events.Info, 'Application has no registered project site')
         }
     })
 

@@ -1,6 +1,6 @@
 export const MessageTypes = {
     Error: 'error',
     Information: 'info',
-    Warning: 'warn',
+    Warning: 'warning',
     Success: 'success'
 }
