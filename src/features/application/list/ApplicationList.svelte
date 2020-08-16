@@ -87,6 +87,7 @@
         flex-direction: row;
         height: calc(100vh - 48px - 90px - 16px);
         overflow: auto;
+        justify-content: center;
     }
 
     .body .centered {
@@ -94,12 +95,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    @media (max-width: 768px) {
-        .body .item {
-            width: calc(100vw - 16px)
-        }
     }
 
 </style>

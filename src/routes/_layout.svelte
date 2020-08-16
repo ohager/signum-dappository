@@ -19,10 +19,24 @@
 <style>
     :global(body) {
         margin: 0;
+        overflow: hidden;
     }
 
     :global(.mdc-top-app-bar){
         z-index: 100 !important;
+    }
+
+    :global(*::-webkit-scrollbar) {
+        width: 0.25rem;
+    }
+
+    :global(*::-webkit-scrollbar-thumb) {
+        background-color: darkgrey;
+    }
+
+    :global(*){
+        scrollbar-color: darkgrey white;
+        scrollbar-width: thin;
     }
 
     html {
