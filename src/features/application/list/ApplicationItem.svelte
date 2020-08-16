@@ -2,6 +2,7 @@
     import { beforeUpdate } from 'svelte'
     import Card, { ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media } from '@smui/card'
     import Button, { Label } from '@smui/button'
+    import Chip, {Set, Text} from '@smui/chips'
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
@@ -118,6 +119,13 @@
                 <Media aspectRatio="16x9" style={mediaStyle}/>
                 <Content class="mdc-typography--body2">
                     <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
+                    <div class="tags-wrapper">
+                        <Set chips={data.tags} let:chip>
+                            <Chip shouldRemoveOnTrailingIconClick={false}>
+                                <Text>{chip}</Text>
+                            </Chip>
+                        </Set>
+                    </div>
                     {data.desc}
                     <div>
                         <small>Donated: {donation} BURST</small>
@@ -181,4 +189,14 @@
         opacity: 0.5;
         z-index: 10;
     }
+
+    .tags-wrapper :global(.mdc-chip__text) {
+        font-size: 80%;
+    }
+
+    .tags-wrapper :global(.mdc-chip) {
+        margin: 0;
+        height: 24px;
+    }
+
 </style>
