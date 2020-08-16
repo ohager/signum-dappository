@@ -9,11 +9,11 @@
     const isNotDeactivated  = i => i.version === 0 || (i.version > 0 && i.isActive)
     const isOwnToken = i => i.creator === accountId
 
+    $: hasPendingTransaction = at => $unconfirmedTransactions$.some( ({recipient, sender}) => sender === accountId && recipient === at)
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
-    $: unconfirmedTx = $unconfirmedTransactions$
 
-</script>
+ </script>
 
 <style>
     .container {
@@ -36,7 +36,7 @@
     {/each}
     {#each tokens as data}
         <div class="item">
-            <ApplicationItem {data} variant={ApplicationItemVariant.Owner}/>
+            <ApplicationItem {data} variant={hasPendingTransaction(data.at) ? ApplicationItemVariant.Unconfirmed : ApplicationItemVariant.Owner} />
         </div>
     {/each}
 </div>

@@ -82,9 +82,11 @@
             for these actions the passphrase is required.
         </p>
 
-        <TextField bind:value={account}
-                   invalid={!isValid}
-                   label="Account"
+        <TextField
+                fullwidth
+                bind:value={account}
+                invalid={!isValid}
+                label="Account"
         />
         {#if isEmptyString(account)}
             <HelperText>Enter a valid account address or id</HelperText>

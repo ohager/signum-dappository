@@ -69,6 +69,10 @@
         width: 100%;
     }
 
+    .form--input-field :global(.mdc-text-field) {
+        width: 100%;
+    }
+
     :global(.form .mdc-text-field__input) {
         font-size: 100% !important;
     }

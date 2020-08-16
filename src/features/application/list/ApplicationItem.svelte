@@ -39,6 +39,7 @@
         background-image: url(${imageUrl});
     `
     $: isUnconfirmed = variant === ApplicationItemVariant.Unconfirmed
+    $: hasPendingTx = variant === ApplicationItemVariant.HasPendingTransaction
     $: {
         if (variant === ApplicationItemVariant.Preview) {
             stampText = 'Preview'
@@ -52,11 +53,13 @@
     }
 
     const ifNotPreview = (fn) => () => {
-        if (variant === ApplicationItemVariant.Preview) return
+        if (variant === ApplicationItemVariant.Preview ) return
         fn()
     }
 
     const handleClick = ifNotPreview(() => {
+        if(variant !== ApplicationItemVariant.Normal) return
+
         if(data.repo){
             window.open(data.repo, "_blank")
         } else
