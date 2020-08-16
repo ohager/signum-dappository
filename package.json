@@ -26,7 +26,8 @@
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run"
+    "test": "run-p --race dev cy:run",
+    "publish": "now --prod"
   },
   "dependencies": {
     "@burstjs/contracts": "^0.5.0",
@@ -39,7 +40,6 @@
     "dexie": "^3.0.2",
     "lodash.debounce": "^4.0.8",
     "magic-mapper": "0.0.11",
-    "now": "^19.2.0",
     "polka": "next",
     "qrcode": "^1.4.4",
     "sapper-environment": "^1.0.1",
@@ -58,6 +58,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-svelte3": "^2.7.3",
     "node-sass": "^4.14.1",
+    "now": "^19.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
     "prettier-plugin-svelte": "^1.1.0",
