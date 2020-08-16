@@ -7,7 +7,7 @@
     export let accountId
 
     const isNotDeactivated  = i => i.version === 0 || (i.version > 0 && i.isActive)
-    const isOwnToken = i => (i.owner ? i.owner : i.creator) === accountId
+    const isOwnToken = i => (i.owner !== '0' ? i.owner : i.creator) === accountId
 
     $: hasPendingTransaction = at => $unconfirmedTransactions$.some( ({recipient, sender}) => sender === accountId && recipient === at)
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
