@@ -14,6 +14,7 @@
     import { account$ } from '../account/accountStore'
     import AccountInput from '../../components/AccountInput.svelte'
     import { RouteAccountTokens } from '../../utils/routes'
+    import { watchTokenState } from '../../utils/watchTokenState'
 
     export let token = EmptyToken
     let isPassphraseValid = false
@@ -24,11 +25,20 @@
     $: ownerId = $account$.accountId
     $: canTransfer = isAccountValid && isPassphraseValid
 
+    function startMonitoring(){
+        watchTokenState({
+            tokenId: token.at,
+            predicateFn: ({ owner }) => owner !== ownerId,
+            callback: console.log
+        })
+    }
+
     function handleCancel() {
         history.back()
     }
 
     function handleTransfer() {
+        startMonitoring()
         applicationTokenService
             .transferToken(token, passphrase, targetAccount)
             .then(() => {
