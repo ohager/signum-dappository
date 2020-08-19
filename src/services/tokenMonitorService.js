@@ -3,7 +3,7 @@ import { TokenStateMonitor } from './TokenStateMonitor'
 import { voidFn } from '../utils/voidFn'
 
 const TokenWatcherIntervalSecs = 10
-const TokenWatcherTimeoutSecs = 1 * 30
+const TokenWatcherTimeoutSecs = 8 * 60 // doubled Burstcoin blocktime
 
 export class TokenMonitorService {
     constructor(repository = tokenMonitorRepository) {

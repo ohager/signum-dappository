@@ -18,7 +18,7 @@
     async function startMonitoring(){
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
-            expectedValue: '1',
+            expectedValue: true,
             fieldName: 'isActive'
         })
     }

@@ -14,6 +14,8 @@
     import { account$ } from '../account/accountStore'
     import AccountInput from '../../components/AccountInput.svelte'
     import { RouteAccountTokens } from '../../utils/routes'
+    import { tokenMonitorService } from '../../services/tokenMonitorService'
+    import { assureAccountId } from '../../utils/assureAccountId'
 
     export let token = EmptyToken
     let isPassphraseValid = false
@@ -28,12 +30,14 @@
         history.back()
     }
 
-    function handleTransfer() {
-        applicationTokenService
-            .transferToken(token, passphrase, targetAccount)
-            .then(() => {
-                goto(RouteAccountTokens(ownerId))
-            })
+    async function handleTransfer() {
+        await applicationTokenService.transferToken(token, passphrase, targetAccount)
+        await tokenMonitorService.startMonitor({
+            tokenId: token.at,
+            expectedValue: assureAccountId(targetAccount),
+            fieldName: 'owner'
+        })
+        goto(RouteAccountTokens(ownerId))
     }
 
     function validateAccount(accountId) {

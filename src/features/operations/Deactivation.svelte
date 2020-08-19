@@ -13,6 +13,7 @@
     import { account$ } from '../account/accountStore'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { RouteAccountTokens } from '../../utils/routes'
+    import { tokenMonitorService } from '../../services/tokenMonitorService'
 
     export let token = EmptyToken
     let isPassphraseValid = false
@@ -22,14 +23,14 @@
         history.back()
     }
 
-    function handleDeactivate() {
-        /*
-        applicationTokenService
-                .deactivateToken(token, passphrase)
-                .then(() => {
-                    goto(RouteAccountTokens($account$.accountId))
-                })
-         */
+    async function handleDeactivate() {
+        await applicationTokenService.deactivateToken(token, passphrase)
+        await tokenMonitorService.startMonitor({
+            tokenId: token.at,
+            expectedValue: false,
+            fieldName: 'isActive'
+        })
+        goto(RouteAccountTokens($account$.accountId))
     }
 
 </script>
