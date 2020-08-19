@@ -2,18 +2,18 @@
     import ApplicationItem from './ApplicationItem.svelte'
     import { ApplicationItemVariant } from './constants'
     import { tokens$ } from '../applicationTokenStore'
-    import { unconfirmedTransactions$ } from '../unconfirmedTransactionStore'
+    import { activeTokenMonitors$ } from '../tokenMonitorStore'
 
     export let accountId
 
-    const isNotDeactivated  = i => i.version === 0 || (i.version > 0 && i.isActive)
+    const isNotDeactivated = i => i.version === 0 || (i.version > 0 && i.isActive)
     const isOwnToken = i => (i.owner !== '0' ? i.owner : i.creator) === accountId
 
-    $: hasPendingTransaction = at => $unconfirmedTransactions$.some( ({recipient, sender}) => sender === accountId && recipient === at)
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
+    $: hasPendingTransaction = at => $activeTokenMonitors$.some(m => m.at === at)
 
- </script>
+</script>
 
 <style>
     .container {
@@ -36,7 +36,8 @@
     {/each}
     {#each tokens as data}
         <div class="item">
-            <ApplicationItem {data} variant={hasPendingTransaction(data.at) ? ApplicationItemVariant.Unconfirmed : ApplicationItemVariant.Owner} />
+            <ApplicationItem {data}
+                             variant={hasPendingTransaction(data.at) ? ApplicationItemVariant.Unconfirmed : ApplicationItemVariant.Owner}/>
         </div>
     {/each}
 </div>

@@ -13,26 +13,16 @@
     import { account$ } from '../account/accountStore'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { RouteAccountTokens } from '../../utils/routes'
-    import { watchTokenState } from '../../utils/watchTokenState'
 
     export let token = EmptyToken
     let isPassphraseValid = false
     let passphrase = ''
-
-    function startMonitoring(){
-        watchTokenState({
-            tokenId: token.at,
-            predicateFn: ({ isActive }) => isActive === '0',
-            callback: console.log
-        })
-    }
 
     function handleCancel() {
         history.back()
     }
 
     function handleDeactivate() {
-        startMonitoring()
         /*
         applicationTokenService
                 .deactivateToken(token, passphrase)

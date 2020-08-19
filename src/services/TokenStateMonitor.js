@@ -1,5 +1,5 @@
 import { ApplicationToken } from '../repositories/models/applicationToken'
-import { BurstApi } from './burstApi'
+import { BurstApi } from '../utils/burstApi'
 
 export class TokenStateMonitor {
     _tokenId
@@ -18,14 +18,14 @@ export class TokenStateMonitor {
     }
 
     watch({ predicateFn, callback, startTime = Date.now() }) {
-        this._debug('Monitor (re)started')
+        this._debug('Monitoring...')
         this._handle = setTimeout(async () => {
             try {
                 const contract = await BurstApi.contract.getContract(this._tokenId)
                 const tokenData = ApplicationToken.mapFromContract(contract)
                 if (predicateFn(tokenData)) {
                     this._debug('Monitor predicate fulfilled')
-                    return callback(tokenData)
+                    return callback(tokenData, true)
                 }
                 const shouldRestart = (Date.now() - startTime) / 1000 < this._abortAfterSecs
                 if (shouldRestart) {
@@ -33,6 +33,7 @@ export class TokenStateMonitor {
                 }
                 else{
                     this._debug('Monitor timed out')
+                    callback(tokenData, false)
                 }
             } catch (e) {
                 this._debug(`Monitor failed: ${e}`)

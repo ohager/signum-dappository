@@ -15,7 +15,7 @@ export const syncProgress$ = readable(InitialSyncProgressState, (set) => {
         const { total, processed } = detail
         set(total && processed / total)
     }
-    window.addEventListener(Events.Progress, updateProgress)
+    window.addEventListener(Events.Progress, updateProgress, {passive:true})
     service.syncTokens()
     const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
     return () => {

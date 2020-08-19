@@ -10,27 +10,26 @@
     import { BurstValue } from '@burstjs/util'
     import PaymentQrCode from '../../components/PaymentQrCode.svelte'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import { TokenStateMonitor } from '../../utils/TokenStateMonitor'
-    import { watchTokenState } from '../../utils/watchTokenState'
+    import { TokenStateMonitor } from '../../services/TokenStateMonitor'
+    import { tokenMonitorService } from '../../services/tokenMonitorService'
 
     export let token = EmptyToken
 
-    function startMonitoring(){
-        watchTokenState({
+    async function startMonitoring(){
+        await tokenMonitorService.startMonitor({
             tokenId: token.at,
-            predicateFn: ({ isActive }) => isActive === '1',
-            callback: console.log
+            expectedValue: '1',
+            fieldName: 'isActive'
         })
     }
 
-
-    function handleCancel() {
-        startMonitoring()
+    async function handleCancel() {
+        await startMonitoring()
         history.back()
     }
 
-    function handlePaid() {
-        startMonitoring()
+    async function handlePaid() {
+        await startMonitoring()
         history.back()
     }
 
