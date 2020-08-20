@@ -2,15 +2,12 @@ import { ApplicationToken } from '../repositories/models/applicationToken'
 import { BurstApi } from '../utils/burstApi'
 
 export class TokenStateMonitor {
-    _tokenId
-    _intervalSecs
-    _abortAfterSecs
-    _handle
 
     constructor({ tokenId, intervalSecs, abortAfterSecs }) {
         this._tokenId = tokenId
         this._intervalSecs = intervalSecs
         this._abortAfterSecs = abortAfterSecs
+        this._handle = undefined
     }
 
     _debug(msg) {
