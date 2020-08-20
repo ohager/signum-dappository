@@ -7,11 +7,11 @@
     export let accountId
 
     const isNotDeactivated = i => i.version === 0 || (i.version > 0 && i.isActive)
-    const isOwnToken = i => (i.owner !== '0' ? i.owner : i.creator) === accountId
+    const isOwnToken = i => (i.owner && i.owner !== '0' ? i.owner : i.creator) === accountId
 
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
-    $: hasPendingTransaction = at => $activeTokenMonitors$.some(m => m.at === at)
+    $: hasPendingTransaction = at => $activeTokenMonitors$.some(id => id === at)
 
 </script>
 
@@ -37,7 +37,11 @@
     {#each tokens as data}
         <div class="item">
             <ApplicationItem {data}
-                             variant={hasPendingTransaction(data.at) ? ApplicationItemVariant.Unconfirmed : ApplicationItemVariant.Owner}/>
+                             variant={hasPendingTransaction(data.at)
+                                 ? ApplicationItemVariant.Unconfirmed
+                                 : ApplicationItemVariant.Owner
+                             }
+            />
         </div>
     {/each}
 </div>

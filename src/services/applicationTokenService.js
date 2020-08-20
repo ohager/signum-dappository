@@ -98,8 +98,6 @@ export class ApplicationTokenService {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
-
-            await unconfirmedTokenService.addToken({ at: contractId, creator: accountId, ...token })
         } catch (e) {
             this._dispatch(Events.Error, e.message)
             throw e
@@ -144,6 +142,7 @@ export class ApplicationTokenService {
                 isCIP20Active: true,
             })
 
+            // TODO: better set a state within the collection and not using an additional repo
             await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, creator: accountId, ...tokenData })
             this._dispatch(Events.Success, 'Token successfully generated')
             return unconfirmedTokenId

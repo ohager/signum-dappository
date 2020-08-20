@@ -1,13 +1,21 @@
 import { tokenMonitorRepository } from '../repositories/tokenMonitorRepository'
 import { TokenStateMonitor } from './TokenStateMonitor'
 import { voidFn } from '../utils/voidFn'
+import { dispatchEvent } from '../utils/dispatchEvent'
+import { Events } from '../utils/events'
+import { updateActiveTokens } from '../features/application/tokenMonitorStore'
+import { applicationTokenRepository } from '../repositories/applicationTokenRepository'
 
 const TokenWatcherIntervalSecs = 10
-const TokenWatcherTimeoutSecs = 8 * 60 // doubled Burstcoin blocktime
+const TokenWatcherTimeoutSecs = 10 * 60  // doubled Burstcoin blocktime
 
 export class TokenMonitorService {
-    constructor(repository = tokenMonitorRepository) {
-        this._repository = repository
+    constructor(monitorRepository = tokenMonitorRepository,
+                tokenRepository = applicationTokenRepository
+                ) {
+        this._dispatch = dispatchEvent
+        this._monitorRepository = monitorRepository
+        this._tokenRepository = tokenRepository
         this._activeMonitors = []
     }
 
@@ -15,50 +23,55 @@ export class TokenMonitorService {
         return this._activeMonitors
     }
 
-    async restoreMonitors(callback = voidFn) {
-        const monitors = await this._repository.getAll()
+    async restoreMonitors() {
+        const monitors = await this._monitorRepository.getAll()
         monitors.forEach(monitor => {
-            this.restoreMonitor(monitor.at, callback)
+            this.restoreMonitor(monitor.at)
         })
-        return monitors
     }
 
-    async restoreMonitor(tokenId, callback = voidFn) {
-        const { expected, startTime } = await this._repository.get(tokenId)
+    async restoreMonitor(tokenId) {
+        const { expected, startTime } = await this._monitorRepository.get(tokenId)
         const fieldName = Object.keys(expected)[0]
         const expectedValue = expected[fieldName]
-
+        const expired = (Date.now() - startTime) / 1000 > TokenWatcherTimeoutSecs
+        if(expired){
+            console.log('Expired Monitor', tokenId)
+            return this.removeMonitor(tokenId)
+        }
         await this.startMonitor({
             tokenId,
             fieldName,
             expectedValue,
-            callback,
             startTime,
         })
     }
 
-    async startMonitor({ tokenId, fieldName, expectedValue, callback = voidFn, startTime = Date.now() }) {
+    async startMonitor({ tokenId, fieldName, expectedValue, startTime = Date.now() }) {
         const activeMonitor = this.activeMonitors.includes(tokenId)
         if (activeMonitor) {
             console.debug(`Monitor [${tokenId}] already active - ignored`)
             return Promise.resolve()
         }
-
         const monitor = new TokenStateMonitor({
             tokenId,
             abortAfterSecs: TokenWatcherTimeoutSecs,
             intervalSecs: TokenWatcherIntervalSecs,
         })
-
         monitor.watch({
             predicateFn: (token) => token[fieldName] === expectedValue,
-            callback: async (m, fulfilled) => {
-                await this.removeMonitor(tokenId)
-                callback(m, fulfilled)
+            callback: async (tokenData, fulfilled) => {
+                await this.removeMonitor(tokenData.at)
+                if(!fulfilled){
+                    this._dispatch(Events.Warning, `Action for token [${tokenData.at}] timed out - Please retry`)
+                }else{
+                    await this._updateLocalToken(tokenData)
+                }
             },
+            startTime
         })
 
-        await this._repository.insert({
+        await this._monitorRepository.insert({
             at: tokenId,
             expected: {
                 [fieldName]: expectedValue,
@@ -67,12 +80,18 @@ export class TokenMonitorService {
         })
 
         this._activeMonitors.push(tokenId)
-
+        updateActiveTokens(this.activeMonitors)
     }
 
     async removeMonitor(tokenId) {
-        await this._repository.remove(tokenId)
+        await this._monitorRepository.remove(tokenId)
         this._activeMonitors = this._activeMonitors.filter(id => id !== tokenId)
+        updateActiveTokens(this.activeMonitors)
+    }
+
+    async _updateLocalToken(tokenData) {
+        await this._tokenRepository.update(tokenData.at, tokenData)
+        this._dispatch(Events.Progress, { total:1, processed:1 })
     }
 }
 

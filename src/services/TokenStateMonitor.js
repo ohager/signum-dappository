@@ -17,7 +17,7 @@ export class TokenStateMonitor {
         console.debug(`[${this._tokenId}] - ${msg}`)
     }
 
-    watch({ predicateFn, callback, startTime = Date.now() }) {
+    watch({ predicateFn, callback, startTime }) {
         this._debug('Monitoring...')
         this._handle = setTimeout(async () => {
             try {
@@ -30,8 +30,7 @@ export class TokenStateMonitor {
                 const shouldRestart = (Date.now() - startTime) / 1000 < this._abortAfterSecs
                 if (shouldRestart) {
                     this.watch({ predicateFn, callback, startTime })
-                }
-                else{
+                } else {
                     this._debug('Monitor timed out')
                     callback(tokenData, false)
                 }
