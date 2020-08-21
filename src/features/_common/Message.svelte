@@ -1,7 +1,7 @@
 <script>
     import Snackbar, { Actions, Label } from '@smui/snackbar'
     import IconButton from '@smui/icon-button'
-    import { MessageTypes } from '../utils/messageTypes'
+    import { MessageTypes } from '../../utils/messageTypes'
 
     let message
     let type

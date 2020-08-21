@@ -6,14 +6,14 @@
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate } from '../../../utils/routes'
-    import { isEmptyString } from '../../../utils/isEmptyString'
-    import Stamp from '../../../components/Stamp.svelte'
-    import { ApplicationItemVariant } from './constants'
-    import { Events } from '../../../utils/events'
-    import { dispatchEvent } from '../../../utils/dispatchEvent'
+    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate } from '../../utils/routes'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import Stamp from './Stamp.svelte'
+    import { TokenItemVariant } from './TokenItemVariant'
+    import { Events } from '../../utils/events'
+    import { dispatchEvent } from '../../utils/dispatchEvent'
 
-    export let variant = ApplicationItemVariant.Normal
+    export let variant = TokenItemVariant.Normal
     export let data = {
         at: '',
         name: '',
@@ -38,12 +38,12 @@
     $: mediaStyle = `
         background-image: url(${imageUrl});
     `
-    $: isUnconfirmed = variant === ApplicationItemVariant.Unconfirmed
-    $: hasPendingTx = variant === ApplicationItemVariant.HasPendingTransaction
+    $: isUnconfirmed = variant === TokenItemVariant.Unconfirmed
+    $: hasPendingTx = variant === TokenItemVariant.HasPendingTransaction
     $: {
-        if (variant === ApplicationItemVariant.Preview) {
+        if (variant === TokenItemVariant.Preview) {
             stampText = 'Preview'
-        } else if (variant === ApplicationItemVariant.Unconfirmed) {
+        } else if (variant === TokenItemVariant.Unconfirmed) {
             stampText = 'Confirming'
         } else if (!data.isActive) {
             stampText = 'Inactive'
@@ -53,12 +53,12 @@
     }
 
     const ifNotPreview = (fn) => () => {
-        if (variant === ApplicationItemVariant.Preview ) return
+        if (variant === TokenItemVariant.Preview ) return
         fn()
     }
 
     const handleClick = ifNotPreview(() => {
-        if(variant !== ApplicationItemVariant.Normal) return
+        if(variant !== TokenItemVariant.Normal) return
 
         if(data.repo){
             window.open(data.repo, "_blank")
@@ -136,14 +136,14 @@
                     </div>
                 </Content>
             </PrimaryAction>
-            {#if variant !== ApplicationItemVariant.Unconfirmed && variant !== ApplicationItemVariant.NoActions}
+            {#if variant !== TokenItemVariant.Unconfirmed && variant !== TokenItemVariant.NoActions}
                 <Actions>
                     <ActionButtons>
-                        {#if variant === ApplicationItemVariant.Owner && !data.isActive}
+                        {#if variant === TokenItemVariant.Owner && !data.isActive}
                             <Button on:mouseenter={prefetchActivate} on:click={handleActivate}>
                                 <Label>Activate</Label>
                             </Button>
-                        {:else if variant === ApplicationItemVariant.Owner && data.isActive}
+                        {:else if variant === TokenItemVariant.Owner && data.isActive}
                             <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
                                 <Label>Deactivate</Label>
                             </Button>
@@ -156,7 +156,7 @@
                             </Button>
                         {/if}
                     </ActionButtons>
-                    {#if variant !== ApplicationItemVariant.Owner}
+                    {#if variant !== TokenItemVariant.Owner}
                         <ActionIcons>
                             <IconButton on:click={handleClick} toggle aria-label="Add to favorites"
                                         title="Add to favorites">

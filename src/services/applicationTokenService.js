@@ -1,15 +1,15 @@
-import { applicationTokenRepository } from '../repositories/applicationTokenRepository.js'
+import { applicationTokenRepository } from './repositories/applicationTokenRepository.js'
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../utils/burstApi.js'
 import { Config } from '../config.js'
-import { ApplicationToken } from '../repositories/models/applicationToken'
+import { ApplicationToken } from './repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
 import { TokenContract } from './tokenContract'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
 import { BurstValue } from '@burstjs/util'
-import { finishLoading, startLoading } from '../components/appStore'
+import { finishLoading, startLoading } from '../features/_common/appStore'
 
 const MaxParallelFetches = 6
 

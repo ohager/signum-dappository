@@ -1,25 +1,22 @@
 <script>
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
-    import Page from '../../components/Page.svelte'
-    import ApplicationItem from '../application/list/ApplicationItem.svelte'
-    import { ApplicationItemVariant } from '../application/list/constants'
+    import { Page, TokenItem, TokenItemVariant, burstFeeStore, PassphraseInput, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../services/tokenContract'
     import { EmptyToken } from '../../utils/emptyToken'
-    import { burstFee$ } from '../burstFeeStore'
     import { BurstValue } from '@burstjs/util'
-    import PaymentQrCode from '../../components/PaymentQrCode.svelte'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { TokenStateMonitor } from '../../services/TokenStateMonitor'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
 
     export let token = EmptyToken
 
-    async function startMonitoring(){
+    const { burstFee$ } = burstFeeStore
+    async function startMonitoring() {
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
             expectedValue: true,
-            fieldName: 'isActive'
+            fieldName: 'isActive',
         })
     }
 
@@ -53,7 +50,7 @@
                 with your app.
             </p>
             <div class="item-wrapper">
-                <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
+                <TokenItem data={token} variant={TokenItemVariant.NoActions}/>
             </div>
         </div>
 

@@ -3,11 +3,11 @@
     import Button, { Label } from '@smui/button'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
-    import { RouteAccountTokens, RouteHome } from '../utils/routes'
-    import { isEmptyString } from '../utils/isEmptyString'
-    import { dispatchEvent } from '../utils/dispatchEvent'
-    import { account$, clearAccount } from '../features/account/accountStore'
-    import { Events } from '../utils/events'
+    import { RouteAccountTokens, RouteHome } from '../../utils/routes'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import { dispatchEvent } from '../../utils/dispatchEvent'
+    import { account$, clearAccount } from '../account/accountStore'
+    import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
 
     $: currentAccount = $account$.accountId

@@ -1,8 +1,8 @@
 <script>
     import QrCode from 'qrcode'
     import { BurstValue, convertNumericIdToAddress, FeeQuantPlanck } from '@burstjs/util'
-    import { mountLegacyDeepLink } from '../utils/deeplink'
-    import { assureAccountId } from '../utils/assureAccountId'
+    import { mountLegacyDeepLink } from '../../utils/deeplink'
+    import { assureAccountId } from '../../utils/assureAccountId'
 
     export let recipient
     export let costs = []

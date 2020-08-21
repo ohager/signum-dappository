@@ -1,4 +1,4 @@
-import { settingsRepository } from '../repositories/settingsRepository'
+import { settingsRepository } from './repositories/settingsRepository'
 
 export const SettingsKeys = {
     CurrentAccount: 'current-account',

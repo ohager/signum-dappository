@@ -1,5 +1,5 @@
 <script>
-    import Page from '../../../components/Page.svelte'
+    import Page from '../_common/Page.svelte'
     import ApplicationRegistrationTabForm from './ApplicationRegistrationTabForm.svelte'
 </script>
 <style>

@@ -2,11 +2,10 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
-    import ApplicationItem from '../list/ApplicationItem.svelte'
-    import { ApplicationItemVariant } from '../list/constants'
+    import { TokenItemVariant, TokenItem } from '../_common/'
     import { registration$ } from './registrationStore'
-    import { isEmptyString } from '../../../utils/isEmptyString'
-    import { isValidPassphrase } from './validators'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import { isValidPassphrase } from '../../utils/validators'
     import { MaxDataLength } from './constants'
 
     let isPassphraseVisible = false
@@ -16,7 +15,7 @@
     $: message = () => {
 
         // this check avoids flicker while typing
-        if($registration$.isPassphraseValid !== isPassphraseValid){
+        if ($registration$.isPassphraseValid !== isPassphraseValid) {
             $registration$.isPassphraseValid = false
         }
 
@@ -48,7 +47,7 @@
         carefully, because once registered applications cannot be changed anymore.
     </p>
     <div class="card-preview">
-        <ApplicationItem data={{...$registration$, donationPlanck: '0'}} variant={ApplicationItemVariant.Preview}/>
+        <TokenItem data={{...$registration$, donationPlanck: '0'}} variant={TokenItemVariant.Preview}/>
     </div>
     <div class="form--input">
         <div class="form--input-field">

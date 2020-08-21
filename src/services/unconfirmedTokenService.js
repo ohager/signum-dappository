@@ -1,5 +1,5 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { unconfirmedTokensRepository } from '../repositories/unconfirmedTokensRepository'
+import { unconfirmedTokensRepository } from './repositories/unconfirmedTokensRepository'
 
 export class UnconfirmedTokenService {
     constructor(repository = unconfirmedTokensRepository) {

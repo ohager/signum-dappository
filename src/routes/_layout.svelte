@@ -1,9 +1,6 @@
 <script>
-    import Header from '../components/Header.svelte'
-    import Message from '../components/Message.svelte'
-    import AccountDialog from '../components/AccountDialog.svelte'
-    import SyncProgressBar from '../features/application/tokenSync/SyncProgressBar.svelte'
-    import LoadingBar from '../components/LoadingBar.svelte'
+    import {Header, Message, AccountDialog, LoadingBar} from '../features/_common'
+    import SyncProgressBar from '../features/tokens/SyncProgressBar.svelte'
 </script>
 
 <Header/>

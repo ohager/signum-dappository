@@ -7,9 +7,9 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Chip, { Set, Icon as ChipIcon, Checkmark, Text } from '@smui/chips'
     import Button, { Label } from '@smui/button'
-    import { hasLength } from '../../../utils/hasLength'
-    import { isEmptyString } from '../../../utils/isEmptyString'
-    import { Licenses } from '../../../utils/licenses'
+    import { hasLength } from '../../utils/hasLength'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import { Licenses } from '../../utils/licenses'
     import {
         MaxDataLength,
         MaxDescriptionLength,

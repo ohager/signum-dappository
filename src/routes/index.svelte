@@ -1,13 +1,13 @@
 <script>
     // TODO: use context to inject config for dev and prod
-    import ApplicationList from '../features/application/list/ApplicationList.svelte'
     import { goto, prefetch } from '@sapper/app'
+    import TokenList from '../features/tokens/TokenList.svelte'
     import { RouteRegister } from '../utils/routes'
     import { account$ } from '../features/account/accountStore'
     import { isEmptyString } from '../utils/isEmptyString'
     import { Events } from '../utils/events'
     import { dispatchEvent } from '../utils/dispatchEvent'
-    import RegisterFabButton from '../components/RegisterFabButton.svelte'
+    import RegisterFabButton from '../features/_common/RegisterFabButton.svelte'
 
     $: accountId = $account$.accountId
     $: hasAccount = !isEmptyString(accountId)
@@ -34,7 +34,7 @@
 </svelte:head>
 
 <div>
-    <ApplicationList/>
+    <TokenList/>
     <RegisterFabButton on:mouseenter={prefetchRoute} on:click={handleClick}/>
 </div>
 

@@ -1,10 +1,8 @@
 <script>
-    import ApplicationItem from './ApplicationItem.svelte'
-    import { ApplicationItemVariant } from './constants'
     import LinearProgress from '@smui/linear-progress'
-    import { tokens$ } from '../applicationTokenStore'
-    import { syncProgress$ } from '../tokenSync/syncProgressStore'
-    import Searchbar from '../../../components/Searchbar.svelte'
+    import { TokenItem, TokenItemVariant, Searchbar } from '../_common'
+    import { tokens$ } from './tokenStore'
+    import { syncProgress$ } from './syncProgressStore'
     import ApplicationItemMessageCard from './ApplicationItemMessageCard.svelte'
 
     let searchTerm = ''
@@ -12,8 +10,8 @@
     const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
 
     const searchFilter = filter => ({ name, desc, tags }) =>
-            hasText(name, filter)
-            || hasText(desc, filter)
+        hasText(name, filter)
+        || hasText(desc, filter)
 
     $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(searchFilter(searchTerm))
@@ -48,7 +46,7 @@
             <div class="item-list">
                 {#each activeTokens as data}
                     <div class="item">
-                        <ApplicationItem {data}/>
+                        <TokenItem {data}/>
                     </div>
                 {/each}
             </div>

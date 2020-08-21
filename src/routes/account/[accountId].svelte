@@ -10,8 +10,8 @@
     import { onMount } from 'svelte'
     import { goto, prefetch } from '@sapper/app'
     import { RouteRegister } from '../../utils/routes'
-    import AccountApplicationsList from '../../features/application/list/AccountApplicationsList.svelte'
-    import RegisterFabButton from '../../components/RegisterFabButton.svelte'
+    import AccountApplicationsList from '../../features/account/AccountApplicationsList.svelte'
+    import { RegisterFabButton } from '../../features/_common'
 
     function redirectToRegister() {
         goto(RouteRegister())

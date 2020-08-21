@@ -1,36 +1,48 @@
 <script>
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
-    import Page from '../../components/Page.svelte'
-    import ApplicationItem from '../application/list/ApplicationItem.svelte'
-    import { ApplicationItemVariant } from '../application/list/constants'
+    import { Page, TokenItemVariant, TokenItem, PassphraseInput, AccountInput } from '../_common'
     import { TokenContract } from '../../services/tokenContract'
+    import { applicationTokenService } from '../../services/applicationTokenService'
     import { EmptyToken } from '../../utils/emptyToken'
-    import { burstFee$ } from '../burstFeeStore'
     import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import PassphraseInput from '../../components/PassphraseInput.svelte'
-    import { account$ } from '../account/accountStore'
-    import { applicationTokenService } from '../../services/applicationTokenService'
+    import { account$ } from './accountStore'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
+    import { assureAccountId } from '../../utils/assureAccountId'
 
     export let token = EmptyToken
     let isPassphraseValid = false
+    let isAccountValid = false
+    let targetAccount = ''
     let passphrase = ''
+
+    $: ownerId = $account$.accountId
+    $: canTransfer = isAccountValid && isPassphraseValid
 
     function handleCancel() {
         history.back()
     }
 
-    async function handleDeactivate() {
-        await applicationTokenService.deactivateToken(token, passphrase)
+    async function handleTransfer() {
+        await applicationTokenService.transferToken(token, passphrase, targetAccount)
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
-            expectedValue: false,
-            fieldName: 'isActive'
+            expectedValue: assureAccountId(targetAccount),
+            fieldName: 'owner',
         })
-        goto(RouteAccountTokens($account$.accountId))
+        goto(RouteAccountTokens(ownerId))
+    }
+
+    function validateAccount(accountId) {
+        return new Promise(((resolve, reject) => {
+            if (ownerId !== accountId) {
+                resolve()
+            } else {
+                reject('Accounts must not be equal')
+            }
+        }))
     }
 
 </script>
@@ -38,40 +50,45 @@
 
 <Page>
     <div class="header">
-        <img src="/img/deactivation.svg" alt="deactivate token">
-        <div class="mdc-typography--headline6">Deactivate Token</div>
+        <img src="/img/transfer.svg" alt="transfer token">
+        <div class="mdc-typography--headline6">Transfer Token</div>
     </div>
     <div class="form">
         <div class="form--header">
             <article class="description">
                 <p class="mdc-typography--body1">
-                    Do you really want to <b>deactivate</b> your App Token?
+                    Do you really want to transfer your App Token?
                 </p>
                 <p class="mdc-typography--body1">
-                    Once deactivated, you cannot reactivate the token, receive donations or transfer it.
-                    In addition, it is no longer listed in the general overview.
-                    Any remaining balance of the token will be credited to your account in full.
+                    This means that you no longer own and/or control the token. You will not receive any more donations for the token and you will not be able to deactivate it. The existing balance will not be paid to you and will be transferred to the new owner.
                 </p>
                 <p class="mdc-typography--body1">
-                    This action turns your token worthless and is irrevocable.
+                    This action is irrevocable.
                     Mind that you'll be charged a small fee for contract execution.
                 </p>
             </article>
             <div class="item-wrapper">
-                <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
+                <TokenItem data={token} variant={TokenItemVariant.NoActions}/>
             </div>
         </div>
 
-        <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid} bind:passphrase={passphrase}/>
+        <AccountInput bind:account={targetAccount}
+                      bind:valid={isAccountValid}
+                      validate={validateAccount}
+        />
+
+        <PassphraseInput bind:valid={isPassphraseValid}
+                         bind:passphrase={passphrase}
+                        account={$account$.accountId}
+        />
 
         <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
             </Button>
 
-            <Button on:click={handleDeactivate} disabled={!isPassphraseValid}>
-
-                <Label>Deactivate</Label>
+            <Button on:click={handleTransfer} disabled={!canTransfer}>
+                <Label>Transfer</Label>
             </Button>
         </div>
     </div>

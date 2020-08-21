@@ -1,9 +1,9 @@
-import { isEmptyString } from '../../../utils/isEmptyString'
-import { MaxDescriptionLength, MaxNameLength, MaxUrlLength } from './constants'
-import { hasLength } from '../../../utils/hasLength'
-import { getAccountIdFromPublicKey } from '@burstjs/crypto'
-import { assureAccountId } from '../../../utils/assureAccountId'
-import { accountService } from '../../../services/accountService'
+import { isEmptyString } from './isEmptyString'
+import { MaxDescriptionLength, MaxNameLength, MaxUrlLength } from '../features/registration/constants'
+import { hasLength } from './hasLength'
+import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
+import { assureAccountId } from './assureAccountId'
+import { accountService } from '../services/accountService'
 
 const isRequiredAndHasCorrectLength = (str, maxLength) => !isEmptyString(str) || hasLength(str, 1, maxLength)
 
@@ -28,7 +28,7 @@ export const isValidImageUrl = (img) => {
 }
 
 export const isValidPassphrase = (phrase, account) => {
-    const { publicKey } = accountService.getKeys(phrase)
+    const { publicKey } = generateMasterKeys(phrase)
     const accountId = getAccountIdFromPublicKey(publicKey)
     return accountId === assureAccountId(account)
 }

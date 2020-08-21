@@ -1,10 +1,10 @@
-import { tokenMonitorRepository } from '../repositories/tokenMonitorRepository'
+import { tokenMonitorRepository } from './repositories/tokenMonitorRepository'
 import { TokenStateMonitor } from './TokenStateMonitor'
 import { voidFn } from '../utils/voidFn'
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { Events } from '../utils/events'
-import { updateActiveTokens } from '../features/application/tokenMonitorStore'
-import { applicationTokenRepository } from '../repositories/applicationTokenRepository'
+import { updateActiveTokens } from '../features/account/tokenMonitorStore'
+import { applicationTokenRepository } from './repositories/applicationTokenRepository'
 
 const TokenWatcherIntervalSecs = 10
 const TokenWatcherTimeoutSecs = 10 * 60  // doubled Burstcoin blocktime

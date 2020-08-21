@@ -6,8 +6,8 @@
 </script>
 
 <script>
-    import { tokens$ } from '../../features/application/applicationTokenStore'
-    import Deactivation from '../../features/operations/Deactivation.svelte'
+    import { tokens$ } from '../../features/tokens/tokenStore'
+    import Deactivation from '../../features/account/Deactivation.svelte'
 
     export let tokenId
     $: token = $tokens$.items.find(i => i.at === tokenId)

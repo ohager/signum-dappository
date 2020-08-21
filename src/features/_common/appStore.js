@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import { isClientSide } from '../utils/isClientSide'
+import { isClientSide } from '../../utils/isClientSide'
 
 export const loading$ = writable(false, (set) => {
     if (!isClientSide()) return

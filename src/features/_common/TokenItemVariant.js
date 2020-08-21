@@ -1,4 +1,4 @@
-export const ApplicationItemVariant = {
+export const TokenItemVariant = {
     Normal: 'normal',
     Preview: 'preview',
     Owner: 'owner',

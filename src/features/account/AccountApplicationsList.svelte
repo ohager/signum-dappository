@@ -1,8 +1,7 @@
 <script>
-    import ApplicationItem from './ApplicationItem.svelte'
-    import { ApplicationItemVariant } from './constants'
-    import { tokens$ } from '../applicationTokenStore'
-    import { activeTokenMonitors$ } from '../tokenMonitorStore'
+    import { TokenItemVariant, TokenItem } from '../_common'
+    import { tokens$ } from '../tokens/tokenStore'
+    import { activeTokenMonitors$ } from './tokenMonitorStore'
 
     export let accountId
 
@@ -31,15 +30,15 @@
 <div class="container">
     {#each unconfirmedTokens as data}
         <div class="item">
-            <ApplicationItem {data} variant={ApplicationItemVariant.Unconfirmed}/>
+            <TokenItem {data} variant={TokenItemVariant.Unconfirmed}/>
         </div>
     {/each}
     {#each tokens as data}
         <div class="item">
-            <ApplicationItem {data}
+            <TokenItem {data}
                              variant={hasPendingTransaction(data.at)
-                                 ? ApplicationItemVariant.Unconfirmed
-                                 : ApplicationItemVariant.Owner
+                                 ? TokenItemVariant.Unconfirmed
+                                 : TokenItemVariant.Owner
                              }
             />
         </div>

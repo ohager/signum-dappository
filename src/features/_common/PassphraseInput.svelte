@@ -2,8 +2,8 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
-    import { isEmptyString } from '../utils/isEmptyString'
-    import { isValidPassphrase } from '../features/application/registration/validators'
+    import { isEmptyString } from '../../utils/isEmptyString'
+    import { isValidPassphrase } from '../../utils/validators'
 
     export let valid = false
     export let account = ''

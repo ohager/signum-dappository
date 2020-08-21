@@ -2,13 +2,9 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Button, { Label } from '@smui/button'
-    import Page from '../../components/Page.svelte'
     import { BurstValue } from '@burstjs/util'
-    import ApplicationItem from '../application/list/ApplicationItem.svelte'
-    import { ApplicationItemVariant } from '../application/list/constants'
+    import {Page, TokenItem, TokenItemVariant, burstFeeStore, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../services/tokenContract'
-    import { burstFee$ } from '../burstFeeStore'
-    import PaymentQrCode from '../../components/PaymentQrCode.svelte'
 
     export let token = {
         at: '',
@@ -21,6 +17,7 @@
         isActive: true,
     }
 
+    const { burstFee$ } = burstFeeStore
     const AmountValidationPattern = /^[1-9]\d*$/
 
     let amount = ''
@@ -62,7 +59,7 @@
                 </p>
             </article>
             <div class="item-wrapper">
-                <ApplicationItem data={token} variant={ApplicationItemVariant.NoActions}/>
+                <TokenItem data={token} variant={TokenItemVariant.NoActions}/>
             </div>
         </div>
         <div class="form--input">

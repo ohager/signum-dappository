@@ -3,10 +3,10 @@
     import TabBar from '@smui/tab-bar'
     import Button from '@smui/button'
     import { goto } from '@sapper/app'
-    import { RouteAccountTokens, RouteHome } from '../../../utils/routes'
+    import { RouteAccountTokens, RouteHome } from '../../utils/routes'
     import TabAccount from './TabAccount.svelte'
     import TabApplicationInfo from './TabApplicationInfo.svelte'
-    import TabContent from '../../../components/TabContent.svelte'
+    import TabContent from '../_common/TabContent.svelte'
     import TabConfirm from './TabConfirm.svelte'
     import {
         isValidAccount,
@@ -14,12 +14,12 @@
         isValidImageUrl,
         isValidName,
         isValidRepo,
-    } from './validators'
+    } from '../../utils/validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
-    import { account$ } from '../../account/accountStore'
+    import { account$ } from '../account/accountStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
-    import { applicationTokenService } from '../../../services/applicationTokenService'
+    import { applicationTokenService } from '../../services/applicationTokenService'
 
     const TabNames = {
         Account: 'Account',
