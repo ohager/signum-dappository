@@ -10,7 +10,7 @@
     import { onMount } from 'svelte'
     import { goto, prefetch } from '@sapper/app'
     import { RouteRegister } from '../../utils/routes'
-    import AccountApplicationsList from '../../features/account/AccountApplicationsList.svelte'
+    import AccountTokenList from '../../features/account/AccountTokenList.svelte'
     import { RegisterFabButton } from '../../features/_common'
 
     function redirectToRegister() {
@@ -33,6 +33,6 @@
 </script>
 
 <div>
-    <AccountApplicationsList {accountId}/>
+    <AccountTokenList {accountId}/>
     <RegisterFabButton on:mouseenter={prefetchRegisterRoute} on:click={redirectToRegister}/>
 </div>

@@ -1,5 +1,5 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { BurstApi } from '../utils/burstApi.js'
+import { BurstApi } from '../context'
 import { BurstValue } from '@burstjs/util'
 import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
 
@@ -40,7 +40,7 @@ export class AccountService {
         const { publicKey } = this.getKeys(passphrase)
         return getAccountIdFromPublicKey(publicKey)
     }
-    
+
     async getBalance(accountId) {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
         return BurstValue.fromPlanck(balanceNQT)

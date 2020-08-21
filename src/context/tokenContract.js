@@ -1,5 +1,7 @@
 import { calculateMinimumCreationFee } from '@burstjs/contracts'
 
+// TODO: distinguish between develop contract (e.g - other inventor account) and production contract
+
 const TokenContract = {
     Version: 1,
     Name: 'BurstAppToken',

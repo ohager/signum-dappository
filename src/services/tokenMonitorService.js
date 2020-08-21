@@ -1,18 +1,15 @@
 import { tokenMonitorRepository } from './repositories/tokenMonitorRepository'
 import { TokenStateMonitor } from './TokenStateMonitor'
-import { voidFn } from '../utils/voidFn'
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { Events } from '../utils/events'
 import { updateActiveTokens } from '../features/account/tokenMonitorStore'
 import { applicationTokenRepository } from './repositories/applicationTokenRepository'
-
-const TokenWatcherIntervalSecs = 10
-const TokenWatcherTimeoutSecs = 10 * 60  // doubled Burstcoin blocktime
+import { Vars } from '../context'
 
 export class TokenMonitorService {
     constructor(monitorRepository = tokenMonitorRepository,
-                tokenRepository = applicationTokenRepository
-                ) {
+                tokenRepository = applicationTokenRepository,
+    ) {
         this._dispatch = dispatchEvent
         this._monitorRepository = monitorRepository
         this._tokenRepository = tokenRepository
@@ -34,9 +31,9 @@ export class TokenMonitorService {
         const { expected, startTime } = await this._monitorRepository.get(tokenId)
         const fieldName = Object.keys(expected)[0]
         const expectedValue = expected[fieldName]
-        const expired = (Date.now() - startTime) / 1000 > TokenWatcherTimeoutSecs
-        if(expired){
-            console.log('Expired Monitor', tokenId)
+        const expired = (Date.now() - startTime) / 1000 > Vars.TokenWatcherTimeoutSecs
+        if (expired) {
+            console.debug('Expired Monitor', tokenId)
             return this.removeMonitor(tokenId)
         }
         await this.startMonitor({
@@ -55,20 +52,20 @@ export class TokenMonitorService {
         }
         const monitor = new TokenStateMonitor({
             tokenId,
-            abortAfterSecs: TokenWatcherTimeoutSecs,
-            intervalSecs: TokenWatcherIntervalSecs,
+            abortAfterSecs: Vars.TokenWatcherTimeoutSecs,
+            intervalSecs: Vars.TokenWatcherIntervalSecs,
         })
         monitor.watch({
             predicateFn: (token) => token[fieldName] === expectedValue,
             callback: async (tokenData, fulfilled) => {
                 await this.removeMonitor(tokenData.at)
-                if(!fulfilled){
+                if (!fulfilled) {
                     this._dispatch(Events.Warning, `Action for token [${tokenData.at}] timed out - Please retry`)
-                }else{
+                } else {
                     await this._updateLocalToken(tokenData)
                 }
             },
-            startTime
+            startTime,
         })
 
         await this._monitorRepository.insert({
@@ -91,7 +88,7 @@ export class TokenMonitorService {
 
     async _updateLocalToken(tokenData) {
         await this._tokenRepository.update(tokenData.at, tokenData)
-        this._dispatch(Events.Progress, { total:1, processed:1 })
+        this._dispatch(Events.Progress, { total: 1, processed: 1 })
     }
 }
 

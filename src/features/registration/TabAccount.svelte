@@ -6,7 +6,7 @@
     import { registration$ } from './registrationStore'
     import { assureAccountId } from '../../utils/assureAccountId'
     import { onDestroy, onMount } from 'svelte'
-    import { pruneErrorMessage } from '../../utils/burstApi'
+    import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { accountService } from '../../services/accountService'
     import { TokenContract } from '../../services/tokenContract'
     import { convertNumericIdToAddress } from '@burstjs/util'
@@ -37,7 +37,7 @@
                 }
             } catch (e) {
                 validation = {
-                    message: pruneErrorMessage(e.message),
+                    message: pruneBurstErrorMessage(e.message),
                     valid: false,
                 }
             } finally {

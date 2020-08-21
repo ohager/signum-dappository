@@ -1,5 +1,5 @@
-import { voidFn } from '../utils/voidFn'
-import { isClientSide } from '../utils/isClientSide'
+import { voidFn } from './voidFn'
+import { isClientSide } from './isClientSide'
 import { HttpImpl as HttpClient } from '@burstjs/http'
 
 const voidPromise = () => new Promise(voidFn)

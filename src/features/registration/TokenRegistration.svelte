@@ -1,6 +1,6 @@
 <script>
     import Page from '../_common/Page.svelte'
-    import ApplicationRegistrationTabForm from './ApplicationRegistrationTabForm.svelte'
+    import TokenRegistrationTabForm from './TokenRegistrationTabForm.svelte'
 </script>
 <style>
     .registration__header {
@@ -19,5 +19,5 @@
     <div class="registration__header">
         <img src="/img/registration.svg" alt="registration">
     </div>
-    <ApplicationRegistrationTabForm />
+    <TokenRegistrationTabForm />
 </Page>

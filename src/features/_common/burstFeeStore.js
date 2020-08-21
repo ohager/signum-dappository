@@ -1,7 +1,7 @@
 import { readable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
 import { FeeQuantPlanck, BurstValue } from '@burstjs/util'
-import { BurstApi } from '../../utils/burstApi'
+import { BurstApi } from '../../context'
 
 const InitialFee = BurstValue.fromPlanck(FeeQuantPlanck.toString(10))
 

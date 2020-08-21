@@ -1,5 +1,5 @@
 import { ApplicationToken } from './repositories/models/applicationToken'
-import { BurstApi } from '../utils/burstApi'
+import { BurstApi } from '../context'
 
 export class TokenStateMonitor {
 

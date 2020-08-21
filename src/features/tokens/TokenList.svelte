@@ -3,7 +3,7 @@
     import { TokenItem, TokenItemVariant, Searchbar } from '../_common'
     import { tokens$ } from './tokenStore'
     import { syncProgress$ } from './syncProgressStore'
-    import ApplicationItemMessageCard from './ApplicationItemMessageCard.svelte'
+    import TokenItemMessageCard from './TokenItemMessageCard.svelte'
 
     let searchTerm = ''
 
@@ -30,17 +30,17 @@
     <section class="body">
         {#if isSyncing && !hasTokens}
             <div class="centered">
-                <ApplicationItemMessageCard animated icon="/img/synchronization.svg">
+                <TokenItemMessageCard animated icon="/img/synchronization.svg">
                     <div class="mdc-typography--body2">Synchronizing...</div>
-                </ApplicationItemMessageCard>
+                </TokenItemMessageCard>
             </div>
         {/if}
         {#if !isSyncing && !hasTokens}
             <div class="centered">
-                <ApplicationItemMessageCard icon="/img/empty.svg">
+                <TokenItemMessageCard icon="/img/empty.svg">
                     <div class="mdc-typography--body1">No active Tokens available yet.</div>
                     <div class="mdc-typography--body2">Be the first to register one! 👑</div>
-                </ApplicationItemMessageCard>
+                </TokenItemMessageCard>
             </div>
         {:else}
             <div class="item-list">

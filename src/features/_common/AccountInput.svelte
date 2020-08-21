@@ -4,11 +4,10 @@
     import Icon from '@smui/textfield/icon/index'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { assureAccountId } from '../../utils/assureAccountId'
-    import { TokenContract } from '../../services/tokenContract'
     import { convertNumericIdToAddress } from '@burstjs/util'
-    import { accountService } from '../../services/accountService'
-    import { pruneErrorMessage } from '../../utils/burstApi'
+    import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { voidFn } from '../../utils/voidFn'
+    import { accountService } from '../../services/accountService'
 
     export let account = ''
     export let valid = false
@@ -17,7 +16,6 @@
     let errorMessage = 'Account is required'
 
     $: accountAddress = valid ? convertNumericIdToAddress(account) : ''
-
 
     function validateAccount(e) {
         const account = e.target.value
@@ -31,7 +29,7 @@
                 errorMessage =  ''
                 valid = true
             } catch (e) {
-                errorMessage = pruneErrorMessage(e.message || e)
+                errorMessage = pruneBurstErrorMessage(e.message || e)
                 valid = false
             } finally {
                 validationTimeout = null

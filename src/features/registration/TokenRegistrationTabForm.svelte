@@ -5,7 +5,7 @@
     import { goto } from '@sapper/app'
     import { RouteAccountTokens, RouteHome } from '../../utils/routes'
     import TabAccount from './TabAccount.svelte'
-    import TabApplicationInfo from './TabApplicationInfo.svelte'
+    import TabTokenInfo from './TabTokenInfo.svelte'
     import TabContent from '../_common/TabContent.svelte'
     import TabConfirm from './TabConfirm.svelte'
     import {
@@ -113,7 +113,7 @@
             {#if active === TabNames.Account}
                 <TabAccount accountId={$account$.accountId}/>
             {:else if active === TabNames.AppInfo}
-                <TabApplicationInfo/>
+                <TabTokenInfo />
             {:else if active === TabNames.Confirm}
                 <TabConfirm />
             {/if}

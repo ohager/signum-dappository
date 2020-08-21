@@ -1,6 +1,8 @@
 <script>
     import {Header, Message, AccountDialog, LoadingBar} from '../features/_common'
     import SyncProgressBar from '../features/tokens/SyncProgressBar.svelte'
+
+    export let segment
 </script>
 
 <Header/>

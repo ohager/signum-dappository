@@ -1,7 +1,7 @@
 import { convertNumericIdToAddress, createDeeplink } from '@burstjs/util'
-import {Config} from '../config'
+import { Vars } from '../context'
 
-const redirectable = targetUrl => Config.DeeplinkRedirectServiceUrl + encodeURIComponent(targetUrl)
+const redirectable = targetUrl => Vars.DeeplinkRedirectServiceUrl + encodeURIComponent(targetUrl)
 
 export function mountLegacyDeepLink(recipientId, amountValue, feeValue, message = '') {
     const amountPlanck = amountValue.getPlanck()

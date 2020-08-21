@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
 import { dispatchEvent } from '../../utils/dispatchEvent'
-import { Config } from '../../config'
 import { tokenMonitorService } from '../../services/tokenMonitorService'
 
 const InitialState = []

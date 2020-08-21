@@ -1,12 +1,10 @@
 import { applicationTokenRepository } from './repositories/applicationTokenRepository.js'
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { BurstApi } from '../utils/burstApi.js'
-import { Config } from '../config.js'
+import { BurstApi, Vars, TokenContract } from '../context'
 import { ApplicationToken } from './repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@burstjs/crypto'
-import { TokenContract } from './tokenContract'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
 import { BurstValue } from '@burstjs/util'
 import { finishLoading, startLoading } from '../features/_common/appStore'
@@ -28,7 +26,7 @@ export class ApplicationTokenService {
 
     async _fetchContractIds() {
         const { atIds } = await BurstApi.contract.getAllContractIds(null)
-        const firstContractId = atIds.lastIndexOf(Config.FirstApplicationContractId)
+        const firstContractId = atIds.lastIndexOf(Vars.FirstApplicationContractId)
         return atIds.slice(firstContractId - 1)
     }
 

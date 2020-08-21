@@ -2,10 +2,10 @@ import { readable } from 'svelte/store'
 import { applicationTokenService } from '../../services/applicationTokenService'
 import { isClientSide } from '../../utils/isClientSide'
 import { Events } from '../../utils/events'
-import { Config } from '../../config'
+import { Vars } from '../../context'
 
 const InitialSyncProgressState = 0
-const UpdateInterval = Config.ContractPollingIntervalSecs
+const UpdateInterval = Vars.ContractPollingIntervalSecs
 
 export const syncProgress$ = readable(InitialSyncProgressState, (set) => {
     if (!isClientSide()) return
