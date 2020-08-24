@@ -9,6 +9,7 @@
     import { account$, clearAccount } from '../account/accountStore'
     import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
+    import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
 
     $: currentAccount = $account$.accountId
     $: hasAccount = !isEmptyString(currentAccount)
@@ -68,6 +69,7 @@
             {/if}
         </Section>
     </Row>
+    <SyncProgressBar/>
 </TopAppBar>
 
 <style>

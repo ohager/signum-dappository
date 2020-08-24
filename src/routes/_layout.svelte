@@ -1,6 +1,5 @@
 <script>
     import {Header, Message, AccountDialog, LoadingBar} from '../features/_common'
-    import SyncProgressBar from '../features/tokens/SyncProgressBar.svelte'
 
     export let segment
 </script>
@@ -10,7 +9,6 @@
 <AccountDialog/>
 <main>
     <LoadingBar/>
-    <SyncProgressBar/>
     <slot/>
 </main>
 
@@ -47,8 +45,9 @@
         padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;
-        height: fit-content;
-        top: 48px;
+        height: calc(100vh - var(--header-height));
+        top: var(--header-height);
+        overflow: auto;
     }
 
     @media (max-width: 480px) {

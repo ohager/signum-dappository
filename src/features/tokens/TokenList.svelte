@@ -10,32 +10,43 @@
     const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
 
     const searchFilter = filter => ({ name, desc, tags }) =>
-        hasText(name, filter)
-        || hasText(desc, filter)
+        hasText(name, filter) || hasText(desc, filter) || tags.includes(filter)
 
-    $: activeTokens = $tokens$.items.filter(t => t.isActive).filter(searchFilter(searchTerm))
-    $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(searchFilter(searchTerm))
+    $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
+    $: activeTokens = unfilteredActiveTokens.filter(searchFilter(searchTerm))
     $: isSyncing = $syncProgress$ < 1
     $: hasTokens = activeTokens.length > 0
+    $: isSearching = searchTerm.length > 0
+    $: countText = `${activeTokens.length}/${unfilteredActiveTokens.length}`
+
+    function handleTagClick({detail: tagName}){
+        searchTerm = tagName
+    }
 
 </script>
 
 <div class="container">
-
-    {#if hasTokens}
-        <section class="header">
+    <section class="header">
             <Searchbar bind:value={searchTerm}/>
-        </section>
-    {/if}
+            <div class="counter mdc-typography--body2">{countText}</div>
+    </section>
+
     <section class="body">
-        {#if isSyncing && !hasTokens}
+        {#if !isSearching && isSyncing && !hasTokens}
             <div class="centered">
                 <TokenItemMessageCard animated icon="/img/synchronization.svg">
                     <div class="mdc-typography--body2">Synchronizing...</div>
                 </TokenItemMessageCard>
             </div>
         {/if}
-        {#if !isSyncing && !hasTokens}
+        {#if isSearching && !hasTokens}
+            <div class="centered">
+                <TokenItemMessageCard icon="/img/empty.svg">
+                    <div class="mdc-typography--body2">Nothing found</div>
+                </TokenItemMessageCard>
+            </div>
+        {/if}
+        {#if !isSearching && !isSyncing && !hasTokens}
             <div class="centered">
                 <TokenItemMessageCard icon="/img/empty.svg">
                     <div class="mdc-typography--body1">No active Tokens available yet.</div>
@@ -46,7 +57,7 @@
             <div class="item-list">
                 {#each activeTokens as data}
                     <div class="item">
-                        <TokenItem {data}/>
+                        <TokenItem {data} on:tag-click={handleTagClick}/>
                     </div>
                 {/each}
             </div>
@@ -72,6 +83,19 @@
         flex-direction: row;
         padding: 1rem;
         border: 1px solid #efefef;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        background-color: white;
+        opacity: 97%;
+    }
+
+    .header > .counter {
+        position: absolute;
+        right: 20px;
+        color: grey;
+        font-size: small;
     }
 
     .body .item {
@@ -83,7 +107,6 @@
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
-        height: calc(100vh - 48px - 90px - 16px);
         overflow: auto;
         justify-content: center;
     }

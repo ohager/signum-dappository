@@ -12,6 +12,7 @@
     import { TokenItemVariant } from './TokenItemVariant'
     import { Events } from '../../utils/events'
     import { dispatchEvent } from '../../utils/dispatchEvent'
+    import { createEventDispatcher } from 'svelte'
 
     export let variant = TokenItemVariant.Normal
     export let data = {
@@ -32,6 +33,7 @@
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
+    const dispatch = createEventDispatcher()
 
     $: donation = BurstValue.fromPlanck(data.donationPlanck || '0').getBurst()
     $: imageUrl = data.img || PlaceholderImage
@@ -104,6 +106,12 @@
         prefetch(TransferPath)
     })
 
+    const handleChipClick = (e) => {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        dispatch('tag-click', e.target.textContent)
+    }
+
 </script>
 
 <div class="item-container">
@@ -125,14 +133,15 @@
                     <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
                     <div class="tags-wrapper">
                         <Set chips={data.tags} let:chip>
-                            <Chip shouldRemoveOnTrailingIconClick={false}>
+                            <Chip shouldRemoveOnTrailingIconClick={false} on:click={handleChipClick}>
                                 <Text>{chip}</Text>
                             </Chip>
                         </Set>
                     </div>
                     {data.desc}
-                    <div>
+                    <div class="donation-info">
                         <small>Donated: {donation} BURST</small>
+                        <small>Donations: {data.donationCount}</small>
                     </div>
                 </Content>
             </PrimaryAction>
@@ -184,6 +193,12 @@
     .item-wrapper,
     .item-container {
         position: relative;
+    }
+
+    .item-wrapper .donation-info {
+        display: flex;
+        flex-direction: column;
+        line-height: normal;
     }
 
     .stamp-wrapper {

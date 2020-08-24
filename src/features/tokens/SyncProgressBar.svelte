@@ -3,7 +3,7 @@
     import { syncProgress$ } from './syncProgressStore'
 
     $: progress = $syncProgress$
-    $: isSyncing = progress < 1
+    $: isSyncing = true //progress < 1
 
 </script>
 
@@ -15,9 +15,9 @@
 
 <style>
     .sync-progressbar {
-        position: absolute;
+        position: relative;
         width: 100%;
         left: 0;
-        top: 0;
+        bottom: 0;
     }
 </style>
