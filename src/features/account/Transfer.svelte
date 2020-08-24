@@ -57,7 +57,7 @@
         <div class="form--header">
             <article class="description">
                 <p class="mdc-typography--body1">
-                    Do you really want to transfer your App Token?
+                    Do you really want to <b>transfer</b> your App Token?
                 </p>
                 <p class="mdc-typography--body1">
                     This means that you no longer own and/or control the token. You will not receive any more donations for the token and you will not be able to deactivate it. The existing balance will not be paid to you and will be transferred to the new owner.

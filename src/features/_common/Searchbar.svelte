@@ -6,7 +6,6 @@
     export let value = ''
 
     function handleDelete() {
-        console.log('handleDelete')
         value = ''
     }
 
@@ -18,7 +17,7 @@
             withTrailingIcon
             variant="outlined"
             bind:value={value}
-            label="Enter search term"
+            label="Enter search term, e.g. text, tag, name"
     >
         <Icon class="material-icons">search</Icon>
         {#if value.length}

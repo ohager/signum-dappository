@@ -59,15 +59,17 @@
         fn()
     }
 
-    const handleClick = ifNotPreview(() => {
-        if(variant !== TokenItemVariant.Normal) return
+    const handleShareClick = ifNotPreview(() => {
+        dispatchEvent(Events.Info, "Sharing not implemented yet")
+    })
 
-        if(data.repo){
-            window.open(data.repo, "_blank")
-        } else
-        {
-            dispatchEvent(Events.Info, 'Application has no registered project site')
-        }
+    const handleDetailsClick = ifNotPreview(() => {
+        if(variant !== TokenItemVariant.Normal) return
+        dispatchEvent(Events.Info, "Details not implemented yet")
+    })
+
+    const handleProjectClick = ifNotPreview(() => {
+        window.open(data.repo, "_blank")
     })
 
     const handleDonate = ifNotPreview(() => {
@@ -126,7 +128,7 @@
          class:animation-fading={isUnconfirmed}
          class="item-wrapper">
         <Card>
-            <PrimaryAction on:click={handleClick}>
+            <PrimaryAction on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
                 <Media aspectRatio="16x9" style={mediaStyle}/>
                 <Content class="mdc-typography--body2">
@@ -167,14 +169,11 @@
                     </ActionButtons>
                     {#if variant !== TokenItemVariant.Owner}
                         <ActionIcons>
-                            <IconButton on:click={handleClick} toggle aria-label="Add to favorites"
-                                        title="Add to favorites">
-                                <Icon class="material-icons" on>favorite</Icon>
-                                <Icon class="material-icons">favorite_border</Icon>
-                            </IconButton>
-                            <IconButton class="material-icons" on:click={handleClick} title="Share">share</IconButton>
-                            <IconButton class="material-icons" on:click={handleClick} title="More options">more_vert
-                            </IconButton>
+                            {#if !isEmptyString(data.repo)}
+                                <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
+                            {/if}
+                            <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
+                            <IconButton class="material-icons" on:click={handleDetailsClick} title="More details">description</IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>
@@ -199,6 +198,7 @@
         display: flex;
         flex-direction: column;
         line-height: normal;
+        margin-top: 0.5rem;
     }
 
     .stamp-wrapper {

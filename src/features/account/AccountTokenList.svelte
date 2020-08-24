@@ -2,6 +2,7 @@
     import { TokenItemVariant, TokenItem } from '../_common'
     import { tokens$ } from '../tokens/tokenStore'
     import { activeTokenMonitors$ } from './tokenMonitorStore'
+    import { convertNumericIdToAddress } from '@burstjs/util'
 
     export let accountId
 
@@ -17,8 +18,28 @@
 <style>
     .container {
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
         margin-inline-start: 0;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        padding: 1rem;
+        border: 1px solid #efefef;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        background-color: white;
+        opacity: 97%;
+    }
+
+    .body {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
     }
 
     .item {
@@ -28,6 +49,11 @@
 </style>
 
 <div class="container">
+    <section class="header">
+        <div class="counter mdc-typography--headline6">{`You are viewing tokens of account ${convertNumericIdToAddress(accountId)}`}</div>
+    </section>
+
+    <section class="body">
     {#each unconfirmedTokens as data}
         <div class="item">
             <TokenItem {data} variant={TokenItemVariant.Unconfirmed}/>
@@ -43,4 +69,5 @@
             />
         </div>
     {/each}
+    </section>
 </div>
