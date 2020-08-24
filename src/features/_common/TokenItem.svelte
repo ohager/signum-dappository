@@ -199,8 +199,12 @@
     }
 
     .tags-wrapper :global(.mdc-chip) {
-        margin: 0;
         height: 24px;
+        margin: 0 2px 0 0;
+    }
+
+    .tags-wrapper :global(.mdc-chip-set) {
+        padding: 0;
     }
 
 </style>

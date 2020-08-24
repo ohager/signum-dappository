@@ -32,7 +32,7 @@ export class AccountService {
             await this.getAccount(accountId)
             return true
         } catch (e) {
-            return Promise.resolve(false)
+            return false
         }
     }
 
