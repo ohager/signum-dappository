@@ -1,8 +1,8 @@
 <script>
-    import { beforeUpdate } from 'svelte'
+    import { beforeUpdate, createEventDispatcher } from 'svelte'
     import Card, { ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media } from '@smui/card'
     import Button, { Label } from '@smui/button'
-    import Chip, {Set, Text} from '@smui/chips'
+    import Chip, { Set, Text } from '@smui/chips'
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
@@ -12,7 +12,8 @@
     import { TokenItemVariant } from './TokenItemVariant'
     import { Events } from '../../utils/events'
     import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { createEventDispatcher } from 'svelte'
+    import { Badge } from '../_common'
+    import BadgeCollection from './BadgeCollection.svelte'
 
     export let variant = TokenItemVariant.Normal
     export let data = {
@@ -26,11 +27,6 @@
         isActive: true,
     }
 
-    const DonationPath = RouteDonate(data.at)
-    const TokenDetailPath = RouteTokenDetail(data.at)
-    const ActivationPath = RouteActivate(data.at)
-    const DeactivationPath = RouteDeactivate(data.at)
-    const TransferPath = RouteTransfer(data.at)
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
@@ -56,29 +52,29 @@
     }
 
     const ifNotPreview = (fn) => () => {
-        if (variant === TokenItemVariant.Preview ) return
+        if (variant === TokenItemVariant.Preview) return
         fn()
     }
 
     const handleShareClick = ifNotPreview(() => {
-        dispatchEvent(Events.Info, "Sharing not implemented yet")
+        dispatchEvent(Events.Info, 'Sharing not implemented yet')
     })
 
     const prefetchDetails = ifNotPreview(() => {
-        prefetch(TokenDetailPath)
+        prefetch(RouteTokenDetail(data.at))
     })
 
     const handleDetailsClick = ifNotPreview(() => {
-        if(variant !== TokenItemVariant.Normal) return
-        goto(TokenDetailPath)
+        if (variant !== TokenItemVariant.Normal) return
+        goto(RouteTokenDetail(data.at))
     })
 
     const handleProjectClick = ifNotPreview(() => {
-        window.open(data.repo, "_blank")
+        window.open(data.repo, '_blank')
     })
 
     const handleDonate = ifNotPreview(() => {
-        goto(DonationPath)
+        goto(RouteDonate(data.at))
     })
 
     const handleMediaError = (e) => {
@@ -86,31 +82,31 @@
     }
 
     const prefetchDonate = ifNotPreview(() => {
-        prefetch(DonationPath)
+        prefetch(RouteDonate(data.at))
     })
 
     const handleActivate = ifNotPreview(() => {
-        goto(ActivationPath)
+        goto(RouteActivate(data.at))
     })
 
     const prefetchActivate = ifNotPreview(() => {
-        prefetch(ActivationPath)
+        prefetch(RouteActivate(data.at))
     })
 
     const handleDeactivate = ifNotPreview(() => {
-        goto(DeactivationPath)
+        goto(RouteDeactivate(data.at))
     })
 
     const prefetchDeactivate = ifNotPreview(() => {
-        prefetch(DeactivationPath)
+        prefetch(RouteDeactivate(data.at))
     })
 
     const handleTransfer = ifNotPreview(() => {
-        goto(TransferPath)
+        goto(RouteTransfer(data.at))
     })
 
     const prefetchTransfer = ifNotPreview(() => {
-        prefetch(TransferPath)
+        prefetch(RouteTransfer(data.at))
     })
 
     const handleChipClick = (e) => {
@@ -139,6 +135,9 @@
             <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
                 <Media aspectRatio="16x9" style={mediaStyle}/>
+                <div class="badge-wrapper">
+                    <BadgeCollection token={data} />
+                </div>
                 <Content class="mdc-typography--body2">
                     <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
                     <div class="tags-wrapper">
@@ -230,4 +229,9 @@
         padding: 0;
     }
 
+    .badge-wrapper {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
 </style>
