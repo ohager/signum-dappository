@@ -7,6 +7,7 @@ export const withQuery = jsonArgs => route => {
 
 export const RouteHome = () => '/'
 export const RouteDonate = at => `/donate/${at}`
+export const RouteTokenDetail = at => `/token/${at}`
 export const RouteActivate = at => `/activate/${at}`
 export const RouteDeactivate = at => `/deactivate/${at}`
 export const RouteTransfer = at => `/transfer/${at}`

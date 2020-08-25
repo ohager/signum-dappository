@@ -6,7 +6,7 @@
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate } from '../../utils/routes'
+    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../utils/routes'
     import { isEmptyString } from '../../utils/isEmptyString'
     import Stamp from './Stamp.svelte'
     import { TokenItemVariant } from './TokenItemVariant'
@@ -27,6 +27,7 @@
     }
 
     const DonationPath = RouteDonate(data.at)
+    const TokenDetailPath = RouteTokenDetail(data.at)
     const ActivationPath = RouteActivate(data.at)
     const DeactivationPath = RouteDeactivate(data.at)
     const TransferPath = RouteTransfer(data.at)
@@ -41,7 +42,6 @@
         background-image: url(${imageUrl});
     `
     $: isUnconfirmed = variant === TokenItemVariant.Unconfirmed
-    $: hasPendingTx = variant === TokenItemVariant.HasPendingTransaction
     $: {
         if (variant === TokenItemVariant.Preview) {
             stampText = 'Preview'
@@ -63,9 +63,13 @@
         dispatchEvent(Events.Info, "Sharing not implemented yet")
     })
 
+    const prefetchDetails = ifNotPreview(() => {
+        prefetch(TokenDetailPath)
+    })
+
     const handleDetailsClick = ifNotPreview(() => {
         if(variant !== TokenItemVariant.Normal) return
-        dispatchEvent(Events.Info, "Details not implemented yet")
+        goto(TokenDetailPath)
     })
 
     const handleProjectClick = ifNotPreview(() => {
@@ -128,7 +132,7 @@
          class:animation-fading={isUnconfirmed}
          class="item-wrapper">
         <Card>
-            <PrimaryAction on:click={handleDetailsClick}>
+            <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
                 <Media aspectRatio="16x9" style={mediaStyle}/>
                 <Content class="mdc-typography--body2">
@@ -173,7 +177,7 @@
                                 <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
                             {/if}
                             <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
-                            <IconButton class="material-icons" on:click={handleDetailsClick} title="More details">description</IconButton>
+                            <IconButton class="material-icons" on:hover={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>

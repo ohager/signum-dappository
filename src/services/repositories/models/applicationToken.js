@@ -23,8 +23,20 @@
 
 import MagicMapper from 'magic-mapper'
 import {ContractDataView} from '@burstjs/contracts'
+import { TokenStatus } from '../../../utils/tokenStatus'
 
-const mapper = new MagicMapper({ exclusive: true })
+const mapper = new MagicMapper({
+    exclusive: true,
+    propertyTransform: propertyName => {
+        if(propertyName === 'balanceNQT'){
+            return 'balancePlanck'
+        }
+        if(propertyName === 'minActivation'){
+            return 'minActivationPlanck'
+        }
+        return propertyName
+    }
+})
 
 const mappingSchema = {
     at: MagicMapper.Direct,
@@ -32,6 +44,8 @@ const mappingSchema = {
     machineData: MagicMapper.Direct,
     description: MagicMapper.Direct,
     creationBlock: MagicMapper.Direct,
+    balancePlanck: MagicMapper.Direct,
+    minActivationPlanck: MagicMapper.Direct,
 }
 
 const infoMappingSchema = {
@@ -63,8 +77,17 @@ function parseMachineData(contract) {
         isActive,
         donationPlanck,
         donationCount,
-        owner
+        owner,
     }
+}
+
+function parseStatus(contract){
+    const {dead, frozen, finished, running, stopped} = contract
+    if(dead) return TokenStatus.Dead
+    if(finished) return TokenStatus.Ok
+    if(stopped) return TokenStatus.Ok
+    if(running) return TokenStatus.Running
+    if(frozen) return TokenStatus.NoFunds
 }
 
 export class ApplicationToken {
@@ -81,9 +104,10 @@ export class ApplicationToken {
         try {
             const info = mapper.map(JSON.parse(data.description), infoMappingSchema)
             const state = parseMachineData(contract)
+            const status = parseStatus(contract)
             delete data.description
             delete data.machineData
-            return new ApplicationToken({ ...data, ...info, ...state})
+            return new ApplicationToken({ ...data, ...info, ...state, status})
         } catch (e) {
             return null // ignore unreadable contract
         }
