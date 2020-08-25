@@ -14,6 +14,7 @@
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { Badge } from '../_common'
     import BadgeCollection from './BadgeCollection.svelte'
+    import TokenRank from './TokenRank.svelte'
 
     export let variant = TokenItemVariant.Normal
     export let data = {
@@ -134,10 +135,14 @@
         <Card>
             <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
-                <Media aspectRatio="16x9" style={mediaStyle}/>
-                <div class="badge-wrapper">
-                    <BadgeCollection token={data} />
-                </div>
+                <Media aspectRatio="16x9" style={mediaStyle}>
+                    <div class="badge-wrapper">
+                        <BadgeCollection token={data} />
+                    </div>
+                    <div class="rank-wrapper">
+                        <TokenRank token={data} />
+                    </div>
+                </Media>
                 <Content class="mdc-typography--body2">
                     <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
                     <div class="tags-wrapper">
@@ -148,10 +153,6 @@
                         </Set>
                     </div>
                     {data.desc}
-                    <div class="donation-info">
-                        <small>Donated: {donation}</small>
-                        <small>Donations: {data.donationCount}</small>
-                    </div>
                 </Content>
             </PrimaryAction>
             {#if variant !== TokenItemVariant.Unconfirmed && variant !== TokenItemVariant.NoActions}
@@ -201,13 +202,6 @@
         position: relative;
     }
 
-    .item-wrapper .donation-info {
-        display: flex;
-        flex-direction: column;
-        line-height: normal;
-        margin-top: 0.5rem;
-    }
-
     .stamp-wrapper {
         top: 50%;
         left: 25%;
@@ -233,5 +227,13 @@
         position: absolute;
         top: 1rem;
         right: 1rem;
+        filter: drop-shadow(0px 2px 2px #555555)
+    }
+
+    .rank-wrapper {
+        position: absolute;
+        right: 1rem;
+        bottom: 0;
+        filter: drop-shadow(0px 2px 2px #555555)
     }
 </style>
