@@ -7,7 +7,7 @@
     import { EmptyToken } from '../../utils/emptyToken'
     import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import { account$ } from './accountStore'
+    import { account$ } from '../_common/accountStore'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
     import { assureAccountId } from '../../utils/assureAccountId'

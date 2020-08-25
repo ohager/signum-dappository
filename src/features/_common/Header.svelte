@@ -6,7 +6,7 @@
     import { RouteAccountTokens, RouteHome } from '../../utils/routes'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { account$, clearAccount } from '../account/accountStore'
+    import { account$, clearAccount } from './accountStore'
     import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'

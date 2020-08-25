@@ -16,7 +16,7 @@
         isValidRepo,
     } from '../../utils/validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
-    import { account$ } from '../account/accountStore'
+    import { account$ } from '../_common/accountStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
     import { applicationTokenService } from '../../services/applicationTokenService'

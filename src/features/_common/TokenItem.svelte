@@ -34,9 +34,10 @@
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
+    let isElevated = false
     const dispatch = createEventDispatcher()
 
-    $: donation = BurstValue.fromPlanck(data.donationPlanck || '0').getBurst()
+    $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
         background-image: url(${imageUrl});
@@ -130,7 +131,10 @@
 
     <div class:is-unconfirmed={isUnconfirmed}
          class:animation-fading={isUnconfirmed}
-         class="item-wrapper">
+         on:mouseenter={() => isElevated=true}
+         on:mouseleave={() => isElevated=false}
+         class:mdc-elevation--z8={isElevated}
+         class="item-wrapper mdc-elevation-transition">
         <Card>
             <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
@@ -146,7 +150,7 @@
                     </div>
                     {data.desc}
                     <div class="donation-info">
-                        <small>Donated: {donation} BURST</small>
+                        <small>Donated: {donation}</small>
                         <small>Donations: {data.donationCount}</small>
                     </div>
                 </Content>

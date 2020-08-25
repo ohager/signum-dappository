@@ -6,4 +6,5 @@ export const Vars = {
     DeeplinkRedirectServiceUrl: process.env.SAPPER_APP_DEEPLINK_REDIRECT_SERVICE_URL,
     TokenWatcherIntervalSecs: process.env.SAPPER_APP_TOKEN_WATCHER_INTERVAL_SECS,
     TokenWatcherTimeoutSecs: process.env.SAPPER_APP_TOKEN_WATCHER_TIMEOUT_SECS,
+    ExplorerUrl: process.env.SAPPER_APP_EXPLORER_URL,
 }
