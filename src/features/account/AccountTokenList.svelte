@@ -1,6 +1,6 @@
 <script>
     import { TokenItemVariant, TokenItem } from '../_common'
-    import { tokens$ } from '../tokens/tokenStore'
+    import { tokens$ } from '../_common/tokenStore'
     import { activeTokenMonitors$ } from './tokenMonitorStore'
     import { convertNumericIdToAddress } from '@burstjs/util'
 

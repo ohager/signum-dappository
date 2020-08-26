@@ -1,12 +1,13 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
     import { TokenItem, TokenItemVariant, Searchbar } from '../_common'
-    import { tokens$ } from './tokenStore'
+    import { tokenStore } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
 
     let searchTerm = ''
 
+    const { tokens$ } = tokenStore
     const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
 
     const searchFilter = filter => ({ name, desc, tags }) =>

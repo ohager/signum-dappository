@@ -7,7 +7,7 @@
 
 <script>
     import Activation from '../../features/account/Activation.svelte'
-    import { tokens$ } from '../../features/tokens/tokenStore'
+    import { tokens$ } from '../../features/_common/tokenStore'
     import TokenDetail from '../../features/tokens/TokenDetail.svelte'
 
     export let tokenId

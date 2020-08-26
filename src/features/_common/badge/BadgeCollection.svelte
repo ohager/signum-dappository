@@ -1,33 +1,28 @@
 <script>
     import { EmptyToken } from '../../../utils/emptyToken'
     import Badge from './Badge.svelte'
-
+    import { badgeRulesEngine } from '../../../services/badgeRulesEngine'
+    import { tokens$ } from '../tokenStore'
     export let token = EmptyToken
 
     let expanded = false
-    let badges = [
-        {
-            icon: 'new',
-            text: 'New Token'
-        },
-        {
-            icon: 'badge-1',
-            text: 'Badge 1'
-        },
-    ]
-    // TODO: create a Badge Collection Logic
-    // rules and badge icons
+    let badges = []
 
     function toggleExpanded() {
-        expanded = !expanded
+        expanded = badges.length > 1 ? !expanded : expanded
+    }
+
+    $: allTokens = $tokens$.items.filter(t => t.isActive)
+    $: {
+       badges = badgeRulesEngine.run({ token, allTokens })
     }
 
 </script>
 
 <div class="badges-collection" on:mouseenter={toggleExpanded} on:mouseleave={toggleExpanded}>
-    {#each badges as { icon, text }}
+    {#each badges as badgeProps}
         <div class="badge-wrapper" class:expanded>
-            <Badge {icon} {text}/>
+            <Badge {...badgeProps}/>
         </div>
     {/each}
 </div>

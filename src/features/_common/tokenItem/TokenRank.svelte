@@ -7,7 +7,7 @@
 
 </script>
 
-<div class="token-rank">
+<div class="token-rank" title="Token Score">
     <div class="rank">
         <small>{points}</small>
         <img width="64" src="img/badges/banner.svg" alt="{`${points} points`}">

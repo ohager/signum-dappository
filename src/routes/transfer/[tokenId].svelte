@@ -6,7 +6,7 @@
 </script>
 
 <script>
-    import { tokens$ } from '../../features/tokens/tokenStore'
+    import { tokens$ } from '../../features/_common/tokenStore'
     import Transfer from '../../features/account/Transfer.svelte'
 
     export let tokenId

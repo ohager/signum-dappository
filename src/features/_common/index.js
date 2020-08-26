@@ -1,6 +1,7 @@
 import * as appStore from './appStore'
 import * as burstFeeStore from './burstFeeStore'
 import * as accountStore from './accountStore'
+import * as tokenStore from './tokenStore'
 import AccountDialog from './AccountDialog.svelte'
 import AccountInput from './AccountInput.svelte'
 import Header from './Header.svelte'
@@ -32,5 +33,6 @@ export {
     Stamp,
     TabContent,
     TokenItemVariant,
-    TokenItem
+    TokenItem,
+    tokenStore
 }
