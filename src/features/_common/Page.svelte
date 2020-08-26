@@ -14,6 +14,12 @@
         }
     }
 
+    @media (min-width: 481px) and (max-width: 768px) {
+        .page {
+            max-width: 98%;
+        }
+    }
+
     @media (min-width: 1280px) {
         .page {
             max-width: 50%;

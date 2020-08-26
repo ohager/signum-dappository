@@ -1,5 +1,5 @@
 <script>
-    import { EmptyToken } from '../../utils/emptyToken'
+    import { EmptyToken } from '../../../utils/emptyToken'
     import Badge from './Badge.svelte'
 
     export let token = EmptyToken
@@ -11,20 +11,8 @@
             text: 'New Token'
         },
         {
-            icon: 'medal',
-            text: 'Medal Merit'
-        },
-        {
-            icon: 'medal',
-            text: 'Medal Merit'
-        },
-        {
-            icon: 'medal',
-            text: 'Medal Merit'
-        },
-        {
-            icon: 'medal',
-            text: 'Medal Merit'
+            icon: 'badge-1',
+            text: 'Badge 1'
         },
     ]
     // TODO: create a Badge Collection Logic

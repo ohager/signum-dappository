@@ -18,10 +18,11 @@
 <style>
     .v {
         line-height: 1rem;
+        font-weight: bold;
     }
 
     .list-item {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .list-item small {

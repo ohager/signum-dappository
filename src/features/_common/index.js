@@ -13,16 +13,13 @@ import RegisterFabButton from './RegisterFabButton.svelte'
 import Searchbar from './Searchbar.svelte'
 import Stamp from './Stamp.svelte'
 import TabContent from './TabContent.svelte'
-import TokenItem from './TokenItem.svelte'
-import Badge from './Badge.svelte'
-import { TokenItemVariant } from './TokenItemVariant'
+import { TokenItem, TokenItemVariant } from './tokenItem'
 
 export {
     AccountDialog,
     AccountInput,
     accountStore,
     appStore,
-    Badge,
     burstFeeStore,
     Header,
     LoadingBar,

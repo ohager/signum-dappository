@@ -1,5 +1,5 @@
 <script>
-    import { calculateRankingPoints } from '../../utils/calculateRankingPoints'
+    import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
 
     export let token
 

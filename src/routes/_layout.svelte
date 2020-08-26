@@ -2,6 +2,7 @@
     import {Header, Message, AccountDialog, LoadingBar} from '../features/_common'
 
     export let segment
+    export let preload
 </script>
 
 <Header/>
@@ -34,10 +35,6 @@
     :global(*){
         scrollbar-color: darkgrey white;
         scrollbar-width: thin;
-    }
-
-    html {
-        background-color: #eee;
     }
 
     main {

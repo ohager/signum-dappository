@@ -6,14 +6,13 @@
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../utils/routes'
-    import { isEmptyString } from '../../utils/isEmptyString'
-    import Stamp from './Stamp.svelte'
+    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../../utils/routes'
+    import { isEmptyString } from '../../../utils/isEmptyString'
+    import Stamp from '../Stamp.svelte'
     import { TokenItemVariant } from './TokenItemVariant'
-    import { Events } from '../../utils/events'
-    import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { Badge } from '../_common'
-    import BadgeCollection from './BadgeCollection.svelte'
+    import { Events } from '../../../utils/events'
+    import { dispatchEvent } from '../../../utils/dispatchEvent'
+    import BadgeCollection from '../badge/BadgeCollection.svelte'
     import TokenRank from './TokenRank.svelte'
 
     export let variant = TokenItemVariant.Normal
@@ -66,7 +65,6 @@
     })
 
     const handleDetailsClick = ifNotPreview(() => {
-        if (variant !== TokenItemVariant.Normal) return
         goto(RouteTokenDetail(data.at))
     })
 
