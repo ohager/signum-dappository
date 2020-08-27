@@ -1,17 +1,24 @@
 <script>
-    import {Header, Message, AccountDialog, LoadingBar} from '../features/_common'
+    import { Header, Message, AccountDialog, LoadingBar, ThemeProvider } from '../features/_common'
+    import LeftSideMenu from '../features/_common/LeftSideMenu.svelte'
+    import { Scrim } from '@smui/drawer'
 
     export let segment
     export let preload
+
+    let isMenuOpen = false
 </script>
 
-<Header/>
-<Message/>
-<AccountDialog/>
-<main>
-    <LoadingBar/>
-    <slot/>
-</main>
+<ThemeProvider>
+    <Header {isMenuOpen} />
+    <Message/>
+    <main>
+        <LeftSideMenu bind:open={isMenuOpen} />
+        <LoadingBar/>
+        <AccountDialog/>
+        <slot/>
+    </main>
+</ThemeProvider>
 
 
 <style>
@@ -39,18 +46,10 @@
 
     main {
         position: relative;
-        padding: 1em;
         margin: 0 auto;
         box-sizing: border-box;
         height: calc(100vh - var(--header-height));
         top: var(--header-height);
         overflow: auto;
     }
-
-    @media (max-width: 480px) {
-        main {
-            padding: 0;
-        }
-    }
-
 </style>

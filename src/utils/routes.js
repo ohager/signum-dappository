@@ -13,4 +13,6 @@ export const RouteDeactivate = at => `/deactivate/${at}`
 export const RouteTransfer = at => `/transfer/${at}`
 export const RouteRegister = () => `/register`
 export const RouteAccountTokens = (accountId, wantsRegister = false) => `/account/${accountId}${wantsRegister?'?register=true':''}`
+export const RouteTutorial = () => '/tutorial'
+export const RouteAbout = () => '/about'
 

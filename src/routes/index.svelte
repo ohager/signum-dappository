@@ -25,8 +25,6 @@
             prefetch(RouteRegister(accountId))
         }
     }
-
-
 </script>
 
 <svelte:head>

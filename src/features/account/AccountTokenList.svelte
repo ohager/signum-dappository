@@ -21,6 +21,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         margin-inline-start: 0;
+        margin: 1rem;
     }
 
     .header {
@@ -49,10 +50,6 @@
 </style>
 
 <div class="container">
-    <section class="header">
-        <div class="counter mdc-typography--headline6">{`You are viewing tokens of account ${convertNumericIdToAddress(accountId)}`}</div>
-    </section>
-
     <section class="body">
     {#each unconfirmedTokens as data}
         <div class="item">

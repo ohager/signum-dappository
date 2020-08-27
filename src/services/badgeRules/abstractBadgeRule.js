@@ -1,10 +1,10 @@
 export class AbstractBadgeRule {
     constructor({name, description, icon, text, textStyle}) {
-        this._name = name
-        this._text = text
-        this._description = description
-        this._icon = icon
-        this._textStyle = textStyle
+        this._name = name || ''
+        this._text = text || ''
+        this._description = description || ''
+        this._icon = icon || ''
+        this._textStyle = textStyle || ''
     }
 
     test({token, allTokens, blockHeight}) {

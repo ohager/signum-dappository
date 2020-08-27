@@ -1,7 +1,7 @@
 <script>
     import { isEmptyString } from '../../../utils/isEmptyString'
     export let text = ''
-    export let name = '' // still unused
+    export let name = '' // still unused:sun
     export let description = ''
     export let icon = ''
     export let textStyle = ''

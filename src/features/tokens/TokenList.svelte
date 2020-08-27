@@ -82,6 +82,7 @@
     .header {
         display: flex;
         flex-direction: row;
+        margin: 1rem;
         padding: 1rem;
         border: 1px solid #efefef;
         position: sticky;
@@ -90,6 +91,12 @@
         box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
         background-color: white;
         opacity: 97%;
+    }
+
+    @media (max-width: 480px) {
+        .header {
+            margin: 0;
+        }
     }
 
     .header > .counter {

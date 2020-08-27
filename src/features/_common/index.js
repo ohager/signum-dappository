@@ -15,6 +15,7 @@ import Searchbar from './Searchbar.svelte'
 import Stamp from './Stamp.svelte'
 import TabContent from './TabContent.svelte'
 import { TokenItem, TokenItemVariant } from './tokenItem'
+import ThemeProvider from './ThemeProvider.svelte'
 
 export {
     AccountDialog,
@@ -34,5 +35,6 @@ export {
     TabContent,
     TokenItemVariant,
     TokenItem,
-    tokenStore
+    tokenStore,
+    ThemeProvider
 }

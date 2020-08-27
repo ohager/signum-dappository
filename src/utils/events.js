@@ -7,5 +7,6 @@ export const Events = {
     Warning: 'warning',
     Info: 'info',
     SyncTokenRequest: 'sync-tokens',
-    ShowAccountDialog: 'show-account-dialog'
+    ShowAccountDialog: 'show-account-dialog',
+    ShowMenu:'show-menu'
 }

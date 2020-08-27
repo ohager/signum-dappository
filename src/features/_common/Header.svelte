@@ -1,15 +1,19 @@
 <script>
+    import {fade} from 'svelte/transition'
     import { goto, prefetch } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
     import { RouteAccountTokens, RouteHome } from '../../utils/routes'
+    import {rotate} from '../../utils/transitionRotate'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { account$, clearAccount } from './accountStore'
     import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
+
+    export let isMenuOpen = false
 
     $: currentAccount = $account$.accountId
     $: hasAccount = !isEmptyString(currentAccount)
@@ -22,8 +26,8 @@
         }
     }
 
-    function gotoHomePage() {
-        goto(RouteHome())
+    function toggleMenu() {
+        dispatchEvent(Events.ShowMenu, { isOpen: !isMenuOpen })
     }
 
     function unsetAccount() {
@@ -36,7 +40,18 @@
 <TopAppBar variant="fixed" dense color='primary'>
     <Row>
         <Section>
-            <IconButton class="material-icons" on:click={gotoHomePage}>home</IconButton>
+            <div class="menu-icon-wrapper">
+
+            {#if isMenuOpen}
+                <div transition:fade class="menu-icon">
+                    <IconButton class="material-icons" on:click={toggleMenu}>menu_open</IconButton>
+                </div>
+            {:else}
+                <div transition:fade class="menu-icon">
+                    <IconButton class="material-icons" on:click={toggleMenu}>menu</IconButton>
+                </div>
+            {/if}
+            </div>
             <img class="burst-logo" src="img/burst-white.svg" alt="Burst"/>
             <Title>Applications</Title>
         </Section>
@@ -48,23 +63,6 @@
                     >
                         <Label style="color: white">{convertNumericIdToAddress(currentAccount)}</Label>
                     </Button>
-                    <IconButton ripple={false}
-                                class="material-icons"
-                                aria-label="Unset Account"
-                                title="Unset Account"
-                                on:click={unsetAccount}>
-                        clear
-                    </IconButton>
-                </div>
-            {:else}
-                <div title="Enter as your account">
-                    <IconButton ripple={false}
-                                class="material-icons"
-                                aria-label="Your Account"
-                                on:click={gotoOwnerPage}
-                    >
-                        account_box
-                    </IconButton>
                 </div>
             {/if}
         </Section>
@@ -87,4 +85,15 @@
     .current-account .mdc-typography--body1 {
         margin-right: 1rem;
     }
+
+    .menu-icon-wrapper {
+        position: relative;
+        height: 48px;
+        width: 48px;
+    }
+
+    .menu-icon-wrapper .menu-icon {
+        position: absolute;
+    }
+
 </style>
