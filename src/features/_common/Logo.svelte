@@ -4,11 +4,11 @@
     export let height
     export let dark = false
 
-    const logoPath = () => dark ? 'img/logo.svg' : 'img/logo.dark.svg'
+    const logoPath = dark ? 'img/logo.black.svg' : 'img/logo.white.svg'
 </script>
 
 <div class="logo" style="height: {height}">
-    <img src={logoPath()} alt="The Burst dAppository"/>
+    <img src={logoPath} alt="The Burst dAppository"/>
 </div>
 
 <style>
