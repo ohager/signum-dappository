@@ -5,7 +5,14 @@ import { ThemeNames } from '../../utils/themeNames'
 
 export const theme$ = writable(ThemeNames.Default, set => {
     if(!isClientSide()) return
-    set(settingsService.getValue(SettingsKeys.Theme))
+    settingsService.getValue(SettingsKeys.Theme).then( theme => {
+        if(theme){
+            set(theme)
+        }
+    })
+    return () => {
+        set(ThemeNames.Default)
+    }
 })
 
 export function setTheme(themeName) {
