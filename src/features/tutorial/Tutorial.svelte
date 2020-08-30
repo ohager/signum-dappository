@@ -1,15 +1,28 @@
 <script>
-    import Page from '../_common/Page.svelte'
+    import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
+    import Page from '../_common/Page.svelte'
+    import { WhatIs, Page2 } from './pages'
+    import { RouteHome } from '../../utils/routes'
+
+    let pages = [WhatIs, Page2]
+    let currentPage = 0
+
+    $: hasFinished = currentPage === pages.length - 1
 
     function handleBack(){
-        history.back()
+        if(currentPage === 0){
+            return goto(RouteHome())
+        }
+        currentPage = Math.max(--currentPage, 0)
     }
 
     function handleNext() {
-        console.log('Next')
+        if(hasFinished){
+            return goto(RouteHome())
+        }
+        currentPage = Math.min(++currentPage, pages.length - 1)
     }
-
 </script>
 
 <Page>
@@ -18,12 +31,15 @@
         <div class="mdc-typography--headline6">Tutorial</div>
     </div>
     <div class="form">
+        <div class="content">
+            <svelte:component this={pages[currentPage]}/>
+        </div>
         <div class="form--footer">
             <Button on:click={handleBack}>
-                <Label>Back</Label>
+                <Label>{currentPage===0 ? "Home" : "Back"}</Label>
             </Button>
             <Button on:click={handleNext}>
-                <Label>Next</Label>
+                <Label>{hasFinished ? "Finish" : "Next"}</Label>
             </Button>
         </div>
     </div>
@@ -49,22 +65,10 @@
         margin: 0 auto
     }
 
-    .form--header {
+    .content {
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
-        margin-bottom: 2rem;
-    }
-
-    .form--header > p {
-        text-align: justify;
-        width: 50%;
-        margin: 0;
-    }
-
-    .form--header > .item-wrapper {
-        margin-left: 1rem;
-        width: 50%;
+        overflow: hidden;
     }
 
     .form--footer {
@@ -72,21 +76,6 @@
         flex-direction: row;
         justify-content: space-between;
         margin-top: 2rem;
-    }
-
-    @media (max-width: 480px) {
-        .form--header {
-            flex-direction: column;
-        }
-
-        .form--header > p {
-            width: 100%;
-        }
-
-        .form--header > .item-wrapper {
-            margin: 1rem 0;
-            width: 100%;
-        }
     }
 
 </style>
