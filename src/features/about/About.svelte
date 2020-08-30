@@ -2,11 +2,13 @@
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import { Page, TokenItem, TokenItemVariant, burstFeeStore, PassphraseInput, PaymentQrCode } from '../_common'
+    import Logo from '../_common/Logo.svelte'
+    import { ThemeNames } from '../../utils/themeNames'
 </script>
 
 <Page>
     <div class="header">
-        <img src="/img/gear.svg" alt="about">
+        <Logo height="128px" dark />
         <div class="mdc-typography--headline6">About</div>
     </div>
     <div class="form">

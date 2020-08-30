@@ -77,8 +77,8 @@
 <svelte:window on:show-menu={showDrawer}/>
 <Drawer variant="modal" bind:this={drawerElement} bind:open={open}>
     <Header>
-        <Title>Super Mail</Title>
-        <Subtitle>It's the best fake mail app drawer.</Subtitle>
+        <Title>The Burst dAppository</Title>
+        <Subtitle>All the Burst Apps in one place</Subtitle>
     </Header>
     <Content>
         <List>

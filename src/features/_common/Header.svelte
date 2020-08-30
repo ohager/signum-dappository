@@ -1,17 +1,19 @@
 <script>
-    import {fade} from 'svelte/transition'
+    import { fade } from 'svelte/transition'
     import { goto, prefetch } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
     import { RouteAccountTokens, RouteHome } from '../../utils/routes'
-    import {rotate} from '../../utils/transitionRotate'
+    import { rotate } from '../../utils/transitionRotate'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { account$, clearAccount } from './accountStore'
     import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
+    import { ThemeNames } from '../../utils/themeNames'
+    import Logo from './Logo.svelte'
 
     export let isMenuOpen = false
 
@@ -52,8 +54,10 @@
                 </div>
             {/if}
             </div>
-            <img class="burst-logo" src="img/burst-white.svg" alt="Burst"/>
-            <Title>Applications</Title>
+            <Logo height="42px" />
+            <div class="title-text">
+                <Title>The Burst dAppository</Title>
+            </div>
         </Section>
         <Section align="end" toolbar>
             {#if hasAccount}
@@ -71,8 +75,10 @@
 </TopAppBar>
 
 <style>
-    .burst-logo {
-        height: 42px
+    @media (max-width: 480px) {
+        .title-text {
+            display: none;
+        }
     }
 
     .current-account {
