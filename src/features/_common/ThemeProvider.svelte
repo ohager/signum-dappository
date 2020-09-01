@@ -1,6 +1,6 @@
 <script>
     import {theme$} from "./appStore"
-    let themeName = `theme-${$theme$}`
+    $: themeName = `theme-${$theme$}`
 </script>
 
 <div class={themeName}>
@@ -9,22 +9,85 @@
 
 <style>
     :global(*){
+        --dark-grey: #444;
+        --mid-grey: #676778;
+        --solar-grey: #b2b2d4;
         --burst-blue: #00579d;
-        --burst-dark-blue: #001e35;
+        --burst-dark-blue: #323f65;
+        --burst-darker-blue: #001e35;
     }
 
     :global(*.theme-default){
-        --mdc-theme-primary : var(--burst-blue);
-        --mdc-theme-secondary: #676778;
-        --mdc-theme-on-primary: white;
         --mdc-theme-background : white;
-        --mdc-theme-surface : white;
         --mdc-theme-error: var(--material-color-red-900);
+        --mdc-theme-primary : var(--burst-blue);
+        --mdc-theme-secondary: var(--mid-grey);
+        --mdc-theme-surface : white;
+        --mdc-theme-text-primary-on-background: var(--theme-text);
+        --mdc-theme-text-primary-on-surface: var(--theme-text);
+        --theme-hover-background: black;
+        --theme-hover-opacity: 0.04;
+        --theme-light-background: var(--solar-grey);
+        --theme-lighter-background: white;
+        --theme-text: var(--burst-darker-blue);
     }
 
     :global(*.theme-dark){
-        --mdc-theme-primary : black;
-        --mdc-theme-on-primary: white;
-        --mdc-theme-surface : black;
+        --mdc-theme-background : var(--burst-darker-blue);
+        --mdc-theme-error: var(--material-color-red-600);
+        --mdc-theme-on-background: var(--theme-text);
+        --mdc-theme-on-primary: var(--theme-text);
+        --mdc-theme-on-secondary: var(--burst-dark-blue);
+        --mdc-theme-on-surface: var(--theme-text);
+        --mdc-theme-primary : var(--burst-dark-blue);
+        --mdc-theme-secondary: var(--solar-grey);
+        --mdc-theme-surface: var(--theme-lighter-background);
+        --mdc-theme-text-primary-on-background: var(--theme-text);
+        --mdc-theme-text-primary-on-surface: var(--theme-text);
+        --mdc-theme-text-secondary-on-background: var(--theme-text);
+        --mdc-theme-text-secondary-on-surface: var(--theme-text);
+        --theme-hover-background: white;
+        --theme-hover-opacity: 0.1;
+        --theme-light-background: var(--solar-grey);
+        --theme-lighter-background: var(--burst-dark-blue);
+        --theme-text: var(--solar-grey);
+    }
+
+    :global(main){
+        background-color: var(--mdc-theme-background);
+        color: var(--theme-text);
+    }
+
+    :global(a),
+    :global(a:visited){
+        text-decoration: none;
+        color: var(--theme-text);
+    }
+
+    :global([class*="mdc-drawer"]),
+    :global([class*="mdc-icon"]),
+    :global([class*="mdc-chip"]),
+    :global([class*="mdc-list"])
+    {
+        color: var(--theme-text) !important;
+    }
+
+    :global([class*="mdc-list"]),
+    :global([class*="mdc-drawer"]) {
+        background-color: var(--theme-lighter-background);
+    }
+
+    :global(.mdc-chip),
+    :global(.mdc-chip__text){
+        background-color: var(--theme-light-background) !important;
+        color: var( --mdc-theme-primary) !important;
+    }
+
+    :global(.mdc-button__label){
+        color: var(--theme-text);
+    }
+    :global(.mdc-card__primary_action:hover){
+        opacity: var(--theme-hover-opacity);
+        background-color: var(--theme-hover-background);
     }
 </style>

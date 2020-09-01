@@ -84,7 +84,7 @@
         flex-direction: row;
         margin: 1rem;
         padding: 1rem;
-        border: 1px solid #efefef;
+        /*border: 1px solid #efefef;*/
         position: sticky;
         top: 0;
         z-index: 2;

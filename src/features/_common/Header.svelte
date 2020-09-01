@@ -43,7 +43,6 @@
     <Row>
         <Section>
             <div class="menu-icon-wrapper">
-
             {#if isMenuOpen}
                 <div transition:fade class="menu-icon">
                     <IconButton class="material-icons" on:click={toggleMenu}>menu_open</IconButton>
@@ -98,8 +97,9 @@
         width: 48px;
     }
 
-    .menu-icon-wrapper .menu-icon {
+    :global(.menu-icon-wrapper .menu-icon > .mdc-icon-button) {
         position: absolute;
+        color: white !important;
     }
 
 </style>

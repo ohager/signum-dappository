@@ -219,6 +219,7 @@
 
     .tags-wrapper :global(.mdc-chip-set) {
         padding: 0;
+        margin-bottom: 0.25rem;
     }
 
     .badge-wrapper {

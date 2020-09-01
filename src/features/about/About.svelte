@@ -1,31 +1,41 @@
 <script>
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
-    import { Page, TokenItem, TokenItemVariant, burstFeeStore, PassphraseInput, PaymentQrCode } from '../_common'
+    import {
+        Page,
+        TokenItem,
+        TokenItemVariant,
+        burstFeeStore,
+        PassphraseInput,
+        PaymentQrCode,
+        appStore,
+    } from '../_common'
     import Logo from '../_common/Logo.svelte'
     import { ThemeNames } from '../../utils/themeNames'
-    import List, {Item, Graphic, Text } from '@smui/list';
+    import List, { Item, Graphic, Text } from '@smui/list'
+    import Link from '../Link.svelte'
+
+    const { theme$ } = appStore
 
     const openUrl = url => () => {
         window.open(url, '_blank')
     }
 
-    const flatIconAuthorUrl = (url) => {
-
-    }
+    $: dark = $theme$ === ThemeNames.Default
 
 </script>
 
 <Page>
     <div class="header">
-        <Logo height="128px" dark />
+        <Logo height="128px" {dark} />
     </div>
     <section class="general">
         <p>
-            This dApp is built with ❤️ by <a href="https://github.com/ohager" alt="ohager">ohager</a>
+            This dApp is built with ❤️ by ohager
         </p>
-        <p>
+        <p class="github">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/ohager/burst-applications?style=social">
+            <Link href="https://github.com/ohager/burst-applications">This project is Open Source</Link>
         </p>
     </section>
     <section class="credits">
@@ -115,7 +125,17 @@
     }
 
     .general {
+        margin: 0 auto;
+        width: 50%;
         text-align: center;
+    }
+    .general .github {
+        display: flex;
+        justify-content: center;
+    }
+
+    .general .github img {
+        margin-right: 1rem;
     }
 
     .credits-container {

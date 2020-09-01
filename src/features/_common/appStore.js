@@ -16,6 +16,7 @@ export const theme$ = writable(ThemeNames.Default, set => {
 })
 
 export function setTheme(themeName) {
+    if(!isClientSide()) return
     theme$.update(_ => {
         settingsService.updateValue(SettingsKeys.Theme, themeName)
         return themeName

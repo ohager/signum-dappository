@@ -1,4 +1,5 @@
 <script>
+    import Link from '../Link.svelte'
     export let key = ''
     export let value = ''
     export let url = null
@@ -7,9 +8,9 @@
 <div class="list-item">
     <small>{key}</small>
     {#if url}
-        <a href={url} target="_blank">
+        <Link href={url}>
             <div class="v mdc-typography--headline7">{value}</div>
-        </a>
+        </Link>
     {:else}
         <div class="v mdc-typography--headline7">{value}</div>
     {/if}
@@ -23,9 +24,5 @@
 
     .list-item {
         margin-bottom: 0.5rem;
-    }
-
-    .list-item small {
-        color: #222;
     }
 </style>
