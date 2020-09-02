@@ -3,14 +3,16 @@
     import { BurstValue, convertNumericIdToAddress, FeeQuantPlanck } from '@burstjs/util'
     import { mountLegacyDeepLink } from '../../utils/deeplink'
     import { assureAccountId } from '../../utils/assureAccountId'
+    import { theme$ } from './appStore'
+    import { ThemeNames } from '../../utils/themeNames'
 
     export let recipient
     export let costs = []
     export let fee = BurstValue.fromPlanck(FeeQuantPlanck.toString())
     export let message = null
 
-    let QrCodeCanvas = null
     let info = []
+    let QrCodeCanvas = null
 
     $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), BurstValue.fromBurst(0))
     $: {
@@ -29,6 +31,10 @@
         if (QrCodeCanvas !== null) {
             QrCode.toCanvas(QrCodeCanvas, deepLink, {
                 width: 256,
+                color : {
+                    light: $theme$ === ThemeNames.Dark ? '#323f65ff' : '#ffffffff',
+                    dark: $theme$ === ThemeNames.Dark ? '#b2b2d4ff' : '#001e35ff'
+                }
             })
         }
     }
@@ -71,7 +77,6 @@
         text-align: justify;
         font-size: 0.75rem;
         font-family: sans-serif;
-        color: gray;
         line-height: 1rem;
     }
 

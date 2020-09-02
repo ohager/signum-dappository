@@ -1,5 +1,7 @@
 <script>
     import Paper from '@smui/paper'
+
+    export let id = ''
 </script>
 
 <style>
@@ -27,7 +29,7 @@
     }
 </style>
 
-<section class="page">
+<section class="page" {id}>
     <Paper>
         <slot/>
     </Paper>

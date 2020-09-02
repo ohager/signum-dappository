@@ -38,7 +38,7 @@
 </script>
 
 
-<Page>
+<Page id="donation">
     <div class="header">
         <img src="/img/donation.svg" alt="donate">
         <div class="mdc-typography--headline6">Donate</div>
@@ -166,7 +166,7 @@
         }
     }
 
-    :global(.form .mdc-text-field__input) {
+    :global(#donation .form .mdc-text-field__input) {
         font-size: 2rem !important;
     }
 

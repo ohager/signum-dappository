@@ -88,13 +88,13 @@
         background-color: transparent;
         border: 1px solid var(--mdc-theme-secondary);
         border-radius: 50%;
-        transition: all 0.5s ease-in-out;
+        transition: all 250ms ease-in-out;
     }
 
     .dots .dot.active{
-        border: 1px solid var(--mdc-theme-primary);
-        background-color: var(--mdc-theme-primary);
-        transition: all 0.5s ease-in-out;
+        border: 1px solid var(--mdc-theme-on-primary);
+        background-color: var(--mdc-theme-on-primary);
+        transition: all 250ms ease-in-out;
     }
 
     .form--footer {

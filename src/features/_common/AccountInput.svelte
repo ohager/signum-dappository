@@ -70,6 +70,6 @@
         right: 32px;
         font-size: 75%;
         font-family: monospace;
-        color: rgba(0,0,0,.6);
+        color: var(--theme-text) !important;
     }
 </style>

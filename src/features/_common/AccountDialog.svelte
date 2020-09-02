@@ -83,7 +83,6 @@
         </p>
 
         <TextField
-                fullwidth
                 bind:value={account}
                 invalid={!isValid}
                 label="Account"

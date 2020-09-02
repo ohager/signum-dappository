@@ -2,7 +2,7 @@
     import {fade,fly} from 'svelte/transition'
 </script>
 
-<div class="tutorial-page" in:fade="{{ duration: 1000 }}">
+<div class="tutorial-page" in:fade="{{ duration: 500 }}">
     <slot/>
 </div>
 
