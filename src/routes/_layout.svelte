@@ -1,7 +1,7 @@
 <script context="module">
     import { Vars } from '../context'
     export async function preload({ params, query }) {
-        return {isTestnet: Vars.IsTestnet}
+        return {isTestnet: Vars.IsTestnet === 'true'}
     }
 </script>
 
