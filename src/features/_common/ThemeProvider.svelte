@@ -15,6 +15,7 @@
         --burst-blue: #00579d;
         --burst-dark-blue: #323f65;
         --burst-darker-blue: #001e35;
+        transition: color, background-color 500ms ease-in;
     }
 
     :global(*.theme-default){
