@@ -1,5 +1,5 @@
 {
-  "name": "burst-applications",
+  "name": "burst-dappository",
   "description": "A decentralized application and tool registry using Burst blockchain and Smart Contracts",
   "keywords": [
     "blockchain",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "repository": {
     "type": "github",
-    "url": "git@github.com:ohager/burst-applications.git"
+    "url": "git@github.com:ohager/burst-dappository.git"
   },
   "version": "0.0.1",
   "scripts": {
