@@ -10,6 +10,7 @@
     import { accountService } from '../../services/accountService'
     import { TokenContract } from '../../services/tokenContract'
     import { convertNumericIdToAddress } from '@burstjs/util'
+    import AccountInput from '../_common/AccountInput.svelte'
 
     export let accountId = ''
 
@@ -31,8 +32,8 @@
                 const hasSufficientBalance = balance.greaterOrEqual(TokenContract.CreationFee)
                 validation = {
                     message: hasSufficientBalance
-                            ? `Accounts balance: ${balance.toString()}`
-                            : `Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`,
+                        ? `Accounts balance: ${balance.toString()}`
+                        : `Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`,
                     valid: hasSufficientBalance,
                 }
             } catch (e) {
@@ -73,23 +74,27 @@
         You will also have to pay a fee of {TokenContract.ActivationCosts} BURST to create the token. This fee is
         used exclusively to create the token and no third party will receive anything.
     </p>
-    <div class="form--input">
-        <div class="form--input-field">
-            <TextField bind:value={$registration$.account}
-                       invalid={!validation.valid}
-                       label='Account Id or Address'
-                       withTrailingIcon
-            >
-                <Icon class={`material-icons ${validation.valid ? 'green' : ''}`}>
-                    {validation.valid ? 'check_circle' : 'error'}
-                </Icon>
-                <div class="address">
-                    {accountAddress}
-                </div>
-            </TextField>
-            <HelperText validationMsg>{validation.message}</HelperText>
-        </div>
-    </div>
+    <AccountInput bind:account={$registration$.account}
+                  bind:valid={validation.valid}
+                  validate={validateAccount}
+    />
+<!--    <div class="form&#45;&#45;input">-->
+<!--        <div class="form&#45;&#45;input-field">-->
+<!--            <TextField bind:value={$registration$.account}-->
+<!--                       invalid={!validation.valid}-->
+<!--                       label='Account Id or Address'-->
+<!--                       withTrailingIcon-->
+<!--            >-->
+<!--                <Icon class={`material-icons ${validation.valid ? 'green' : ''}`}>-->
+<!--                    {validation.valid ? 'check_circle' : 'error'}-->
+<!--                </Icon>-->
+<!--                <div class="address">-->
+<!--                    {accountAddress}-->
+<!--                </div>-->
+<!--            </TextField>-->
+<!--            <HelperText validationMsg>{validation.message}</HelperText>-->
+<!--        </div>-->
+<!--    </div>-->
 </section>
 
 <style>

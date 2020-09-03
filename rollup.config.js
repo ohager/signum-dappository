@@ -14,8 +14,11 @@ const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
 
-const onwarn = (warning, onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) || onwarn(warning)
 const dedupe = importee => importee === 'svelte' || importee.startsWith('svelte/')
+const onwarn = (warning, onwarn) =>
+    (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
+    (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
+    onwarn(warning);
 
 const postcssOptions = () => ({
     extensions: ['.scss', '.sass'],

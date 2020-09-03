@@ -7,7 +7,7 @@
 
 <script>
     import Donation from '../../features/tokens/Donation.svelte'
-    import { tokens$ } from '../../features/tokens/tokenStore'
+    import { tokens$ } from '../../features/_common/tokenStore'
 
     export let tokenId
 

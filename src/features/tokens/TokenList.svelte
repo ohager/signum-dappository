@@ -1,12 +1,13 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
     import { TokenItem, TokenItemVariant, Searchbar } from '../_common'
-    import { tokens$ } from './tokenStore'
+    import { tokenStore } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
 
     let searchTerm = ''
 
+    const { tokens$ } = tokenStore
     const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
 
     const searchFilter = filter => ({ name, desc, tags }) =>
@@ -79,16 +80,24 @@
     }
 
     .header {
+        border-radius: 4px;
         display: flex;
         flex-direction: row;
+        margin: 1rem;
         padding: 1rem;
-        border: 1px solid #efefef;
+        /*border: 1px solid #efefef;*/
         position: sticky;
         top: 0;
         z-index: 2;
         box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
-        background-color: white;
+        background-color: var( --mdc-theme-surface);
         opacity: 97%;
+    }
+
+    @media (max-width: 480px) {
+        .header {
+            margin: 0;
+        }
     }
 
     .header > .counter {

@@ -2,6 +2,7 @@ import { settingsRepository } from './repositories/settingsRepository'
 
 export const SettingsKeys = {
     CurrentAccount: 'current-account',
+    Theme:'theme'
 }
 
 export class SettingsService {
@@ -21,7 +22,6 @@ export class SettingsService {
     async updateValue(key, value) {
         return await this._repository.upsert(key, value)
     }
-
 }
 
 export const settingsService = new SettingsService()

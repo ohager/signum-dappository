@@ -3,7 +3,7 @@
     import { goto, prefetch } from '@sapper/app'
     import TokenList from '../features/tokens/TokenList.svelte'
     import { RouteRegister } from '../utils/routes'
-    import { account$ } from '../features/account/accountStore'
+    import { account$ } from '../features/_common/accountStore'
     import { isEmptyString } from '../utils/isEmptyString'
     import { Events } from '../utils/events'
     import { dispatchEvent } from '../utils/dispatchEvent'
@@ -25,8 +25,6 @@
             prefetch(RouteRegister(accountId))
         }
     }
-
-
 </script>
 
 <svelte:head>

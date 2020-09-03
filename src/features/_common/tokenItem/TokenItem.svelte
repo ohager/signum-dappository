@@ -1,18 +1,19 @@
 <script>
-    import { beforeUpdate } from 'svelte'
+    import { beforeUpdate, createEventDispatcher } from 'svelte'
     import Card, { ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media } from '@smui/card'
     import Button, { Label } from '@smui/button'
-    import Chip, {Set, Text} from '@smui/chips'
+    import Chip, { Set, Text } from '@smui/chips'
     import IconButton, { Icon } from '@smui/icon-button'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate } from '../../utils/routes'
-    import { isEmptyString } from '../../utils/isEmptyString'
-    import Stamp from './Stamp.svelte'
+    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../../utils/routes'
+    import { isEmptyString } from '../../../utils/isEmptyString'
+    import Stamp from '../Stamp.svelte'
     import { TokenItemVariant } from './TokenItemVariant'
-    import { Events } from '../../utils/events'
-    import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { createEventDispatcher } from 'svelte'
+    import { Events } from '../../../utils/events'
+    import { dispatchEvent } from '../../../utils/dispatchEvent'
+    import BadgeCollection from '../badge/BadgeCollection.svelte'
+    import TokenRank from './TokenRank.svelte'
 
     export let variant = TokenItemVariant.Normal
     export let data = {
@@ -26,22 +27,18 @@
         isActive: true,
     }
 
-    const DonationPath = RouteDonate(data.at)
-    const ActivationPath = RouteActivate(data.at)
-    const DeactivationPath = RouteDeactivate(data.at)
-    const TransferPath = RouteTransfer(data.at)
     const PlaceholderImage = '../img/placeholder.noimage.svg'
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
+    let isElevated = false
     const dispatch = createEventDispatcher()
 
-    $: donation = BurstValue.fromPlanck(data.donationPlanck || '0').getBurst()
+    $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
         background-image: url(${imageUrl});
     `
     $: isUnconfirmed = variant === TokenItemVariant.Unconfirmed
-    $: hasPendingTx = variant === TokenItemVariant.HasPendingTransaction
     $: {
         if (variant === TokenItemVariant.Preview) {
             stampText = 'Preview'
@@ -55,25 +52,28 @@
     }
 
     const ifNotPreview = (fn) => () => {
-        if (variant === TokenItemVariant.Preview ) return
+        if (variant === TokenItemVariant.Preview) return
         fn()
     }
 
     const handleShareClick = ifNotPreview(() => {
-        dispatchEvent(Events.Info, "Sharing not implemented yet")
+        dispatchEvent(Events.Info, 'Sharing not implemented yet')
+    })
+
+    const prefetchDetails = ifNotPreview(() => {
+        prefetch(RouteTokenDetail(data.at))
     })
 
     const handleDetailsClick = ifNotPreview(() => {
-        if(variant !== TokenItemVariant.Normal) return
-        dispatchEvent(Events.Info, "Details not implemented yet")
+        goto(RouteTokenDetail(data.at))
     })
 
     const handleProjectClick = ifNotPreview(() => {
-        window.open(data.repo, "_blank")
+        window.open(data.repo, '_blank')
     })
 
     const handleDonate = ifNotPreview(() => {
-        goto(DonationPath)
+        goto(RouteDonate(data.at))
     })
 
     const handleMediaError = (e) => {
@@ -81,31 +81,31 @@
     }
 
     const prefetchDonate = ifNotPreview(() => {
-        prefetch(DonationPath)
+        prefetch(RouteDonate(data.at))
     })
 
     const handleActivate = ifNotPreview(() => {
-        goto(ActivationPath)
+        goto(RouteActivate(data.at))
     })
 
     const prefetchActivate = ifNotPreview(() => {
-        prefetch(ActivationPath)
+        prefetch(RouteActivate(data.at))
     })
 
     const handleDeactivate = ifNotPreview(() => {
-        goto(DeactivationPath)
+        goto(RouteDeactivate(data.at))
     })
 
     const prefetchDeactivate = ifNotPreview(() => {
-        prefetch(DeactivationPath)
+        prefetch(RouteDeactivate(data.at))
     })
 
     const handleTransfer = ifNotPreview(() => {
-        goto(TransferPath)
+        goto(RouteTransfer(data.at))
     })
 
     const prefetchTransfer = ifNotPreview(() => {
-        prefetch(TransferPath)
+        prefetch(RouteTransfer(data.at))
     })
 
     const handleChipClick = (e) => {
@@ -126,11 +126,21 @@
 
     <div class:is-unconfirmed={isUnconfirmed}
          class:animation-fading={isUnconfirmed}
-         class="item-wrapper">
+         on:mouseenter={() => isElevated=true}
+         on:mouseleave={() => isElevated=false}
+         class:mdc-elevation--z8={isElevated}
+         class="item-wrapper mdc-elevation-transition">
         <Card>
-            <PrimaryAction on:click={handleDetailsClick}>
+            <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
-                <Media aspectRatio="16x9" style={mediaStyle}/>
+                <Media aspectRatio="16x9" style={mediaStyle}>
+                    <div class="badge-wrapper">
+                        <BadgeCollection token={data} />
+                    </div>
+                    <div class="rank-wrapper">
+                        <TokenRank token={data} />
+                    </div>
+                </Media>
                 <Content class="mdc-typography--body2">
                     <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
                     <div class="tags-wrapper">
@@ -141,10 +151,6 @@
                         </Set>
                     </div>
                     {data.desc}
-                    <div class="donation-info">
-                        <small>Donated: {donation} BURST</small>
-                        <small>Donations: {data.donationCount}</small>
-                    </div>
                 </Content>
             </PrimaryAction>
             {#if variant !== TokenItemVariant.Unconfirmed && variant !== TokenItemVariant.NoActions}
@@ -173,7 +179,7 @@
                                 <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
                             {/if}
                             <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
-                            <IconButton class="material-icons" on:click={handleDetailsClick} title="More details">description</IconButton>
+                            <IconButton class="material-icons" on:hover={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>
@@ -192,13 +198,6 @@
     .item-wrapper,
     .item-container {
         position: relative;
-    }
-
-    .item-wrapper .donation-info {
-        display: flex;
-        flex-direction: column;
-        line-height: normal;
-        margin-top: 0.5rem;
     }
 
     .stamp-wrapper {
@@ -220,6 +219,20 @@
 
     .tags-wrapper :global(.mdc-chip-set) {
         padding: 0;
+        margin-bottom: 0.25rem;
     }
 
+    .badge-wrapper {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        filter: drop-shadow(0px 2px 2px #555555)
+    }
+
+    .rank-wrapper {
+        position: absolute;
+        right: 1rem;
+        bottom: 0;
+        filter: drop-shadow(0px 2px 2px #555555)
+    }
 </style>

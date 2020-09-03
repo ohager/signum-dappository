@@ -1,5 +1,7 @@
 import * as appStore from './appStore'
 import * as burstFeeStore from './burstFeeStore'
+import * as accountStore from './accountStore'
+import * as tokenStore from './tokenStore'
 import AccountDialog from './AccountDialog.svelte'
 import AccountInput from './AccountInput.svelte'
 import Header from './Header.svelte'
@@ -12,12 +14,13 @@ import RegisterFabButton from './RegisterFabButton.svelte'
 import Searchbar from './Searchbar.svelte'
 import Stamp from './Stamp.svelte'
 import TabContent from './TabContent.svelte'
-import TokenItem from './TokenItem.svelte'
-import { TokenItemVariant } from './TokenItemVariant'
+import { TokenItem, TokenItemVariant } from './tokenItem'
+import ThemeProvider from './ThemeProvider.svelte'
 
 export {
     AccountDialog,
     AccountInput,
+    accountStore,
     appStore,
     burstFeeStore,
     Header,
@@ -31,5 +34,7 @@ export {
     Stamp,
     TabContent,
     TokenItemVariant,
-    TokenItem
+    TokenItem,
+    tokenStore,
+    ThemeProvider
 }

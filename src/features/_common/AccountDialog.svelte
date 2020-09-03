@@ -11,7 +11,7 @@
     import debounce from 'lodash.debounce'
     import { accountService } from '../../services/accountService'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import { setAccount } from '../account/accountStore'
+    import { setAccount } from './accountStore'
 
     let isRegistering = false
     let account = ''
@@ -83,7 +83,6 @@
         </p>
 
         <TextField
-                fullwidth
                 bind:value={account}
                 invalid={!isValid}
                 label="Account"

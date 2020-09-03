@@ -6,7 +6,7 @@
     import { EmptyToken } from '../../utils/emptyToken'
     import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import { account$ } from './accountStore'
+    import { account$ } from '../_common/accountStore'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'

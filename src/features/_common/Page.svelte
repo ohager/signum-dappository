@@ -1,16 +1,24 @@
 <script>
     import Paper from '@smui/paper'
+
+    export let id = ''
 </script>
 
 <style>
     .page {
-        margin: 0 auto;
+        margin: 1rem auto 0;
         max-width: 80%;
     }
 
     @media (max-width: 480px) {
         .page {
             max-width: 100%;
+        }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+        .page {
+            max-width: 98%;
         }
     }
 
@@ -21,7 +29,7 @@
     }
 </style>
 
-<section class="page">
+<section class="page" {id}>
     <Paper>
         <slot/>
     </Paper>
