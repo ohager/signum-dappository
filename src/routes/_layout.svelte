@@ -1,16 +1,26 @@
+<script context="module">
+    import { Vars } from '../context'
+    export async function preload({ params, query }) {
+        return {isTestnet: Vars.IsTestnet}
+    }
+</script>
+
+
 <script>
     import { Header, Message, AccountDialog, LoadingBar, ThemeProvider } from '../features/_common'
     import LeftSideMenu from '../features/_common/LeftSideMenu.svelte'
     import { Scrim } from '@smui/drawer'
+    import Stamp from '../features/_common/Stamp.svelte'
 
     export let segment
-    export let preload
+    // export let preload
+    export let isTestnet
 
     let isMenuOpen = false
 </script>
 
 <ThemeProvider>
-    <Header {isMenuOpen} />
+    <Header {isMenuOpen} {isTestnet} />
     <Message/>
     <main>
         <LeftSideMenu bind:open={isMenuOpen} />
@@ -52,4 +62,5 @@
         top: var(--header-height);
         overflow: auto;
     }
+
 </style>

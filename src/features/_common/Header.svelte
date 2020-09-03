@@ -5,7 +5,6 @@
     import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
     import IconButton from '@smui/icon-button'
     import { RouteAccountTokens, RouteHome } from '../../utils/routes'
-    import { rotate } from '../../utils/transitionRotate'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { account$, clearAccount } from './accountStore'
@@ -14,8 +13,10 @@
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
     import { ThemeNames } from '../../utils/themeNames'
     import Logo from './Logo.svelte'
+    import Stamp from './Stamp.svelte'
 
     export let isMenuOpen = false
+    export let isTestnet = false
 
     $: currentAccount = $account$.accountId
     $: hasAccount = !isEmptyString(currentAccount)
@@ -71,6 +72,11 @@
         </Section>
     </Row>
     <SyncProgressBar/>
+    {#if isTestnet }
+        <div class="testnet-marker">
+            <Stamp text="testnet"/>
+        </div>
+    {/if}
 </TopAppBar>
 
 <style>
@@ -105,6 +111,15 @@
     :global(.menu-icon-wrapper .menu-icon > .mdc-icon-button) {
         position: absolute;
         color: white !important;
+    }
+
+    .testnet-marker {
+        position: absolute;
+        bottom: 1rem;
+        z-index: 100;
+        pointer-events: none;
+        left: calc(50% - 80px);
+        top: 16px;
     }
 
 </style>
