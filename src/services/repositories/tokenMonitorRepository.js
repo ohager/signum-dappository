@@ -3,8 +3,8 @@ import { db } from './database'
 const DefaultDatabase = db
 
 export class TokenMonitorRepository {
-    constructor(db = DefaultDatabase) {
-        this._db = db.tokenMonitors
+    constructor(database = DefaultDatabase) {
+        this._db = database.tokenMonitors
     }
 
     async getAll(){
