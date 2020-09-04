@@ -55,7 +55,7 @@ export class TokenMonitorService {
             abortAfterSecs: Vars.TokenWatcherTimeoutSecs,
             intervalSecs: Vars.TokenWatcherIntervalSecs,
         })
-        monitor.watch({
+        monitor.start({
             predicateFn: (token) => token[fieldName] === expectedValue,
             callback: async (tokenData, fulfilled) => {
                 await this.removeMonitor(tokenData.at)

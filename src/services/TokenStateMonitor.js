@@ -2,7 +2,6 @@ import { ApplicationToken } from './repositories/models/applicationToken'
 import { BurstApi } from '../context'
 
 export class TokenStateMonitor {
-
     constructor({ tokenId, intervalSecs, abortAfterSecs }) {
         this._tokenId = tokenId
         this._intervalSecs = intervalSecs
@@ -14,7 +13,7 @@ export class TokenStateMonitor {
         console.debug(`[${this._tokenId}] - ${msg}`)
     }
 
-    watch({ predicateFn, callback, startTime }) {
+    start({ predicateFn, callback, startTime }) {
         this._debug('Monitoring...')
         this._handle = setTimeout(async () => {
             try {
@@ -26,7 +25,7 @@ export class TokenStateMonitor {
                 }
                 const shouldRestart = (Date.now() - startTime) / 1000 < this._abortAfterSecs
                 if (shouldRestart) {
-                    this.watch({ predicateFn, callback, startTime })
+                    this.start({ predicateFn, callback, startTime })
                 } else {
                     this._debug('Monitor timed out')
                     callback(tokenData, false)
@@ -35,7 +34,6 @@ export class TokenStateMonitor {
                 this._debug(`Monitor failed: ${e}`)
             }
         }, this._intervalSecs * 1000)
-
     }
 
     abort() {
