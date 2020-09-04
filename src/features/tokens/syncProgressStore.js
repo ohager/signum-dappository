@@ -3,12 +3,13 @@ import { applicationTokenService } from '../../services/applicationTokenService'
 import { isClientSide } from '../../utils/isClientSide'
 import { Events } from '../../utils/events'
 import { Vars } from '../../context'
+import { voidFn } from '../../utils/voidFn'
 
 const InitialSyncProgressState = 0
 const UpdateInterval = Vars.ContractPollingIntervalSecs
 
 export const syncProgress$ = readable(InitialSyncProgressState, (set) => {
-    if (!isClientSide()) return
+    if (!isClientSide()) return voidFn
 
     const service = applicationTokenService
     let updateProgress = ({ detail }) => {

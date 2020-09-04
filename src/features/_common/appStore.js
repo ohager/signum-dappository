@@ -2,11 +2,12 @@ import { writable } from 'svelte/store'
 import { SettingsKeys, settingsService } from '../../services/settingsService'
 import { isClientSide } from '../../utils/isClientSide'
 import { ThemeNames } from '../../utils/themeNames'
+import { voidFn } from '../../utils/voidFn'
 
 const PrefersDarkModeQuery = '(prefers-color-scheme: dark)'
 
 export const theme$ = writable(ThemeNames.Default, set => {
-    if (!isClientSide()) return
+    if (!isClientSide()) return voidFn
 
     const getSystemThemeMode = () =>
         window.matchMedia(PrefersDarkModeQuery).matches ? ThemeNames.Dark : ThemeNames.Default
@@ -28,7 +29,7 @@ export const theme$ = writable(ThemeNames.Default, set => {
 })
 
 export function setTheme(themeName) {
-    if (!isClientSide()) return
+    if (!isClientSide()) return voidFn
     theme$.update(_ => {
         settingsService.updateValue(SettingsKeys.Theme, themeName)
         return themeName

@@ -2,15 +2,16 @@ import { writable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
 import { dispatchEvent } from '../../utils/dispatchEvent'
 import { tokenMonitorService } from '../../services/tokenMonitorService'
+import { voidFn } from '../../utils/voidFn'
 
 const InitialState = []
 export const activeTokenMonitors$ = writable(InitialState, (set) => {
-    if(!isClientSide()) return
+    if(!isClientSide()) return voidFn
 
     tokenMonitorService.restoreMonitors().then(() => {
         set(tokenMonitorService.activeMonitors)
     })
-    return  () => {
+    return () => {
         set(InitialState)
     }
 })
