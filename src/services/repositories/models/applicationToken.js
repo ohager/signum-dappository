@@ -22,20 +22,20 @@
  */
 
 import MagicMapper from 'magic-mapper'
-import {ContractDataView} from '@burstjs/contracts'
+import { ContractDataView } from '@burstjs/contracts'
 import { TokenStatus } from '../../../utils/tokenStatus'
 
 const mapper = new MagicMapper({
     exclusive: true,
     propertyTransform: propertyName => {
-        if(propertyName === 'balanceNQT'){
+        if (propertyName === 'balanceNQT') {
             return 'balancePlanck'
         }
-        if(propertyName === 'minActivation'){
+        if (propertyName === 'minActivation') {
             return 'minActivationPlanck'
         }
         return propertyName
-    }
+    },
 })
 
 const mappingSchema = {
@@ -62,13 +62,13 @@ const ContractDataIndices = {
     Inventor: 2,
     Donated: 3,
     DonationCount: 4,
-    Owner: 5
+    Owner: 5,
 }
 
 function parseMachineData(contract) {
     const view = new ContractDataView(contract)
-    const version = parseInt(view.getVariableAsDecimal(ContractDataIndices.Version))
-    const isActive = parseInt(view.getVariableAsDecimal(ContractDataIndices.Active)) === 1
+    const version = parseInt(view.getVariableAsDecimal(ContractDataIndices.Version), 10)
+    const isActive = parseInt(view.getVariableAsDecimal(ContractDataIndices.Active), 10) === 1
     const donationPlanck = view.getVariableAsDecimal(ContractDataIndices.Donated)
     const donationCount = view.getVariableAsDecimal(ContractDataIndices.DonationCount)
     const owner = view.getVariableAsDecimal(ContractDataIndices.Owner)
@@ -81,18 +81,18 @@ function parseMachineData(contract) {
     }
 }
 
-function parseStatus(contract){
-    const {dead, frozen, finished, running, stopped} = contract
-    if(dead) return TokenStatus.Dead
-    if(finished) return TokenStatus.Ok
-    if(stopped) return TokenStatus.Ok
-    if(running) return TokenStatus.Running
-    if(frozen) return TokenStatus.NoFunds
+function parseStatus(contract) {
+    const { dead, frozen, finished, running, stopped } = contract
+    if (dead) return TokenStatus.Dead
+    if (finished) return TokenStatus.Ok
+    if (stopped) return TokenStatus.Ok
+    if (running) return TokenStatus.Running
+    if (frozen) return TokenStatus.NoFunds
 }
 
 export class ApplicationToken {
     constructor(data) {
-        Object.keys(data).forEach(k => this[k] = data[k])
+        Object.keys(data).forEach(k => (this[k] = data[k]))
     }
 
     static schema() {
@@ -107,7 +107,7 @@ export class ApplicationToken {
             const status = parseStatus(contract)
             delete data.description
             delete data.machineData
-            return new ApplicationToken({ ...data, ...info, ...state, status})
+            return new ApplicationToken({ ...data, ...info, ...state, status })
         } catch (e) {
             return null // ignore unreadable contract
         }

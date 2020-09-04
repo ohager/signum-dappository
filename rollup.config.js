@@ -15,10 +15,10 @@ const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
 
 const dedupe = importee => importee === 'svelte' || importee.startsWith('svelte/')
-const onwarn = (warning, onwarn) =>
+const onwarn = (warning, onwarnfn) =>
     (warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
     (warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
-    onwarn(warning);
+    onwarnfn(warning);
 
 const postcssOptions = () => ({
     extensions: ['.scss', '.sass'],
