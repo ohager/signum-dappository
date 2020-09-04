@@ -7,7 +7,7 @@ export class UnconfirmedTokensRepository {
         this._db = database.unconfirmedTokens
     }
 
-    async get(){
+    async get() {
         return this._db.toArray()
     }
 
