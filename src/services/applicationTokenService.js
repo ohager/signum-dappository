@@ -1,6 +1,6 @@
 import { applicationTokenRepository } from './repositories/applicationTokenRepository.js'
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { BurstApi, Vars, TokenContract } from '../context'
+import { BurstApi, TokenContract, Vars } from '../context'
 import { ApplicationToken } from './repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
@@ -12,16 +12,13 @@ import { finishLoading, startLoading } from '../features/_common/appStore'
 const MaxParallelFetches = 6
 
 export class ApplicationTokenService {
-
     constructor(tokenRepository = applicationTokenRepository) {
         this._tokenRepository = tokenRepository
         this._dispatch = dispatchEvent
     }
 
     _fetchContractDetailsChunked(contractIds) {
-        return Promise.all(
-            contractIds.map(cid => BurstApi.contract.getContract(cid)),
-        )
+        return Promise.all(contractIds.map(cid => BurstApi.contract.getContract(cid)))
     }
 
     async _fetchContractIds() {
@@ -85,9 +82,8 @@ export class ApplicationTokenService {
             startLoading()
             const contractId = token.at
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
-            const accountId = getAccountIdFromPublicKey(publicKey)
             const feeValue = await accountService.getSuggestedFee()
-            let transactionId = await BurstApi.contract.callContractMethod({
+            await BurstApi.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 methodHash,
@@ -102,7 +98,6 @@ export class ApplicationTokenService {
         } finally {
             finishLoading()
         }
-
     }
 
     async deactivateToken(token, passphrase) {
@@ -115,6 +110,7 @@ export class ApplicationTokenService {
             token,
             passphrase,
             TokenContract.MethodHash.transfer,
+            // eslint-disable-next-line prettier/prettier
             [newOwnerId],
         )
         this._dispatch(Events.Success, 'Token transferred successfully')
@@ -127,7 +123,9 @@ export class ApplicationTokenService {
             const accountId = getAccountIdFromPublicKey(publicKey)
             const balanceBurst = await accountService.getBalance(accountId)
             if (balanceBurst.less(TokenContract.CreationFee)) {
-                throw new Error(`Accounts balance needs at least ${TokenContract.CreationFee.toString()}`)
+                throw new Error(
+                    `Accounts balance needs at least ${TokenContract.CreationFee.toString()}`,
+                )
             }
 
             let { transaction: unconfirmedTokenId } = await BurstApi.contract.publishContract({
@@ -141,7 +139,11 @@ export class ApplicationTokenService {
             })
 
             // TODO: better set a state within the collection and not using an additional repo
-            await unconfirmedTokenService.addToken({ at: unconfirmedTokenId, creator: accountId, ...tokenData })
+            await unconfirmedTokenService.addToken({
+                at: unconfirmedTokenId,
+                creator: accountId,
+                ...tokenData,
+            })
             this._dispatch(Events.Success, 'Token successfully generated')
             return unconfirmedTokenId
         } catch (e) {
