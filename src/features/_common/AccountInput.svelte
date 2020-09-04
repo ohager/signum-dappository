@@ -2,11 +2,9 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
-    import { isEmptyString } from '../../utils/isEmptyString'
     import { assureAccountId } from '../../utils/assureAccountId'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
-    import { voidFn } from '../../utils/voidFn'
     import { accountService } from '../../services/accountService'
 
     export let account = ''

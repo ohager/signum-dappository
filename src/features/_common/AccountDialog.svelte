@@ -4,22 +4,19 @@
     import Button, { Label } from '@smui/button'
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import { RouteHome, RouteAccountTokens, RouteRegister } from '../../utils/routes'
+    import { RouteAccountTokens, RouteRegister } from '../../utils/routes'
     import { Events } from '../../utils/events'
     import { assureAccountId } from '../../utils/assureAccountId'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import debounce from 'lodash.debounce'
     import { accountService } from '../../services/accountService'
-    import { isEmptyString } from '../../utils/isEmptyString'
     import { setAccount } from './accountStore'
 
     let isRegistering = false
     let account = ''
-    let isOpen = false
     let isValidating = false
     let isValid = false
     let dialog = null
-    let timer = null
 
     async function validateAccount(accountId) {
         isValidating = true

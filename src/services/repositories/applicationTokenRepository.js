@@ -1,30 +1,30 @@
-import {db} from './database'
+import { db } from './database'
 
 const DefaultDatabase = db
 
 export class ApplicationTokenRepository {
-    constructor(db = DefaultDatabase) {
-        this._db = db.appTokens;
+    constructor(database = DefaultDatabase) {
+        this._db = database.appTokens
     }
 
     get collection() {
-        return this._db;
+        return this._db
     }
 
-    async upsert(token){
+    async upsert(token) {
         await this._db.put(token)
     }
 
-    async upsertBulk(tokens){
+    async upsertBulk(tokens) {
         await this._db.bulkPut(tokens)
     }
 
-    async get(filter, order){
+    async get(filter, order) {
         // TODO: apply filter
         return this._db.orderBy(order).toArray()
     }
 
-    async update(id, data){
+    async update(id, data) {
         return await this._db.update(id, data)
     }
 }

@@ -3,8 +3,8 @@ import { db } from './database'
 const DefaultDatabase = db
 
 export class UnconfirmedTokensRepository {
-    constructor(db = DefaultDatabase) {
-        this._db = db.unconfirmedTokens
+    constructor(database = DefaultDatabase) {
+        this._db = database.unconfirmedTokens
     }
 
     async get(){

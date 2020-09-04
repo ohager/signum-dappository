@@ -3,11 +3,11 @@ import { db } from './database'
 const DefaultDatabase = db
 
 export class SettingsRepository {
-    constructor(db = DefaultDatabase) {
-        this._db = db.settings
+    constructor(database = DefaultDatabase) {
+        this._db = database.settings
     }
 
-    async get(key){
+    async get(key) {
         return this._db.where('key').equals(key).first()
     }
 
