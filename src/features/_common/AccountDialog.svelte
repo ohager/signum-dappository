@@ -7,6 +7,7 @@
     import { RouteAccountTokens, RouteRegister } from '../../utils/routes'
     import { Events } from '../../utils/events'
     import { assureAccountId } from '../../utils/assureAccountId'
+    import { isEmptyString } from '../../utils/isEmptyString'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import debounce from 'lodash.debounce'
     import { accountService } from '../../services/accountService'

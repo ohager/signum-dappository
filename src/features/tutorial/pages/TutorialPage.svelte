@@ -1,5 +1,5 @@
 <script>
-    import {fade,fly} from 'svelte/transition'
+    import { fade } from 'svelte/transition'
 </script>
 
 <div class="tutorial-page" in:fade="{{ duration: 500 }}">

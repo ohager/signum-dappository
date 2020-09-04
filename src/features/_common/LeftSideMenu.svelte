@@ -12,7 +12,6 @@
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { ThemeNames } from '../../utils/themeNames'
 
-
     let drawerElement
     export let open = false
     let active
@@ -85,6 +84,7 @@
 </script>
 
 <svelte:window on:show-menu={showDrawer}/>
+
 <Drawer variant="modal" bind:this={drawerElement} bind:open={open}>
     <Header>
         <Title>The Burst dAppository</Title>
