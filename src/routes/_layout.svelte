@@ -1,28 +1,48 @@
 <script context="module">
     import { Vars } from '../context'
     export async function preload({ params, query }) {
-        return {isTestnet: Vars.IsTestnet === 'true'}
+        return {
+            isTestnet: Vars.IsTestnet === 'true',
+            isMaintenance: Vars.IsMaintenance === 'true'
+        }
     }
 </script>
 
 
 <script>
-    import { Header, Message, AccountDialog, LoadingBar, ThemeProvider } from '../features/_common'
-    import LeftSideMenu from '../features/_common/LeftSideMenu.svelte'
+    import {
+        Header,
+        Message,
+        AccountDialog,
+        LoadingBar,
+        ThemeProvider,
+        LeftSideMenu,
+        Maintenance,
+        MaintenanceHeader,
+    } from '../features/_common'
+
     export let isTestnet
+    export let isMaintenance
 
     let isMenuOpen = false
 </script>
 
 <ThemeProvider>
-    <Header {isMenuOpen} {isTestnet} />
-    <Message/>
-    <main>
-        <LeftSideMenu bind:open={isMenuOpen} />
-        <LoadingBar/>
-        <AccountDialog/>
-        <slot/>
-    </main>
+    {#if isMaintenance}
+        <MaintenanceHeader />
+        <main>
+            <Maintenance />
+        </main>
+    {:else}
+        <Header {isMenuOpen} {isTestnet} />
+        <Message/>
+        <main>
+            <LeftSideMenu bind:open={isMenuOpen} />
+            <LoadingBar/>
+            <AccountDialog/>
+            <slot/>
+        </main>
+    {/if}
 </ThemeProvider>
 
 
