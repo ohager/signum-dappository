@@ -6,7 +6,7 @@
 <TutorialPage>
     <h1 class="mdc-typography--headline6">How to create a token?</h1>
     <div class="container">
-        <div class="highlight animation-pulse">
+        <div class="highlight animation-growing">
             <RegisterFabButton />
         </div>
         <p class="mdc-typography--body1">
@@ -18,7 +18,7 @@
         </p>
         <ol class="mdc-typography--body1">
             <li>
-                to register you must "login" with your generator account, that will receive the donations later
+                to register you must "login" with your creator account, that will receive the donations later
             </li>
             <li>
                 fill in the form as completely as possible and confirm the process with your secret passphrase
@@ -27,7 +27,7 @@
                 wait until the registration is completed (about 4 minutes)
             </li>
             <li>
-                activate the token, i.e. send a small amount to the token
+                activate the token, that means you have to send a small amount (5 Burst) to the token
             </li>
         </ol>
         <p class="mdc-typography--body1">
@@ -44,21 +44,7 @@
         position: relative;
         top: 16px;
         transform-origin: center;
-        animation: growing 4s infinite ease-in-out;
     }
 
-    @keyframes growing {
-        0% {
-            transform: scale(0.95);
-        }
-
-        50% {
-            transform: scale(1);
-        }
-
-        100% {
-            transform: scale(0.95);
-        }
-    }
 
 </style>
