@@ -14,7 +14,9 @@ import Page from './Page.svelte'
 import PassphraseInput from './PassphraseInput.svelte'
 import PaymentQrCode from './PaymentQrCode.svelte'
 import RegisterFabButton from './RegisterFabButton.svelte'
-import Searchbar from './Searchbar.svelte'
+import Omnibar from './omnibar/Omnibar.svelte'
+import { omnibarStore$ } from './omnibar/omnibarStore'
+import { OmnibarViewMode } from './omnibar/OmnibarViewMode'
 import Stamp from './Stamp.svelte'
 import TabContent from './TabContent.svelte'
 import { TokenItem, TokenItemVariant } from './tokenItem'
@@ -25,22 +27,24 @@ export {
     AccountInput,
     accountStore,
     appStore,
+    omnibarStore$,
     burstFeeStore,
     Header,
-    LoadingBar,
     LeftSideMenu,
+    LoadingBar,
     Maintenance,
     MaintenanceHeader,
     Message,
+    Omnibar,
+    OmnibarViewMode,
     Page,
     PassphraseInput,
     PaymentQrCode,
     RegisterFabButton,
-    Searchbar,
     Stamp,
     TabContent,
-    TokenItemVariant,
-    TokenItem,
-    tokenStore,
     ThemeProvider,
+    TokenItem,
+    TokenItemVariant,
+    tokenStore,
 }

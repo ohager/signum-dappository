@@ -1,31 +1,35 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
-    import { TokenItem, TokenItemVariant, Searchbar } from '../_common'
-    import { tokenStore } from '../_common'
+    import {
+        TokenItem,
+        TokenItemVariant,
+        Omnibar,
+        OmnibarViewMode,
+        tokenStore,
+        omnibarStore$,
+    } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
-    import { DefaultFilter, filterTokens } from '../../utils/filterTokens'
-
-    let searchObject = DefaultFilter
+    import { filterTokens } from '../../utils/filterTokens'
 
     const { tokens$ } = tokenStore
 
     $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
-    $: activeTokens = filterTokens(unfilteredActiveTokens, searchObject)
+    $: activeTokens = filterTokens(unfilteredActiveTokens, $omnibarStore$)
     $: isSyncing = $syncProgress$ < 1
     $: hasTokens = activeTokens.length > 0
-    $: isSearching = searchObject.text.length > 0
+    $: isSearching = $omnibarStore$.text.length > 0
     $: countText = `${activeTokens.length}/${unfilteredActiveTokens.length}`
 
-    function handleTagClick({detail: tagName}){
-        searchObject.text = tagName
+    function handleTagClick({ detail: tagName }) {
+        $omnibarStore$.text = tagName
     }
 
 </script>
 
 <div class="container">
     <section class="header">
-            <Searchbar bind:value={searchObject}/>
+            <Omnibar />
             <div class="counter mdc-typography--body2">{countText}</div>
     </section>
 
@@ -108,6 +112,10 @@
     .body .item {
         padding: 0.5rem;
         width: 360px;
+    }
+
+    .body .item.small {
+        width: 240px;
     }
 
     .body .item-list {

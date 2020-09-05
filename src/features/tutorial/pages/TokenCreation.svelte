@@ -27,7 +27,7 @@
                 wait until the registration is completed (about 4 minutes)
             </li>
             <li>
-                activate the token, that means you have to send a small amount (5 Burst) to the token
+                finally, activate the token. That means you have to send a small amount (5 Burst) to the token
             </li>
         </ol>
         <p class="mdc-typography--body1">

@@ -25,15 +25,6 @@ const sorter = options => (a, b) => {
     return delta
 }
 
-export const DefaultFilter = {
-    text: '',
-    options: {
-        newestFirst: false,
-        orderByScore: false,
-        orderAlphabetically: false,
-    },
-}
-
 export const filterTokens = (unfilteredTokens, { text, options }) => {
     let filtered = unfilteredTokens.filter(filterByText(text))
 

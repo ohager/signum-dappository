@@ -29,7 +29,7 @@
                 <li>
                     <b>Transfer</b>: That way the ownership can be transferred to another person. Once transferred
                     all <em>donations will be redirected to the new owner</em>. The previous owner won't be refunded and has
-                    no more control over the token.
+                    no control over the token anymore.
                 </li>
             </ol>
         </div>

@@ -15,6 +15,7 @@
     import BadgeCollection from '../badge/BadgeCollection.svelte'
     import TokenRank from './TokenRank.svelte'
 
+    export let small = false
     export let variant = TokenItemVariant.Normal
     export let data = {
         at: '',
@@ -116,7 +117,7 @@
 
 </script>
 
-<div class="item-container">
+<div class="item-container" class:small>
 
     {#if !isEmptyString(stampText) }
         <div class='stamp-wrapper'>

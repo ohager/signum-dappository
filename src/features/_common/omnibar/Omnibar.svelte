@@ -3,15 +3,13 @@
     import TextField from '@smui/textfield'
     import Icon from '@smui/textfield/icon'
     import IconButton from '@smui/icon-button'
-    import SearchFilter from './SearchFilter.svelte'
-    import { DefaultFilter } from '../../utils/filterTokens'
-
-    export let value = DefaultFilter
+    import OmnibarOptions from './OmnibarOptions.svelte'
+    import { omnibarStore$, setText } from './omnibarStore'
 
     let isFilterMenuOpen = false
 
     function handleDelete() {
-        value.text = ''
+        setText('')
     }
 
     function toggleMenu() {
@@ -26,11 +24,11 @@
             withLeadingIcon
             withTrailingIcon
             variant="outlined"
-            bind:value={value.text}
+            bind:value={$omnibarStore$.text}
             label="Enter search term, e.g. text, tag, name"
         >
             <Icon class="material-icons">search</Icon>
-            {#if value.text.length}
+            {#if $omnibarStore$.text.length}
                 <Icon class="material-icons">delete</Icon>
                 <div on:click={handleDelete} class="delete-action"></div>
             {/if}
@@ -47,7 +45,7 @@
             {/if}
         </div>
     </div>
-    <SearchFilter expanded={isFilterMenuOpen} bind:options={value.options} />
+    <OmnibarOptions expanded={isFilterMenuOpen} bind:options={$omnibarStore$.options}/>
 </div>
 
 
@@ -86,7 +84,6 @@
 
     :global(.filter-icon-wrapper .menu-icon > .mdc-icon-button) {
         position: absolute;
-        /*color: white !important;*/
     }
 
 </style>
