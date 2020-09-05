@@ -69,7 +69,7 @@
                     <Graphic>
                         <img src="/img/flaticon-logo.svg" height="32px" alt="flaticon logo">
                     </Graphic>
-                    <Text>Flaticon Authors: Pixel Perfect, Free Pic</Text>
+                    <Text>Flaticon Authors: Pixel Perfect, Free Pic, Pro Symbols</Text>
                 </Item>
             </List>
             <div class="mdc-typography--headline6">Special Credits</div>

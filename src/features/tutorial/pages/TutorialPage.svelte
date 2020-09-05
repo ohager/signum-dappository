@@ -8,8 +8,8 @@
 
 <style>
     .tutorial-page {
-        height: 400px;
-        max-height: 400px;
+        height: 480px;
+        max-height: 480px;
         overflow-y: auto;
     }
 </style>
