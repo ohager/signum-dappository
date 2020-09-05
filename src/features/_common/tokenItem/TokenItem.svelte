@@ -15,7 +15,7 @@
     import BadgeCollection from '../badge/BadgeCollection.svelte'
     import TokenRank from './TokenRank.svelte'
 
-    export let small = false
+    export let compact = false
     export let variant = TokenItemVariant.Normal
     export let data = {
         at: '',
@@ -117,7 +117,7 @@
 
 </script>
 
-<div class="item-container" class:small>
+<div class="item-container">
 
     {#if !isEmptyString(stampText) }
         <div class='stamp-wrapper'>
@@ -143,15 +143,19 @@
                     </div>
                 </Media>
                 <Content class="mdc-typography--body2">
-                    <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
-                    <div class="tags-wrapper">
-                        <Set chips={data.tags} let:chip>
-                            <Chip shouldRemoveOnTrailingIconClick={false} on:click={handleChipClick}>
-                                <Text>{chip}</Text>
-                            </Chip>
-                        </Set>
-                    </div>
-                    {data.desc}
+                    {#if !compact}
+                        <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
+                        <div class="tags-wrapper">
+                            <Set chips={data.tags} let:chip>
+                                <Chip shouldRemoveOnTrailingIconClick={false} on:click={handleChipClick}>
+                                    <Text>{chip}</Text>
+                                </Chip>
+                            </Set>
+                        </div>
+                        {data.desc}
+                    {:else}
+                        <h2 class="mdc-typography--headline6" style="margin: 0; font-size: 90%">{data.name}</h2>
+                    {/if}
                 </Content>
             </PrimaryAction>
             {#if variant !== TokenItemVariant.Unconfirmed && variant !== TokenItemVariant.NoActions}

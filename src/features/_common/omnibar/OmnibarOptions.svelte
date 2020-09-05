@@ -4,8 +4,7 @@
     import FormField from '@smui/form-field'
     import Expandable from '../Expandable.svelte'
     import { OmnibarViewMode } from './OmnibarViewMode'
-
-    let activeViewMode = OmnibarViewMode.Cards
+    import { isClientSide } from '../../../utils/isClientSide'
 
     export let expanded = false
 
@@ -13,16 +12,32 @@
         newestFirst: false,
         orderByScore: false,
         orderAlphabetically: false,
-        viewMode: activeViewMode
+        viewMode: OmnibarViewMode.Cards
     }
 
     function toggleViewOptions(selected) {
-        return () => activeViewMode = selected
+        return () => options.viewMode = selected
     }
+
+    $: viewMode = options.viewMode
+    $: barHeight = '48px'
+    $: {
+        if(isClientSide()){
+            const isMobile = window.matchMedia('(max-width: 480px)').matches
+            barHeight = isMobile ? '120px' : '48px'
+        }
+    }
+
+    function onResize(e){
+        barHeight = window.innerWidth < 480 ? '120px' : '48px'
+    }
+
 
 </script>
 
-<Expandable {expanded}>
+<svelte:window on:resize={onResize} />
+
+<Expandable {expanded} height={barHeight}>
     <div class="container">
         <div class="filter-options">
             <FormField>
@@ -39,15 +54,15 @@
             </FormField>
         </div>
         <div class="view-options">
-            <div class:active={activeViewMode === OmnibarViewMode.Cards}>
+            <div class:active={viewMode === OmnibarViewMode.Cards}>
                 <IconButton class="material-icons" on:click={toggleViewOptions(OmnibarViewMode.Cards)}>view_module
                 </IconButton>
             </div>
-            <div class:active={activeViewMode === OmnibarViewMode.SmallCards}>
+            <div class:active={viewMode === OmnibarViewMode.SmallCards}>
                 <IconButton class="material-icons" on:click={toggleViewOptions(OmnibarViewMode.SmallCards)}>view_comfy
                 </IconButton>
             </div>
-            <div class:active={activeViewMode === OmnibarViewMode.List}>
+            <div class:active={viewMode === OmnibarViewMode.List}>
                 <IconButton class="material-icons" on:click={toggleViewOptions(OmnibarViewMode.List)}>view_list
                 </IconButton>
             </div>

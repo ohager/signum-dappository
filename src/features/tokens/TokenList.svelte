@@ -1,5 +1,6 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
+    import { scale } from 'svelte/transition'
     import {
         TokenItem,
         TokenItemVariant,
@@ -7,6 +8,7 @@
         OmnibarViewMode,
         tokenStore,
         omnibarStore$,
+        Page
     } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
@@ -20,6 +22,7 @@
     $: hasTokens = activeTokens.length > 0
     $: isSearching = $omnibarStore$.text.length > 0
     $: countText = `${activeTokens.length}/${unfilteredActiveTokens.length}`
+    $: viewMode = $omnibarStore$.options.viewMode
 
     function handleTagClick({ detail: tagName }) {
         $omnibarStore$.text = tagName
@@ -27,7 +30,7 @@
 
 </script>
 
-<div class="container">
+<div  class="container">
     <section class="header">
             <Omnibar />
             <div class="counter mdc-typography--body2">{countText}</div>
@@ -56,17 +59,39 @@
                 </TokenItemMessageCard>
             </div>
         {:else}
-            <div class="item-list">
-                {#each activeTokens as data}
-                    <div class="item">
-                        <TokenItem {data} on:tag-click={handleTagClick}/>
+            <div class="item-list-container">
+                {#if viewMode === OmnibarViewMode.List}
+                    <div class="item-list">
+                        {#each activeTokens as data}
+                            <p>List Item</p>
+                        {/each}
                     </div>
-                {/each}
+                {:else if viewMode === OmnibarViewMode.SmallCards}
+                    <div class="item-list">
+                        {#each activeTokens as data}
+                            <div transition:scale class="item compact">
+                                <TokenItem {data} on:tag-click={handleTagClick} compact />
+                            </div>
+                        {/each}
+                    </div>
+
+                {:else}
+                    <div class="item-list">
+                        {#each activeTokens as data}
+                            <div transition:scale class="item">
+                                <TokenItem
+                                    {data}
+                                    on:tag-click={handleTagClick}
+                                    compact={viewMode === OmnibarViewMode.SmallCards}
+                                />
+                            </div>
+                        {/each}
+                    </div>
+                {/if}
             </div>
         {/if}
     </section>
 </div>
-
 
 <style>
     :root {
@@ -86,7 +111,6 @@
         flex-direction: row;
         margin: 1rem;
         padding: 1rem;
-        /*border: 1px solid #efefef;*/
         position: sticky;
         top: 0;
         z-index: 2;
@@ -114,11 +138,17 @@
         width: 360px;
     }
 
-    .body .item.small {
+    .body .item.compact {
         width: 240px;
     }
 
+    .body .item-list-container {
+        position: relative;
+        margin: 1rem
+    }
+
     .body .item-list {
+        position: absolute;
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
