@@ -27,10 +27,6 @@
     }
 </script>
 
-<svelte:head>
-    <title>Burst Applications</title>
-</svelte:head>
-
 <div>
     <TokenList/>
     <RegisterFabButton on:mouseenter={prefetchRoute} on:click={handleClick}/>

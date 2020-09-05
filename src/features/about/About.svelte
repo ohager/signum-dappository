@@ -149,5 +149,9 @@
         .credits-container {
             width: 80%;
         }
+
+        .general {
+            width: 100%;
+        }
     }
 </style>

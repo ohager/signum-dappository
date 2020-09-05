@@ -4,6 +4,9 @@ import { isClientSide } from '../../utils/isClientSide'
 import { ThemeNames } from '../../utils/themeNames'
 import { voidFn } from '../../utils/voidFn'
 
+//export const searchfilter$
+
+
 const PrefersDarkModeQuery = '(prefers-color-scheme: dark)'
 
 export const theme$ = writable(ThemeNames.Default, set => {

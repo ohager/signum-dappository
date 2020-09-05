@@ -4,31 +4,28 @@
     import { tokenStore } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
+    import { DefaultFilter, filterTokens } from '../../utils/filterTokens'
 
-    let searchTerm = ''
+    let searchObject = DefaultFilter
 
     const { tokens$ } = tokenStore
-    const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
-
-    const searchFilter = filter => ({ name, desc, tags }) =>
-        hasText(name, filter) || hasText(desc, filter) || tags.includes(filter)
 
     $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
-    $: activeTokens = unfilteredActiveTokens.filter(searchFilter(searchTerm))
+    $: activeTokens = filterTokens(unfilteredActiveTokens, searchObject)
     $: isSyncing = $syncProgress$ < 1
     $: hasTokens = activeTokens.length > 0
-    $: isSearching = searchTerm.length > 0
+    $: isSearching = searchObject.text.length > 0
     $: countText = `${activeTokens.length}/${unfilteredActiveTokens.length}`
 
     function handleTagClick({detail: tagName}){
-        searchTerm = tagName
+        searchObject.text = tagName
     }
 
 </script>
 
 <div class="container">
     <section class="header">
-            <Searchbar bind:value={searchTerm}/>
+            <Searchbar bind:value={searchObject}/>
             <div class="counter mdc-typography--body2">{countText}</div>
     </section>
 
@@ -100,8 +97,9 @@
         }
     }
 
-    .header > .counter {
+    .counter {
         position: absolute;
+        bottom: -20px;
         right: 20px;
         color: grey;
         font-size: small;

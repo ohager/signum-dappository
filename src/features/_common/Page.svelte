@@ -12,6 +12,7 @@
 
     @media (max-width: 480px) {
         .page {
+            margin: 0;
             max-width: 100%;
         }
     }

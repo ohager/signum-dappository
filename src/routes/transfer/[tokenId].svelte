@@ -5,10 +5,6 @@
     }
 </script>
 
-<svelte:head>
-    <title>Burst Applications - Token </title>
-</svelte:head>
-
 <script>
     import { tokens$ } from '../../features/_common/tokenStore'
     import Transfer from '../../features/account/Transfer.svelte'

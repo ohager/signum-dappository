@@ -11,7 +11,6 @@
     import { Events } from '../../utils/events'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
-    import { ThemeNames } from '../../utils/themeNames'
     import Logo from './Logo.svelte'
     import Stamp from './Stamp.svelte'
 
