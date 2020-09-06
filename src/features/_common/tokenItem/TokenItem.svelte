@@ -1,5 +1,5 @@
 <script>
-    import { beforeUpdate, createEventDispatcher } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     import Card, { ActionButtons, Actions, ActionIcons, PrimaryAction, Content, Media } from '@smui/card'
     import Button, { Label } from '@smui/button'
     import Chip, { Set, Text } from '@smui/chips'
@@ -53,8 +53,10 @@
     }
 
     const ifNotPreview = (fn) => () => {
-        if (variant === TokenItemVariant.Preview) return
-        fn()
+        if (variant === TokenItemVariant.Preview) {
+            return Promise.resolve()
+        }
+        return fn()
     }
 
     const handleShareClick = ifNotPreview(() => {
@@ -62,11 +64,13 @@
     })
 
     const prefetchDetails = ifNotPreview(() => {
+        console.log('prefetching...', data.at)
+
         prefetch(RouteTokenDetail(data.at))
     })
 
-    const handleDetailsClick = ifNotPreview(() => {
-        goto(RouteTokenDetail(data.at))
+    const handleDetailsClick = ifNotPreview(async () => {
+        await goto(RouteTokenDetail(data.at))
     })
 
     const handleProjectClick = ifNotPreview(() => {
@@ -132,7 +136,7 @@
          class:mdc-elevation--z8={isElevated}
          class="item-wrapper mdc-elevation-transition">
         <Card>
-            <PrimaryAction on:hover={prefetchDetails} on:click={handleDetailsClick}>
+            <PrimaryAction on:mouseenter={prefetchDetails} on:click={handleDetailsClick}>
                 <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
                 <Media aspectRatio="16x9" style={mediaStyle}>
                     <div class="badge-wrapper">
