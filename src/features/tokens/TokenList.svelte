@@ -1,5 +1,6 @@
 <script>
     import LinearProgress from '@smui/linear-progress'
+    import List from '@smui/list'
     import { scale } from 'svelte/transition'
     import {
         TokenItem,
@@ -8,11 +9,12 @@
         OmnibarViewMode,
         tokenStore,
         omnibarStore$,
-        Page
+        Page,
     } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
     import { filterTokens } from '../../utils/filterTokens'
+    import TokenListItem from '../_common/tokenItem/TokenListItem.svelte'
 
     const { tokens$ } = tokenStore
 
@@ -61,11 +63,11 @@
         {:else}
             <div class="item-list-container">
                 {#if viewMode === OmnibarViewMode.List}
-                    <div class="item-list">
+                    <ul class="item-list">
                         {#each activeTokens as data}
-                            <p>List Item</p>
+                            <TokenListItem {data} />
                         {/each}
-                    </div>
+                    </ul>
                 {:else if viewMode === OmnibarViewMode.SmallCards}
                     <div class="item-list">
                         {#each activeTokens as data}
@@ -74,16 +76,11 @@
                             </div>
                         {/each}
                     </div>
-
                 {:else}
                     <div class="item-list">
                         {#each activeTokens as data}
                             <div class="item">
-                                <TokenItem
-                                    {data}
-                                    on:tag-click={handleTagClick}
-                                    compact={viewMode === OmnibarViewMode.SmallCards}
-                                />
+                                <TokenItem {data} on:tag-click={handleTagClick} />
                             </div>
                         {/each}
                     </div>
@@ -114,15 +111,9 @@
         position: sticky;
         top: 0;
         z-index: 2;
-        box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        box-shadow: var(--box-shadow);
         background-color: var( --mdc-theme-surface);
         opacity: 97%;
-    }
-
-    @media (max-width: 480px) {
-        .header {
-            margin: 0;
-        }
     }
 
     .counter {
@@ -155,11 +146,32 @@
         justify-content: center;
     }
 
+    .body .item-list-container > ul.item-list {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        margin: auto;
+        padding: 0;
+    }
+
     .body .centered {
         padding: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+
+    @media (max-width: 480px) {
+        .header {
+            margin: 0;
+        }
+        .item-list.list {
+            width: 100%;
+        }
+        .body .item-list-container {
+            margin: 1rem 0 0 0;
+        }
     }
 
 </style>
