@@ -1,6 +1,5 @@
 <script context="module">
     export async function preload({ params, query }) {
-        console.log('called', params)
         const {tokenId} = params;
         return {tokenId}
     }

@@ -64,8 +64,6 @@
     })
 
     const prefetchDetails = ifNotPreview(() => {
-        console.log('prefetching...', data.at)
-
         prefetch(RouteTokenDetail(data.at))
     })
 
@@ -188,7 +186,7 @@
                                 <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
                             {/if}
                             <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
-                            <IconButton class="material-icons" on:hover={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
+                            <IconButton class="material-icons" on:mousenter={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>
