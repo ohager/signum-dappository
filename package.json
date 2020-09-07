@@ -71,6 +71,7 @@
     "rollup-plugin-terser": "^7.0.0",
     "sapper": "^0.28.4",
     "svelte": "^3.24.1",
-    "svelte-material-ui": "^1.0.0"
+    "svelte-material-ui": "^1.0.0",
+    "svelte-share-buttons-component": "^1.2.0"
   }
 }

@@ -4,6 +4,7 @@
     import Button, { Label } from '@smui/button'
     import Chip, { Set, Text } from '@smui/chips'
     import IconButton, { Icon } from '@smui/icon-button'
+    import MenuSurface from '@smui/menu-surface'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
     import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../../utils/routes'
@@ -14,6 +15,8 @@
     import { dispatchEvent } from '../../../utils/dispatchEvent'
     import BadgeCollection from '../badge/BadgeCollection.svelte'
     import TokenRank from './TokenRank.svelte'
+    import SocialMediaList from './SocialMediaList.svelte'
+
 
     export let compact = false
     export let variant = TokenItemVariant.Normal
@@ -32,6 +35,7 @@
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
     let isElevated = false
+    let sharingIconSurface = false
     const dispatch = createEventDispatcher()
 
     $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
@@ -60,7 +64,7 @@
     }
 
     const handleShareClick = ifNotPreview(() => {
-        dispatchEvent(Events.Info, 'Sharing not implemented yet')
+        sharingIconSurface.setOpen(true)
     })
 
     const prefetchDetails = ifNotPreview(() => {
@@ -185,7 +189,12 @@
                             {#if !isEmptyString(data.repo)}
                                 <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
                             {/if}
-                            <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
+                            <div class="share">
+                                <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
+                                <MenuSurface bind:this={sharingIconSurface} anchorCorner="TOP_LEFT">
+                                    <SocialMediaList token={data} />
+                                </MenuSurface>
+                            </div>
                             <IconButton class="material-icons" on:mousenter={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
                         </ActionIcons>
                     {/if}
