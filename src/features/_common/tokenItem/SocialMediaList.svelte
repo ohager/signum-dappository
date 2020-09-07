@@ -14,7 +14,7 @@
 
     const title = token.name
     const text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
-    const url = `${location.origin}/token/${token.at}`
+    const url = encodeURIComponent(`${location.origin}?q=${token.at}`)
 </script>
 
 <div class="container">
@@ -22,7 +22,7 @@
     <Reddit class="share-button" {title} {url} />
     <LinkedIn class="share-button" {url} />
     <Tumblr class="share-button" {title} {url} caption={title} />
-    <Telegram class="share-button" text="{text} - {url}" />
+    <Telegram class="share-button" {text} {url} />
     <WhatsApp class="share-button" {text} />
     <Twitter class="share-button" {text} {url} />
 </div>

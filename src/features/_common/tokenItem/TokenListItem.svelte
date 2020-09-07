@@ -96,8 +96,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        width: 50%;
-        flex-grow: 2;
+        min-width: 230px;
     }
     .badges {
         position: relative;
@@ -111,7 +110,7 @@
 
     .description {
         flex-grow: 1;
-        padding-right: 4rem;
+        padding: 0 4rem 0 1rem;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;

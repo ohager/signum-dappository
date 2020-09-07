@@ -7,9 +7,17 @@
     import { omnibarStore$, setText } from './omnibarStore'
     import { isMobile } from '../../../utils/isMobile'
 
+    export let text = ''
+
     let isFilterMenuOpen = false
 
     $: placeholder = isMobile() ? 'Enter search term' : 'Enter search term, e.g. text, tag, name'
+    $: {
+        if(text.length){
+            $omnibarStore$.text = text
+        }
+    }
+
 
     function handleDelete() {
         setText('')

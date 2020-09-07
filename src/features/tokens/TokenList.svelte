@@ -16,6 +16,8 @@
     import { filterTokens } from '../../utils/filterTokens'
     import TokenListItem from '../_common/tokenItem/TokenListItem.svelte'
 
+    export let searchText = ''
+
     const { tokens$ } = tokenStore
 
     $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
@@ -34,7 +36,7 @@
 
 <div  class="container">
     <section class="header">
-            <Omnibar />
+            <Omnibar text={searchText} />
             <div class="counter mdc-typography--body2">{countText}</div>
     </section>
 

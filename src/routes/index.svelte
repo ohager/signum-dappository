@@ -1,5 +1,12 @@
+<script context="module" >
+    export async function preload({ params, query }) {
+        return {
+            searchText: query.q,
+        }
+    }
+</script>
+
 <script>
-    // TODO: use context to inject config for dev and prod
     import { goto, prefetch } from '@sapper/app'
     import TokenList from '../features/tokens/TokenList.svelte'
     import { RouteRegister } from '../utils/routes'
@@ -8,6 +15,8 @@
     import { Events } from '../utils/events'
     import { dispatchEvent } from '../utils/dispatchEvent'
     import RegisterFabButton from '../features/_common/RegisterFabButton.svelte'
+
+    export let searchText = ''
 
     $: accountId = $account$.accountId
     $: hasAccount = !isEmptyString(accountId)
@@ -28,7 +37,7 @@
 </script>
 
 <div>
-    <TokenList/>
+    <TokenList {searchText} />
     <RegisterFabButton on:mouseenter={prefetchRoute} on:click={handleClick}/>
 </div>
 
