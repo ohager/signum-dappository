@@ -7,7 +7,7 @@
     import TokenRank from './TokenRank.svelte'
     import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
     import { isMobile } from '../../../utils/isMobile'
-
+    import  { BadgeCollection } from '../../_common'
     export let data = {
         at: '',
         name: '',
@@ -44,13 +44,21 @@
         <div class="mdc-typography--subtitle1">{data.name}</div>
         <div class="smaller mdc-typography--body1">Score: {score}</div>
     </div>
-    <div class="actions">
-        {#if isCompactView}
-            <IconButton class="material-icons" on:click={handleDonateClick}>favorite_border</IconButton>
-        {:else}
+    {#if !isCompactView}
+        <div class="description">
+            <small class="smaller mdc-typography--body1">{data.desc}</small>
+        </div>
+        <div class="badges">
+            <BadgeCollection token={data} />
+        </div>
+        <div class="actions">
             <Button on:click={handleDonateClick}><ButtonLabel>Donate</ButtonLabel></Button>
-        {/if}
-    </div>
+        </div>
+    {:else}
+        <div class="actions">
+            <IconButton class="material-icons" on:click={handleDonateClick}>favorite_border</IconButton>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -72,7 +80,6 @@
         object-fit: cover;
         width: 114px;
         height: 64px;
-        flex-grow: 1;
     }
 
     .token-list-item:hover {
@@ -92,9 +99,23 @@
         width: 50%;
         flex-grow: 2;
     }
+    .badges {
+        position: relative;
+    }
 
-    .actions {
+    .badges :global(.badges-collection) {
+        position: absolute;
+        right: 10px;
+        top: -16px;
+    }
+
+    .description {
         flex-grow: 1;
+        padding-right: 4rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
 </style>

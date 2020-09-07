@@ -4,6 +4,7 @@ import * as accountStore from './accountStore'
 import * as tokenStore from './tokenStore'
 import AccountDialog from './AccountDialog.svelte'
 import AccountInput from './AccountInput.svelte'
+import BadgeCollection from './badge/BadgeCollection.svelte'
 import Header from './Header.svelte'
 import LoadingBar from './LoadingBar.svelte'
 import LeftSideMenu from './LeftSideMenu.svelte'
@@ -27,6 +28,7 @@ export {
     AccountInput,
     accountStore,
     appStore,
+    BadgeCollection,
     omnibarStore$,
     burstFeeStore,
     Header,

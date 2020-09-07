@@ -149,7 +149,7 @@
     .body .item-list-container > ul.item-list {
         display: flex;
         flex-direction: column;
-        max-width: 600px;
+        width: 80%;
         margin: auto;
         padding: 0;
     }
@@ -167,7 +167,7 @@
             margin: 0;
             padding: 1rem 0.5rem 0.5rem 0.5rem;
         }
-        .item-list.list {
+        .body .item-list-container > ul.item-list {
             width: 100%;
         }
         .body .item-list-container {
