@@ -42,6 +42,7 @@
     "magic-mapper": "0.0.11",
     "polka": "next",
     "qrcode": "^1.4.4",
+    "query-string": "^6.13.1",
     "sapper-environment": "^1.0.1",
     "sirv": "^1.0.6"
   },

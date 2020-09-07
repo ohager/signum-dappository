@@ -1,11 +1,3 @@
-<script context="module" >
-    export async function preload({ params, query }) {
-        return {
-            searchText: query.q,
-        }
-    }
-</script>
-
 <script>
     import { goto, prefetch } from '@sapper/app'
     import TokenList from '../features/tokens/TokenList.svelte'
@@ -15,11 +7,14 @@
     import { Events } from '../utils/events'
     import { dispatchEvent } from '../utils/dispatchEvent'
     import RegisterFabButton from '../features/_common/RegisterFabButton.svelte'
+    import { getUrlQuery } from '../utils/getUrlQuery'
 
-    export let searchText = ''
+    // need to use like SPA and not SSR (due to sapper export)
+    let query = getUrlQuery()
 
     $: accountId = $account$.accountId
     $: hasAccount = !isEmptyString(accountId)
+    $: searchText = query.q || ''
 
     function handleClick() {
         if (hasAccount) {

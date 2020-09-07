@@ -12,9 +12,9 @@
         isActive: true,
     }
 
-    const title = token.name
+    const title = `dAppository: ${token.name}`
     const text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
-    const url = encodeURIComponent(`${location.origin}?q=${token.at}`)
+    const url = `${location.origin}?q=${token.at}`
 </script>
 
 <div class="container">
