@@ -5,6 +5,7 @@
     import Expandable from '../Expandable.svelte'
     import { OmnibarViewMode } from './OmnibarViewMode'
     import { isClientSide } from '../../../utils/isClientSide'
+    import { isMobile } from '../../../utils/isMobile'
 
     export let expanded = false
 
@@ -20,18 +21,11 @@
     }
 
     $: viewMode = options.viewMode
-    $: barHeight = '48px'
-    $: {
-        if(isClientSide()){
-            const isMobile = window.matchMedia('(max-width: 480px)').matches
-            barHeight = isMobile ? '120px' : '48px'
-        }
-    }
+    $: barHeight = isMobile() ? '120px' : '48px'
 
     function onResize(e){
         barHeight = window.innerWidth < 480 ? '120px' : '48px'
     }
-
 
 </script>
 
@@ -86,6 +80,16 @@
 
     :not(.active) > :global(.mdc-icon-button) {
         opacity: 0.33;
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .filter-options {
+            flex-direction: column;
+        }
     }
 
 

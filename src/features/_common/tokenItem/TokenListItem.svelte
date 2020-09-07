@@ -1,10 +1,12 @@
 <script>
     import { Item, Graphic, Meta, Label, Text, PrimaryText, SecondaryText } from '@smui/list'
     import Button, { Label as ButtonLabel } from '@smui/button';
+    import IconButton from '@smui/icon-button';
     import { goto } from '@sapper/app'
     import { RouteDonate, RouteTokenDetail } from '../../../utils/routes'
     import TokenRank from './TokenRank.svelte'
     import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
+    import { isMobile } from '../../../utils/isMobile'
 
     export let data = {
         at: '',
@@ -18,6 +20,7 @@
     }
 
     $: score =  calculateRankingPoints(data)
+    $: isCompactView = isMobile()
 
     const handleDetailsClick = (() => {
         goto(RouteTokenDetail(data.at))
@@ -27,7 +30,13 @@
         goto(RouteDonate(data.at))
     })
 
+    function onResize(e){
+        isCompactView = window.innerWidth < 480
+    }
 </script>
+
+
+<svelte:window on:resize={onResize} />
 
 <div class="token-list-item">
     <img src={data.img} alt="{data.name}" on:click={handleDetailsClick}/>
@@ -36,7 +45,11 @@
         <div class="smaller mdc-typography--body1">Score: {score}</div>
     </div>
     <div class="actions">
-        <Button on:click={handleDonateClick}><ButtonLabel>Donate</ButtonLabel></Button>
+        {#if isCompactView}
+            <IconButton class="material-icons" on:click={handleDonateClick}>favorite_border</IconButton>
+        {:else}
+            <Button on:click={handleDonateClick}><ButtonLabel>Donate</ButtonLabel></Button>
+        {/if}
     </div>
 </div>
 

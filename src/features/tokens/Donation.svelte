@@ -164,6 +164,10 @@
             margin: 1rem 0;
             width: 100%;
         }
+
+        .form--header > .description {
+            width: 100%;
+        }
     }
 
     :global(#donation .form .mdc-text-field__input) {

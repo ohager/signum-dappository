@@ -165,6 +165,7 @@
     @media (max-width: 480px) {
         .header {
             margin: 0;
+            padding: 1rem 0.5rem 0.5rem 0.5rem;
         }
         .item-list.list {
             width: 100%;

@@ -5,8 +5,11 @@
     import IconButton from '@smui/icon-button'
     import OmnibarOptions from './OmnibarOptions.svelte'
     import { omnibarStore$, setText } from './omnibarStore'
+    import { isMobile } from '../../../utils/isMobile'
 
     let isFilterMenuOpen = false
+
+    $: placeholder = isMobile() ? 'Enter search term' : 'Enter search term, e.g. text, tag, name'
 
     function handleDelete() {
         setText('')
@@ -25,7 +28,7 @@
             withTrailingIcon
             variant="outlined"
             bind:value={$omnibarStore$.text}
-            label="Enter search term, e.g. text, tag, name"
+            label={placeholder}
         >
             <Icon class="material-icons">search</Icon>
             {#if $omnibarStore$.text.length}
