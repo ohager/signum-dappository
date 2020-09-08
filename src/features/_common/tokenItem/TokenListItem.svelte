@@ -8,6 +8,7 @@
     import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
     import { isMobile } from '../../../utils/isMobile'
     import  { BadgeCollection } from '../../_common'
+
     export let data = {
         at: '',
         name: '',
@@ -22,13 +23,13 @@
     $: score =  calculateRankingPoints(data)
     $: isCompactView = isMobile()
 
-    const handleDetailsClick = (() => {
+    const handleDetailsClick = () => {
         goto(RouteTokenDetail(data.at))
-    })
+    }
 
-    const handleDonateClick = (() => {
+    const handleDonateClick = () => {
         goto(RouteDonate(data.at))
-    })
+    }
 
     function onResize(e){
         isCompactView = window.innerWidth < 480
@@ -45,7 +46,7 @@
         <div class="smaller mdc-typography--body1">Score: {score}</div>
     </div>
     {#if !isCompactView}
-        <div class="description">
+        <div class="description" on:click={handleDetailsClick}>
             <small class="smaller mdc-typography--body1">{data.desc}</small>
         </div>
         <div class="badges">
@@ -92,7 +93,7 @@
     }
 
     .text {
-        margin-left: 1rem;
+        margin-left: 0.5rem;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -117,4 +118,11 @@
         overflow: hidden;
     }
 
+
+    @media (max-width: 480px) {
+        .text {
+            min-width: unset;
+            flex-grow: 2;
+        }
+    }
 </style>

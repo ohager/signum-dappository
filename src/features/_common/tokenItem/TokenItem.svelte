@@ -35,7 +35,7 @@
     const PlaceholderErrorImage = '../img/placeholder.error.svg'
     let stampText = ''
     let isElevated = false
-    let sharingIconSurface = false
+    let sharingIconSurface = null
     const dispatch = createEventDispatcher()
 
     $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
