@@ -21,7 +21,6 @@
     }
 
     async function handleCancel() {
-        await startMonitoring()
         history.back()
     }
 

@@ -1,5 +1,6 @@
 <script>
     import { Email, HackerNews, Reddit, LinkedIn, Pinterest, Telegram, Tumblr, Vk, WhatsApp, Xing, Facebook, Twitter } from 'svelte-share-buttons-component';
+    import { isClientSide } from '../../../utils/isClientSide'
 
     export let token = {
         at: '',
@@ -14,7 +15,7 @@
 
     const title = `dAppository: ${token.name}`
     const text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
-    const url = `${location.origin}?q=${token.at}`
+    const url = isClientSide() ? `${location.origin}?q=${token.at}` : ''
 </script>
 
 <div class="container">

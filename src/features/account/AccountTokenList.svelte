@@ -3,6 +3,7 @@
     import { tokens$ } from '../_common/tokenStore'
     import { activeTokenMonitors$ } from './tokenMonitorStore'
     import { convertNumericIdToAddress } from '@burstjs/util'
+    import { scale } from 'svelte/transition'
 
     export let accountId
 
@@ -22,6 +23,7 @@
         flex-wrap: wrap;
         margin-inline-start: 0;
         margin: 1rem;
+        position: relative;
     }
 
     .header {
@@ -38,6 +40,7 @@
     }
 
     .body {
+        position: absolute;
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
@@ -49,7 +52,7 @@
     }
 </style>
 
-<div class="container">
+<div transition:scale class="container">
     <section class="body">
     {#each unconfirmedTokens as data}
         <div class="item">

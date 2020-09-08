@@ -35,7 +35,7 @@
 </script>
 
 <div  class="container">
-    <section class="header">
+    <section transition:scale class="header">
             <Omnibar text={searchText} />
             <div class="counter mdc-typography--body2">{countText}</div>
     </section>
@@ -146,10 +146,9 @@
         position: absolute;
         display: flex;
         flex-wrap: wrap;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         justify-content: center;
-
-
     }
 
     .body .item-list-container > ul.item-list {
