@@ -65,13 +65,13 @@
         {:else}
             <div class="item-list-container">
                 {#if viewMode === OmnibarViewMode.List}
-                    <ul class="item-list">
+                    <ul transition:scale class="item-list">
                         {#each activeTokens as data}
                             <TokenListItem {data} />
                         {/each}
                     </ul>
                 {:else if viewMode === OmnibarViewMode.SmallCards}
-                    <div class="item-list">
+                    <div  transition:scale class="item-list">
                         {#each activeTokens as data}
                             <div class="item compact">
                                 <TokenItem {data} on:tag-click={handleTagClick} compact />
@@ -79,7 +79,7 @@
                         {/each}
                     </div>
                 {:else}
-                    <div class="item-list">
+                    <div  transition:scale  class="item-list">
                         {#each activeTokens as data}
                             <div class="item">
                                 <TokenItem {data} on:tag-click={handleTagClick} />
@@ -137,15 +137,19 @@
 
     .body .item-list-container {
         position: relative;
-        margin: 1rem
+        margin: 1rem;
+        display: flex;
+        justify-content: center;
     }
 
     .body .item-list {
+        position: absolute;
         display: flex;
         flex-wrap: wrap;
-        flex-direction: row;
         overflow: auto;
         justify-content: center;
+
+
     }
 
     .body .item-list-container > ul.item-list {
