@@ -2,7 +2,6 @@
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import { Page, TokenItemVariant, TokenItem, PassphraseInput, AccountInput } from '../_common'
-    import { TokenContract } from '../../services/tokenContract'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { EmptyToken } from '../../utils/emptyToken'
     import { BurstValue } from '@burstjs/util'

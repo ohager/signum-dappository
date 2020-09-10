@@ -8,7 +8,7 @@
     import { onDestroy, onMount } from 'svelte'
     import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { accountService } from '../../services/accountService'
-    import { TokenContract } from '../../services/tokenContract'
+    import { TokenContract } from '../../context'
     import { convertNumericIdToAddress } from '@burstjs/util'
     import AccountInput from '../_common/AccountInput.svelte'
 

@@ -4,7 +4,7 @@
     import Button, { Label } from '@smui/button'
     import { BurstValue } from '@burstjs/util'
     import {Page, TokenItem, TokenItemVariant, burstFeeStore, PaymentQrCode } from '../_common'
-    import { TokenContract } from '../../services/tokenContract'
+    import { TokenContract } from '../../context'
 
     export let token = {
         at: '',

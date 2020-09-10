@@ -62,7 +62,8 @@ const ContractDataIndices = {
     Inventor: 2,
     Donated: 3,
     DonationCount: 4,
-    Owner: 5,
+    FeatureActiveUntilTimestamp: 5,
+    Owner: 6,
 }
 
 function parseMachineData(contract) {
@@ -71,12 +72,18 @@ function parseMachineData(contract) {
     const isActive = parseInt(view.getVariableAsDecimal(ContractDataIndices.Active), 10) === 1
     const donationPlanck = view.getVariableAsDecimal(ContractDataIndices.Donated)
     const donationCount = view.getVariableAsDecimal(ContractDataIndices.DonationCount)
+    const featureActiveUntilTimestamp = view.getVariableAsDecimal(
+        ContractDataIndices.FeatureActiveUntilTimestamp,
+    )
     const owner = view.getVariableAsDecimal(ContractDataIndices.Owner)
     return {
         version,
         isActive,
         donationPlanck,
         donationCount,
+        // FIX: convert that synthetic timestamp into block height
+        // return (value >>32) + " (block height)";
+        featureActiveUntilTimestamp,
         owner,
     }
 }
