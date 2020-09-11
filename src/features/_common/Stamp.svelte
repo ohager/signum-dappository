@@ -14,7 +14,7 @@
         text-transform: uppercase;
         border-radius: 1rem;
         font-family: 'Courier', serif;
-        -webkit-mask-image: url('../img/texture.png');
+        -webkit-mask-image: url('../../img/texture.png');
         -webkit-mask-size: 256px 256px;
         mix-blend-mode: multiply;
     }
