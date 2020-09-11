@@ -23,6 +23,8 @@
         }
         currentPage = Math.min(++currentPage, pages.length - 1)
     }
+
+
 </script>
 
 <Page>
