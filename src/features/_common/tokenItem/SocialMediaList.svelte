@@ -24,7 +24,7 @@
     <LinkedIn class="share-button" {url} />
     <Tumblr class="share-button" {title} {url} caption={title} />
     <Telegram class="share-button" {text} {url} />
-    <WhatsApp class="share-button" {text} />
+    <WhatsApp class="share-button" text = {`${text} - ${url}`} />
     <Twitter class="share-button" {text} {url} />
 </div>
 
