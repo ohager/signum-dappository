@@ -41,8 +41,6 @@
     }
 }
 
-
-
 @keyframes growing {
     0% {
         transform: scale(0.95);

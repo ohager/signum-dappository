@@ -16,6 +16,7 @@ import PassphraseInput from './PassphraseInput.svelte'
 import PaymentQrCode from './PaymentQrCode.svelte'
 import RegisterFabButton from './RegisterFabButton.svelte'
 import Omnibar from './omnibar/Omnibar.svelte'
+import Link from './Link.svelte'
 import { omnibarStore$ } from './omnibar/omnibarStore'
 import { OmnibarViewMode } from './omnibar/OmnibarViewMode'
 import Stamp from './Stamp.svelte'
@@ -32,6 +33,7 @@ export {
     omnibarStore$,
     burstFeeStore,
     Header,
+    Link,
     LeftSideMenu,
     LoadingBar,
     Maintenance,

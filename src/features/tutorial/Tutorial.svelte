@@ -2,10 +2,10 @@
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
     import Page from '../_common/Page.svelte'
-    import { WhatIs, Donations, TokenCreation, AccountZone } from './pages'
+    import { WhatIs, Donations, TokenCreation, AccountZone, TokenScore } from './pages'
     import { RouteHome } from '../../utils/routes'
 
-    let pages = [WhatIs, Donations, TokenCreation, AccountZone]
+    let pages = [WhatIs, Donations, TokenScore, AccountZone, TokenCreation]
     let currentPage = 0
 
     $: hasFinished = currentPage === pages.length - 1
@@ -93,8 +93,7 @@
     }
 
     .dots .dot.active{
-        border: 1px solid var(--mdc-theme-on-primary);
-        background-color: var(--mdc-theme-on-primary);
+        background-color: var(--theme-light-background);
         transition: all 250ms ease-in-out;
     }
 

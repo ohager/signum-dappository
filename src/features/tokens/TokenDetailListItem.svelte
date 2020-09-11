@@ -1,5 +1,5 @@
 <script>
-    import Link from '../Link.svelte'
+    import Link from '../_common/Link.svelte'
     export let key = ''
     export let value = ''
     export let url = null

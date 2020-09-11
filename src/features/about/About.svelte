@@ -13,7 +13,7 @@
     import Logo from '../_common/Logo.svelte'
     import { ThemeNames } from '../../utils/themeNames'
     import List, { Item, Graphic, Text } from '@smui/list'
-    import Link from '../Link.svelte'
+    import Link from '../_common/Link.svelte'
 
     const { theme$ } = appStore
 
