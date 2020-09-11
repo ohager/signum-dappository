@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "sapper dev -p 3001",
     "build": "sapper build --legacy",
-    "export": "SAPPER_SW_TIMESTAMP=$(date +%s%3N) sapper export --entry \"about tutorial register\" ",
+    "export": "SAPPER_SW_TIMESTAMP=$(date +%s%3N) sapper export --entry \"/ about tutorial register\" ",
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
