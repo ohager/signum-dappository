@@ -146,8 +146,6 @@
         position: absolute;
         display: flex;
         flex-wrap: wrap;
-        overflow-y: auto;
-        overflow-x: hidden;
         justify-content: center;
     }
 
@@ -175,6 +173,11 @@
         .body .item-list-container > ul.item-list {
             width: 100%;
         }
+
+        .body .item-list {
+            overflow-x: hidden;
+        }
+
         .body .item-list-container {
             margin: 1rem 0 0 0;
         }
