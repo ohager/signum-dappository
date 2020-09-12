@@ -14,9 +14,13 @@
     let errorMessage = 'Account is required'
 
     $: accountAddress = valid ? convertNumericIdToAddress(account) : ''
+    $: {
+        if(account.length){
+            validateAccount(account)
+        }
+    }
+    function validateAccount(account) {
 
-    function validateAccount(e) {
-        const account = e.target.value
         if (validationTimeout) return
 
         validationTimeout = setTimeout(async () => {
@@ -40,7 +44,7 @@
 <div class="form--input">
     <div class="form--input-field">
         <TextField bind:value={account}
-                   on:input={validateAccount}
+                   on:input={({target}) => validateAccount(target.value)}
                    invalid={!valid}
                    label='Account Id or Address'
                    withTrailingIcon

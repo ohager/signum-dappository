@@ -9,10 +9,15 @@
     import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { accountService } from '../../services/accountService'
     import { TokenContract } from '../../context'
-    import { convertNumericIdToAddress } from '@burstjs/util'
+    import { BurstValue } from '@burstjs/util'
     import AccountInput from '../_common/AccountInput.svelte'
 
     export let accountId = ''
+
+    let validation = {
+        message: 'Account is required',
+        valid: false,
+    }
 
     onMount(() => {
         $registration$.account = accountId
@@ -24,47 +29,12 @@
     }
 
     async function validateAccount(account) {
-        if (balanceTimeout) return
-
-        balanceTimeout = setTimeout(async () => {
-            try {
-                const balance = await getBalance(account)
-                const hasSufficientBalance = balance.greaterOrEqual(TokenContract.CreationFee)
-                validation = {
-                    message: hasSufficientBalance
-                        ? `Accounts balance: ${balance.toString()}`
-                        : `Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`,
-                    valid: hasSufficientBalance,
-                }
-            } catch (e) {
-                validation = {
-                    message: pruneBurstErrorMessage(e.message),
-                    valid: false,
-                }
-            } finally {
-                balanceTimeout = null
-            }
-        }, 500)
-    }
-
-    let balanceTimeout = null
-    let validation = {
-        message: 'Account is required',
-        valid: false,
-    }
-
-    $: isAccountValid = validation.valid
-    $: accountAddress = isAccountValid ? convertNumericIdToAddress($registration$.account) : ''
-
-    const unsubscribe = registration$.subscribe(({ account }) => {
-        if (!isEmptyString(account)) {
-            validateAccount(account)
+        const balance = await getBalance(account)
+        const minimumBalance = TokenContract.CreationFee.add(BurstValue.fromBurst(1))
+        if(!balance.greaterOrEqual(minimumBalance)){
+            throw new Error(`Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`)
         }
-    })
-
-    onDestroy(() => {
-        unsubscribe()
-    })
+    }
 
 </script>
 
@@ -78,23 +48,6 @@
                   bind:valid={validation.valid}
                   validate={validateAccount}
     />
-<!--    <div class="form&#45;&#45;input">-->
-<!--        <div class="form&#45;&#45;input-field">-->
-<!--            <TextField bind:value={$registration$.account}-->
-<!--                       invalid={!validation.valid}-->
-<!--                       label='Account Id or Address'-->
-<!--                       withTrailingIcon-->
-<!--            >-->
-<!--                <Icon class={`material-icons ${validation.valid ? 'green' : ''}`}>-->
-<!--                    {validation.valid ? 'check_circle' : 'error'}-->
-<!--                </Icon>-->
-<!--                <div class="address">-->
-<!--                    {accountAddress}-->
-<!--                </div>-->
-<!--            </TextField>-->
-<!--            <HelperText validationMsg>{validation.message}</HelperText>-->
-<!--        </div>-->
-<!--    </div>-->
 </section>
 
 <style>

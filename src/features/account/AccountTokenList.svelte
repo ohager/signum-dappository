@@ -14,6 +14,11 @@
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
     $: hasPendingTransaction = at => $activeTokenMonitors$.some(id => id === at)
 
+
+    $: {
+        console.log('unconfirmed', unconfirmedTokens, accountId)
+    }
+
 </script>
 
 <style>
