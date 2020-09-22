@@ -35,7 +35,7 @@
         </p>
         <p class="github">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/ohager/burst-applications?style=social">
-            <Link href="https://github.com/ohager/burst-applications">This project is Open Source</Link>
+            <Link href="https://github.com/ohager/burst-dappository">This project is Open Source</Link>
         </p>
     </section>
     <section class="credits">
