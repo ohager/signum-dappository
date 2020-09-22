@@ -38,7 +38,6 @@
         <Message/>
         <main>
             <LeftSideMenu bind:open={isMenuOpen} />
-            <LoadingBar/>
             <AccountDialog/>
             <slot/>
         </main>

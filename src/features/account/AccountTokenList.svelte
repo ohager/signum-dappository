@@ -2,7 +2,6 @@
     import { TokenItemVariant, TokenItem } from '../_common'
     import { tokens$ } from '../_common/tokenStore'
     import { activeTokenMonitors$ } from './tokenMonitorStore'
-    import { convertNumericIdToAddress } from '@burstjs/util'
     import { scale } from 'svelte/transition'
 
     export let accountId
@@ -13,11 +12,6 @@
     $: tokens = $tokens$.items.filter(isOwnToken).filter(isNotDeactivated)
     $: unconfirmedTokens = $tokens$.unconfirmedItems.filter(isOwnToken)
     $: hasPendingTransaction = at => $activeTokenMonitors$.some(id => id === at)
-
-
-    $: {
-        console.log('unconfirmed', unconfirmedTokens, accountId)
-    }
 
 </script>
 

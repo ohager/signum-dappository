@@ -13,6 +13,7 @@
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
     import Logo from './Logo.svelte'
     import Stamp from './Stamp.svelte'
+    import LoadingBar from './LoadingBar.svelte'
 
     export let isMenuOpen = false
     export let isTestnet = false
@@ -71,6 +72,7 @@
         </Section>
     </Row>
     <SyncProgressBar/>
+    <LoadingBar/>
     {#if isTestnet }
         <div class="testnet-marker">
             <Stamp text="testnet"/>

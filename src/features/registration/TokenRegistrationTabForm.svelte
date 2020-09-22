@@ -17,6 +17,7 @@
     } from '../../utils/validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
     import { account$ } from '../_common/accountStore'
+    import { loading$ } from '../_common/appStore'
     import Introduction from './Introduction.svelte'
     import { MaxDataLength } from './constants'
     import { applicationTokenService } from '../../services/applicationTokenService'
@@ -35,8 +36,6 @@
 
     let started = false
     let active = TabNames.Account
-    let applicationInfo = null
-    let isValidApplicationInfo = false
     let account = null
 
     $: currentTabIndex = Tabs.indexOf(active)
@@ -54,8 +53,8 @@
 
     async function handleRegister() {
         try{
-            const tokenId = await applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
-            goto(RouteAccountTokens($account$.accountId))
+            await applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
+            await goto(RouteAccountTokens($account$.accountId))
         }catch(e){
             // noop yet
         }
@@ -82,6 +81,8 @@
             && calculateDataLength() < MaxDataLength
 
     $: isNextEnabled = () => {
+        if($loading$) return false;
+
         switch (active) {
             case TabNames.Account:
                 return isValidAccountStep()

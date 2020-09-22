@@ -221,7 +221,7 @@
         left: 25%;
         position: absolute;
         opacity: 0.5;
-        z-index: 10;
+        z-index: 5;
     }
 
     .tags-wrapper :global(.mdc-chip__text) {

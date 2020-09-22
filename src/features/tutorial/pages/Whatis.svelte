@@ -15,10 +15,10 @@
             <b>receive public donations</b> from supporters and forward them to the owner
         </li>
         <li>
-            the asset <b>can be transferred</b> (exclusively by the owner) to a third party
+            <b>transfer the asset</b> (exclusively by the owner) to another person
         </li>
         <li>
-            the asset <b>can be deactivated</b> permanently (exclusively by the owner)
+            <b>deactivate the asset</b> (exclusively by the owner) permanently
         </li>
     </ol>
     <p class="mdc-typography--body1">
