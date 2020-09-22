@@ -144,6 +144,8 @@ export class ApplicationTokenService {
                 creator: accountId,
                 ...tokenData,
             })
+            // triggering a token store update
+            this._dispatch(Events.Progress, { total: 1, processed: 1 })
             this._dispatch(Events.Success, 'Token successfully generated')
             return unconfirmedTokenId
         } catch (e) {
