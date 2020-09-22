@@ -42,6 +42,7 @@
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
         background-image: url(${imageUrl});
+        background-size: contain;
     `
     $: isUnconfirmed = variant === TokenItemVariant.Unconfirmed
     $: {
