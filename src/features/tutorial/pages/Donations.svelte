@@ -25,7 +25,7 @@
             <div class="mdc-typography--body1">
                 The tokens main feature is receiving donations, i.e. anyone who has a Burst account
                 can send BURST to that token. The respective <b>owner automatically receives the amount</b>
-                minus the execution costs for the Smart Contract (about 2 BURST) and a 1% commission
+                minus the execution costs for the Smart Contract (less than 0.4 BURST) and a 1% commission
                 for the maintainer of this project.
                 <br/>
                 Each received donation raises the <b>tokens score</b>. This feature will be explained next.
