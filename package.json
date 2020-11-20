@@ -35,16 +35,22 @@
     "@burstjs/crypto": "^0.5.0",
     "@burstjs/http": "^0.5.0",
     "@burstjs/util": "^0.5.0",
+    "@hapi/boom": "^9.1.0",
+    "@pinata/sdk": "^1.1.11",
+    "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "dexie": "^3.0.2",
+    "form-data": "^3.0.0",
     "lodash.debounce": "^4.0.8",
     "magic-mapper": "0.0.11",
+    "multer": "^1.4.2",
     "polka": "next",
     "qrcode": "^1.4.4",
     "query-string": "^6.13.1",
     "sapper-environment": "^1.0.1",
-    "sirv": "^1.0.6"
+    "sirv": "^1.0.6",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

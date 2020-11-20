@@ -19,11 +19,17 @@
         MaxTagCount,
     } from './constants'
     import { registration$, calculateDataLength } from './registrationStore'
+    import { httpClientProvider } from '../../utils/httpClientProvider'
+    import { Events } from '../../utils/events'
+    import { dispatchEvent } from '../../utils/dispatchEvent'
+    import { HttpError } from '@burstjs/http'
 
     const licensesSpdx = Object.keys(Licenses)
     const characterCount = (text = '', max) => `${text.length}/${max}`
 
     let tag = ''
+    let selectedImageFile = ''
+    let fileInputEl = null
 
     $: isInvalidName = isEmptyString($registration$.name) || !hasLength($registration$.name, 1, MaxNameLength)
     $: isInvalidDescription = isEmptyString($registration$.desc) || !hasLength($registration$.desc, 1, MaxDescriptionLength)
@@ -35,9 +41,9 @@
     $: nameFieldLabel = `Application Name (${characterCount($registration$.name, MaxNameLength)})`
     $: descriptionFieldLabel = `Description (${characterCount($registration$.desc, MaxDescriptionLength)})`
     $: repoFieldLabel = `Repository or Project URL (${characterCount($registration$.repo, MaxUrlLength)})`
-    $: imageFieldLabel = `Image URL (${characterCount($registration$.img, MaxUrlLength)})`
+    $: imageFieldLabel = `Image (Max 256KiB)`
     $: tagFieldLabel = `Tag or Category (${characterCount(tag, MaxTagLength)})`
-
+    $: imageFieldText = selectedImageFile ? `${selectedImageFile} (not uploaded yet)` : $registration$.img
     $: licenseTextUrl = Licenses[$registration$.lic].url
 
     function hasTag(t) {
@@ -65,6 +71,40 @@
             event.preventDefault()
             addTag(tag)
         }
+    }
+
+    async function handleFileUpload(e) {
+        try {
+            e.stopImmediatePropagation()
+            const formData = new FormData()
+            formData.append('file', selectedImageFile, selectedImageFile.name)
+            formData.append('account', $registration$.account)
+            let http = httpClientProvider.get()
+            const { response } = await http.post('upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            $registration$.img = response.result.urls[2]
+            dispatchEvent(Events.Success, 'Image File uploaded successfully')
+            selectedImageFile = ''
+        } catch (e) {
+            let message = e.message
+            if(e instanceof HttpError){
+                message = e.data && e.data.result && e.data.result.payload ? e.data.result.payload.message : e.message
+            }
+            dispatchEvent(Events.Error, message)
+            console.error('error', e)
+        }
+    }
+
+    function openFileDialog(){
+        selectedImageFile = null
+        fileInputEl.click()
+    }
+
+    function handleSelectedFiles(e) {
+        selectedImageFile = e.target.files[0]
     }
 
 </script>
@@ -108,22 +148,30 @@
             {/if}
         </div>
     </div>
-    <div class="form--input">
-        <div class="form--input-field">
-            <TextField bind:value={$registration$.img}
-                       invalid={isInvalidImage}
-                       label={imageFieldLabel}
-                       type="url"
-            />
-            {#if isInvalidImage}
-                <HelperText validationMsg>{
-                isEmptyString($registration$.img)
-                ? 'Image URL is required'
-                : `Image URL must not be larger than ${MaxUrlLength} characters`
-                }
-                </HelperText>
-            {/if}
+    <div class="form--inline">
+        <div class="form--input fullwidth">
+            <div class="form--input-field">
+                <TextField
+                    bind:value={$registration$.img}
+                    type="text"
+                    invalid={isInvalidImage}
+                    label={imageFieldLabel}
+                    placeholder="Browse for image"
+                    disabled
+                />
+                {#if isInvalidImage}
+                    <HelperText validationMsg>{
+                        isEmptyString($registration$.img)
+                            ? 'Image URL is required'
+                            : `Image URL must not be larger than ${MaxUrlLength} characters`
+                    }
+                    </HelperText>
+                {/if}
+            </div>
         </div>
+        <input bind:this={fileInputEl} hidden type="file" on:change={handleSelectedFiles} accept=".png,.jpg,.webp,.svg" >
+        <IconButton class="material-icons" on:click={openFileDialog}>image_search</IconButton>
+        <IconButton class="material-icons" on:click={handleFileUpload} disabled={!selectedImageFile}>cloud_upload</IconButton>
     </div>
     <div class="form--input">
         <div class="form--input-field">
@@ -225,6 +273,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
     }
 
     :global(.mdc-text-field) {

@@ -7,23 +7,23 @@
     let type
     let snackbar
 
-    function showError({ detail }) {
-        showSnackbar(MessageTypes.Error, detail)
+    async function showError({ detail }) {
+        await showSnackbar(MessageTypes.Error, detail)
     }
 
-    function showWarning({ detail }) {
-        showSnackbar(MessageTypes.Warning, detail)
+    async function showWarning({ detail }) {
+        await showSnackbar(MessageTypes.Warning, detail)
     }
 
-    function showSuccess({ detail }) {
-        showSnackbar(MessageTypes.Success, detail)
+    async function showSuccess({ detail }) {
+        await showSnackbar(MessageTypes.Success, detail)
     }
 
-    function showInformation({ detail }) {
-        showSnackbar(MessageTypes.Information, detail)
+    async function showInformation({ detail }) {
+        await showSnackbar(MessageTypes.Information, detail)
     }
 
-    function showSnackbar(t, msg){
+    async function showSnackbar(t, msg){
         message = msg
         type = t
         snackbar.open()
@@ -60,7 +60,11 @@
     <span class={`mdc-typography--button ml ${type}`}>
         {type}
     </span>
-    <Label>{message}</Label>
+    <span class='mdc-snackbar__label'>
+        {message}
+    </span>
+    <!-- this lable is buggy - its not updating correctly -->
+    <Label></Label>
     <Actions>
         <IconButton class="material-icons" title="Dismiss">close</IconButton>
     </Actions>

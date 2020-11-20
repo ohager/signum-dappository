@@ -9,5 +9,7 @@ export const Vars = {
     TokenWatcherIntervalSecs: process.env.SAPPER_APP_TOKEN_WATCHER_INTERVAL_SECS,
     TokenWatcherTimeoutSecs: process.env.SAPPER_APP_TOKEN_WATCHER_TIMEOUT_SECS,
     ExplorerUrl: process.env.SAPPER_APP_EXPLORER_URL,
-    MaxEarlyAccessBlockHeight: process.env.SAPPER_APP_MAX_EARLY_ACCESS_BLOCK_HEIGHT
+    MaxEarlyAccessBlockHeight: process.env.SAPPER_APP_MAX_EARLY_ACCESS_BLOCK_HEIGHT,
+    PinataApiKey: process.env.SAPPER_APP_PINATA_API_KEY,
+    PinataSecretApiKey: process.env.SAPPER_APP_PINATA_SECRET_API_KEY,
 }
