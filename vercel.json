@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "vercel-sapper"
-    }
-  ],
   "routes": [
     {
       "src": "/img/(.*)",
@@ -18,7 +12,8 @@
   ],
   "functions": {
     "api/*.js": {
-      "memory": 512
+      "memory": 512,
+      "runtime": "vercel-sapper"
     }
   }
 }
