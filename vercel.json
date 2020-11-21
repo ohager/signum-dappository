@@ -17,7 +17,7 @@
     }
   ],
   "functions": {
-    "api/index.js": {
+    "api/*.js": {
       "memory": 512
     }
   }
