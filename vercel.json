@@ -15,5 +15,10 @@
       },
       "dest": "/img/$1"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "memory": 512
+    }
+  }
 }
