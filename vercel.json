@@ -5,5 +5,15 @@
       "src": "package.json",
       "use": "vercel-sapper"
     }
+  ],
+  "routes": [
+    {
+      "src": "/img/(.*)",
+      "headers": {
+        "cache-control": "s-maxage=604800",
+        "connection": "keep-alive",
+      },
+      "dest": "/img/$1"
+    }
   ]
 }
