@@ -1,8 +1,8 @@
 import multer from 'multer'
 import path from 'path'
 import Boom from '@hapi/boom'
-import { pinFile } from '../__helpers__/pinFile'
-import { serializeResponse } from '../__helpers__/serializeResponse'
+import { pinFile } from './__helpers__/pinFile'
+import { serializeResponse } from './__helpers__/serializeResponse'
 
 const AcceptedFormats = ['.png', '.jpg', '.webp', '.svg']
 
