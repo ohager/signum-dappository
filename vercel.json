@@ -10,10 +10,13 @@
       "dest": "/img/$1"
     }
   ],
-  "functions": {
-    "api/*.js": {
-      "memory": 512,
-      "runtime": "vercel-sapper"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "vercel-sapper",
+      "config": {
+        "memory": 512
+      }
     }
-  }
+  ]
 }
