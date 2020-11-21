@@ -11,9 +11,8 @@
     import {
         isValidAccount,
         isValidDescription,
-        isValidImageUrl,
         isValidName,
-        isValidRepo,
+        isValidUrl,
     } from '../../utils/validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
     import { account$ } from '../_common/accountStore'
@@ -74,8 +73,8 @@
     $: isValidApplicationInfoStep = () => isValidAccountStep()
             && isValidName($registration$.name)
             && isValidDescription($registration$.desc)
-            && isValidImageUrl($registration$.img)
-            && isValidRepo($registration$.repo)
+            && isValidUrl($registration$.img)
+            && isValidUrl($registration$.repo)
     $: isValidConfirmationStep = () => isValidApplicationInfoStep()
             && $registration$.isPassphraseValid
             && calculateDataLength() < MaxDataLength

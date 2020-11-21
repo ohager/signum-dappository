@@ -1,50 +1,55 @@
 <script>
+    import {fade} from 'svelte/transition'
     import TextField from '@smui/textfield'
     import TextFieldIcon from '@smui/textfield/icon/index'
     import IconButton, { Icon } from '@smui/icon-button'
     import Select, { Option } from '@smui/select'
     import SelectHelperText from '@smui/select/helper-text/index'
     import HelperText from '@smui/textfield/helper-text/index'
-    import Chip, { Set, Icon as ChipIcon, Checkmark, Text } from '@smui/chips'
-    import Button, { Label } from '@smui/button'
+    import Chip, { Set, Text } from '@smui/chips'
     import { hasLength } from '../../utils/hasLength'
     import { isEmptyString } from '../../utils/isEmptyString'
     import { Licenses } from '../../utils/licenses'
-    import {
-        MaxDataLength,
-        MaxDescriptionLength,
-        MaxNameLength,
-        MaxUrlLength,
-        MaxTagLength,
-        MaxTagCount,
-    } from './constants'
-    import { registration$, calculateDataLength } from './registrationStore'
-    import { httpClientProvider } from '../../utils/httpClientProvider'
+    import { MaxDescriptionLength, MaxNameLength, MaxTagCount, MaxTagLength, MaxUrlLength } from './constants'
+    import { registration$ } from './registrationStore'
     import { Events } from '../../utils/events'
     import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { HttpError } from '@burstjs/http'
+    import { sanitizeUrl } from '@braintree/sanitize-url'
+    import { apiService } from '../../services/apiService'
+    import { isValidUrl } from '../../utils/validators'
 
     const licensesSpdx = Object.keys(Licenses)
     const characterCount = (text = '', max) => `${text.length}/${max}`
 
     let tag = ''
-    let selectedImageFile = ''
+    let selectedImageFile = null
     let fileInputEl = null
+    let uploadProgress = 0.0
+    let isUploading = false
+    let imageFieldLabel = ''
 
     $: isInvalidName = isEmptyString($registration$.name) || !hasLength($registration$.name, 1, MaxNameLength)
     $: isInvalidDescription = isEmptyString($registration$.desc) || !hasLength($registration$.desc, 1, MaxDescriptionLength)
-    $: isInvalidRepo = !hasLength($registration$.repo, 0, MaxUrlLength)
-    $: isInvalidImage = isEmptyString($registration$.img) || !hasLength($registration$.img, 0, MaxUrlLength)
+    $: isInvalidRepo = !isValidUrl($registration$.repo)
+    $: isInvalidImage = !isValidUrl($registration$.img)
     $: isInvalidTag = !hasLength(tag, 0, MaxTagLength) || hasTag(tag)
     $: hasMaximumTags = $registration$.tags.length >= MaxTagCount
 
     $: nameFieldLabel = `Application Name (${characterCount($registration$.name, MaxNameLength)})`
     $: descriptionFieldLabel = `Description (${characterCount($registration$.desc, MaxDescriptionLength)})`
     $: repoFieldLabel = `Repository or Project URL (${characterCount($registration$.repo, MaxUrlLength)})`
-    $: imageFieldLabel = `Image (Max 256KiB)`
     $: tagFieldLabel = `Tag or Category (${characterCount(tag, MaxTagLength)})`
-    $: imageFieldText = selectedImageFile ? `${selectedImageFile} (not uploaded yet)` : $registration$.img
     $: licenseTextUrl = Licenses[$registration$.lic].url
+    $: {
+        const baseLabel = 'Image (Max 256KiB)'
+        imageFieldLabel = `${baseLabel} [No image selected yet]`
+        if (selectedImageFile) {
+            imageFieldLabel = `${baseLabel} [${selectedImageFile.name}]`
+        }
+        if ($registration$.img) {
+            imageFieldLabel = baseLabel
+        }
+    }
 
     function hasTag(t) {
         return $registration$.tags.indexOf(t.toLowerCase()) >= 0
@@ -75,26 +80,22 @@
 
     async function handleFileUpload(e) {
         try {
-            e.stopImmediatePropagation()
-            const formData = new FormData()
-            formData.append('file', selectedImageFile, selectedImageFile.name)
-            formData.append('account', $registration$.account)
-            let http = httpClientProvider.get()
-            const { response } = await http.post('upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            isUploading = true
+            $registration$.img = await apiService.uploadSingleFile({
+                fileObj: selectedImageFile,
+                keyValues: { account: $registration$.account },
+                mangleFilename: true,
+                onProgressFn: (e) => {
+                    const { loaded, total } = e
+                    uploadProgress = loaded / total
+                }
             })
-            $registration$.img = response.result.urls[2]
             dispatchEvent(Events.Success, 'Image File uploaded successfully')
-            selectedImageFile = ''
+            selectedImageFile = null
         } catch (e) {
-            let message = e.message
-            if(e instanceof HttpError){
-                message = e.data && e.data.result && e.data.result.payload ? e.data.result.payload.message : e.message
-            }
-            dispatchEvent(Events.Error, message)
-            console.error('error', e)
+            dispatchEvent(Events.Error, e.message)
+        } finally {
+            isUploading = false
         }
     }
 
@@ -105,6 +106,10 @@
 
     function handleSelectedFiles(e) {
         selectedImageFile = e.target.files[0]
+    }
+
+    function handleRepoUrlChanged(e) {
+        $registration$.repo = sanitizeUrl(e.target.value)
     }
 
 </script>
@@ -169,9 +174,25 @@
                 {/if}
             </div>
         </div>
-        <input bind:this={fileInputEl} hidden type="file" on:change={handleSelectedFiles} accept=".png,.jpg,.webp,.svg" >
-        <IconButton class="material-icons" on:click={openFileDialog}>image_search</IconButton>
-        <IconButton class="material-icons" on:click={handleFileUpload} disabled={!selectedImageFile}>cloud_upload</IconButton>
+        <input bind:this={fileInputEl} hidden type="file" on:change={handleSelectedFiles} accept=".png,.jpg,.webp,.svg">
+        <IconButton title="Browse for image" class="material-icons" on:click={openFileDialog}>image_search</IconButton>
+        <div class="upload-icon-wrapper">
+            {#if isUploading}
+                <div class="upload-icon mdc-typography--body1" style="top:12px;left:8px"
+                     transition:fade>{(uploadProgress * 100).toFixed(1)}%
+                </div>
+            {:else}
+                <div class="upload-icon" transition:fade>
+                    <IconButton class="material-icons"
+                                on:click={handleFileUpload}
+                                disabled={!selectedImageFile}
+                                title="Upload selected image"
+                    >
+                        cloud_upload
+                    </IconButton>
+                </div>
+            {/if}
+        </div>
     </div>
     <div class="form--input">
         <div class="form--input-field">
@@ -179,12 +200,10 @@
                        invalid={isInvalidRepo}
                        label={repoFieldLabel}
                        type="url"
+                       on:change={handleRepoUrlChanged}
             />
             {#if isInvalidRepo}
-                <HelperText validationMsg>{
-                `URL must not be larger than ${MaxUrlLength} characters`
-                }
-                </HelperText>
+                <HelperText validationMsg>Unsupported or invalid URL</HelperText>
             {/if}
         </div>
     </div>
@@ -296,6 +315,17 @@
             width: 100%;
         }
     }
+
+    .upload-icon-wrapper {
+        position: relative;
+        height: 48px;
+        width: 48px;
+    }
+
+    .upload-icon-wrapper .upload-icon {
+        position: absolute;
+    }
+
 
 </style>
 

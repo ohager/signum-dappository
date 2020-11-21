@@ -11,7 +11,11 @@ export const pinFile = async ({ fileBuffer, name, meta }) => {
     const metadata = JSON.stringify({
         keyvalues: meta,
     })
+    const options = JSON.stringify({
+        cidVersion: '1',
+    })
     data.append('pinataMetadata', metadata)
+    data.append('pinataOptions', options)
 
     return await axios.post(url, data, {
         maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files

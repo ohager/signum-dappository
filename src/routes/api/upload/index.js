@@ -8,8 +8,8 @@ const AcceptedFormats = ['.png', '.jpg', '.webp', '.svg']
 
 const IpfsGateways = {
     pinata: 'https://gateway.pinata.cloud/ipfs',
-    ipfs: 'https://ipfs.io/ipfs/',
-    cloudflare: 'https://cloudflare-ipfs.com/ipfs/',
+    ipfs: 'https://ipfs.io/ipfs',
+    cloudflare: 'https://cloudflare-ipfs.com/ipfs',
 }
 
 const upload = multer({

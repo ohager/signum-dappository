@@ -30,6 +30,7 @@
     "publish": "now --prod"
   },
   "dependencies": {
+    "@braintree/sanitize-url": "^5.0.0",
     "@burstjs/contracts": "^0.5.0",
     "@burstjs/core": "^0.5.0",
     "@burstjs/crypto": "^0.5.0",
@@ -50,7 +51,8 @@
     "query-string": "^6.13.1",
     "sapper-environment": "^1.0.1",
     "sirv": "^1.0.6",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
