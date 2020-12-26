@@ -22,7 +22,6 @@
 
     const { tokens$ } = tokenStore
 
-
     $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
     $: activeTokens = filterTokens(unfilteredActiveTokens, $omnibarStore$)
     $: isSyncing = $syncProgress$ < 1
@@ -72,7 +71,7 @@
                 </TokenItemMessageCard>
             </div>
         {:else}
-            <div id='item-list' class="item-list-container" style="--item-list-height: {itemListContainerHeight}px">
+            <div class="item-list-container" style="--item-list-height: {itemListContainerHeight}px">
                 {#if viewMode === OmnibarViewMode.List}
                     <ul transition:scale class="item-list">
                         {#each activeTokens as data}
@@ -147,10 +146,10 @@
 
     .body .item-list-container {
         position: relative;
-        margin: 1rem;
         display: flex;
         justify-content: center;
-        height: var(--item-list-height)
+        height: var(--item-list-height);
+        margin: 1rem 1rem 2rem;
     }
 
     .body .item-list {
