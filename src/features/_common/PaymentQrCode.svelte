@@ -47,8 +47,8 @@
     </a>
     <section>
         <p>
-            Scan the code with e.g. Phoenix Mobile Wallet,
-            or tap/click the QR Code to open an installed wallet
+            Scan the code with a QR-Code scanner,
+            or tap/click the QR-Code, to open an installed wallet
         </p>
 
         <ul>

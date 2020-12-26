@@ -13,9 +13,11 @@
         isActive: true,
     }
 
-    const title = `dAppository: ${token.name}`
-    const text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
-    const url = isClientSide() ? `${location.origin}?q=${token.at}` : ''
+    $: title = `dAppository: ${token.name}`
+    $: text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
+    $: url = isClientSide() ? `${location.origin}?q=${token.at}` : ''
+
+
 </script>
 
 <div class="container">
