@@ -60,6 +60,12 @@
                     </Graphic>
                     <Text>Svelte Material UI</Text>
                 </Item>
+                <Item on:SMUI:action={openUrl('https://pinata.cloud/')}>
+                    <Graphic>
+                        <img src="/img/pinata-logo.svg" height="32px" alt="pinata logo">
+                    </Graphic>
+                    <Text>Pinata IPFS Pinning Service</Text>
+                </Item>
             </List>
             <div class="mdc-typography--body1">
                 Third Party Artworks and Icons

@@ -25,19 +25,6 @@
         position: relative;
     }
 
-    .header {
-        display: flex;
-        flex-direction: row;
-        padding: 1rem;
-        border: 1px solid #efefef;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-        box-shadow: var(--box-shadow);
-        background-color: white;
-        opacity: 97%;
-    }
-
     .body {
         position: absolute;
         display: flex;

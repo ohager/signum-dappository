@@ -1,4 +1,5 @@
 <script>
+    import { afterUpdate, beforeUpdate } from 'svelte'
     import LinearProgress from '@smui/linear-progress'
     import List from '@smui/list'
     import { scale } from 'svelte/transition'
@@ -17,8 +18,10 @@
     import TokenListItem from '../_common/tokenItem/TokenListItem.svelte'
 
     export let searchText = ''
+    let itemListContainerHeight = 0
 
     const { tokens$ } = tokenStore
+
 
     $: unfilteredActiveTokens = $tokens$.items.filter(t => t.isActive)
     $: activeTokens = filterTokens(unfilteredActiveTokens, $omnibarStore$)
@@ -32,12 +35,18 @@
         $omnibarStore$.text = tagName
     }
 
+    afterUpdate(() => {
+        const itemLists = document.getElementsByClassName('item-list')
+        if(itemLists.length){
+            itemListContainerHeight = itemLists[itemLists.length - 1].getBoundingClientRect().height
+        }
+    })
 </script>
 
-<div  class="container">
+<div class="container">
     <section transition:scale class="header">
-            <Omnibar text={searchText} />
-            <div class="counter mdc-typography--body2">{countText}</div>
+        <Omnibar text={searchText} />
+        <div class="counter mdc-typography--body2">{countText}</div>
     </section>
 
     <section class="body">
@@ -63,7 +72,7 @@
                 </TokenItemMessageCard>
             </div>
         {:else}
-            <div class="item-list-container">
+            <div id='item-list' class="item-list-container" style="--item-list-height: {itemListContainerHeight}px">
                 {#if viewMode === OmnibarViewMode.List}
                     <ul transition:scale class="item-list">
                         {#each activeTokens as data}
@@ -71,7 +80,7 @@
                         {/each}
                     </ul>
                 {:else if viewMode === OmnibarViewMode.SmallCards}
-                    <div  transition:scale class="item-list">
+                    <div transition:scale class="item-list">
                         {#each activeTokens as data}
                             <div class="item compact">
                                 <TokenItem {data} on:tag-click={handleTagClick} compact />
@@ -79,7 +88,7 @@
                         {/each}
                     </div>
                 {:else}
-                    <div  transition:scale  class="item-list">
+                    <div transition:scale class="item-list">
                         {#each activeTokens as data}
                             <div class="item">
                                 <TokenItem {data} on:tag-click={handleTagClick} />
@@ -98,6 +107,7 @@
     }
 
     .container {
+        position: relative;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
@@ -105,16 +115,16 @@
     }
 
     .header {
+        position: sticky;
         border-radius: 4px;
         display: flex;
         flex-direction: row;
         margin: 1rem;
         padding: 1rem;
-        position: sticky;
         top: 0;
         z-index: 2;
         box-shadow: var(--box-shadow);
-        background-color: var( --mdc-theme-surface);
+        background-color: var(--mdc-theme-surface);
         opacity: 97%;
     }
 
@@ -140,6 +150,7 @@
         margin: 1rem;
         display: flex;
         justify-content: center;
+        height: var(--item-list-height)
     }
 
     .body .item-list {
@@ -170,6 +181,7 @@
             margin: 0;
             padding: 1rem 0.5rem 0.5rem 0.5rem;
         }
+
         .body .item-list-container > ul.item-list {
             width: 100%;
         }
