@@ -124,12 +124,6 @@
         margin-bottom: 1rem;
     }
 
-    .header img {
-        height: 96px;
-        width: 96px;
-        text-align: center;
-    }
-
     .general {
         margin: 0 auto;
         width: 50%;

@@ -54,13 +54,4 @@
     :global(.mdc-text-field__icon.material-icons.green) {
         color: green !important;
     }
-
-    .address {
-        position: absolute;
-        top: 24px;
-        right: 32px;
-        font-size: 75%;
-        font-family: monospace;
-        color: rgba(0,0,0,.6);
-    }
 </style>
