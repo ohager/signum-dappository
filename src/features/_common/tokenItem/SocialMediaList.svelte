@@ -15,7 +15,7 @@
 
     $: title = `dAppository: ${token.name}`
     $: text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
-    $: url = isClientSide() ? `${location.origin}?q=${token.at}` : ''
+    $: url = isClientSide() ? `${location.origin}/token/${token.at}` : ''
 
 
 </script>
