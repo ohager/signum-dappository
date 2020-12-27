@@ -20,7 +20,6 @@ const upload = multer({
         parts: 2,
     },
     fileFilter: (req, file, cb) => {
-        console.log('filefilter', file)
         const { ext } = path.parse(file.originalname)
         const accepted = AcceptedFormats.includes(ext.toLowerCase())
         if (!accepted) {
