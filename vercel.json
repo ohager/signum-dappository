@@ -1,21 +1,11 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/img/(.*)",
-      "headers": {
-        "cache-control": "s-maxage=604800",
-        "connection": "keep-alive"
-      },
-      "dest": "/img/$1"
-    }
-  ],
   "builds": [
     {
       "src": "package.json",
       "use": "vercel-sapper",
       "config": {
-        "memory": 128
+        "memory": 256
       }
     }
   ]

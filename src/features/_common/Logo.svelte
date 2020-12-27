@@ -6,12 +6,11 @@
 </script>
 
 <div class="logo" style="height:{height}">
-    <object data={src} type="image/svg+xml" />
-<!--        <img {src} alt="The Burst dAppository" />-->
+    <img {src} alt="The Burst dAppository" role="img" />
 </div>
 
 <style>
-    .logo object {
+    .logo img {
         height: 100%;
     }
 
