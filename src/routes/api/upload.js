@@ -4,7 +4,7 @@ import Boom from '@hapi/boom'
 import { pinFile } from './__helpers__/pinFile'
 import { serializeResponse } from './__helpers__/serializeResponse'
 
-const AcceptedFormats = ['.png', '.jpg', '.webp', '.svg']
+const AcceptedFormats = ['.png', '.jpg', '.jpeg', '.webp', '.svg']
 
 const IpfsGateways = {
     pinata: 'https://gateway.pinata.cloud/ipfs',
