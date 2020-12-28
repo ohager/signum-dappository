@@ -38,7 +38,7 @@
     let sharingIconSurface = null
     const dispatch = createEventDispatcher()
 
-    $: tags = data.tags.filter(t => t.trim().length > 0)
+    $: tags = data.tags && data.tags.filter(t => t.trim().length > 0)
     $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `

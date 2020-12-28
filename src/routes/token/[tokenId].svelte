@@ -13,4 +13,6 @@
     $: token = $tokens$.items.find(i => i.at === tokenId)
 </script>
 
-<TokenDetail {token} />
+{#if token}
+    <TokenDetail {token} />
+{/if}
