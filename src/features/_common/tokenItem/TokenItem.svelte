@@ -38,6 +38,7 @@
     let sharingIconSurface = null
     const dispatch = createEventDispatcher()
 
+    $: tags = data.tags.filter(t => t.trim().length > 0)
     $: donation = BurstValue.fromPlanck(data.donationPlanck || '0')
     $: imageUrl = data.img || PlaceholderImage
     $: mediaStyle = `
@@ -153,7 +154,7 @@
                     {#if !compact}
                         <h2 class="mdc-typography--headline6" style="margin: 0;">{data.name}</h2>
                         <div class="tags-wrapper">
-                            <Set chips={data.tags} let:chip>
+                            <Set chips={tags} let:chip>
                                 <Chip shouldRemoveOnTrailingIconClick={false} on:click={handleChipClick}>
                                     <Text>{chip}</Text>
                                 </Chip>

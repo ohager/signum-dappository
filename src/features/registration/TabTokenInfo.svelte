@@ -56,8 +56,9 @@
     }
 
     function addTag(t) {
-        if (!hasTag(t) && !hasMaximumTags) {
-            $registration$.tags = [...$registration$.tags, t.toLowerCase()]
+        const trimmed = t.trim();
+        if (trimmed.length && !hasTag(trimmed) && !hasMaximumTags) {
+            $registration$.tags = [...$registration$.tags, trimmed.toLowerCase()]
             tag = ''
         }
     }
@@ -217,7 +218,7 @@
                        withTrailingIcon={!hasMaximumTags}
                        on:keypress={handleTagKeypress}
             >
-                {#if !hasMaximumTags}
+                {#if !hasMaximumTags && tag.trim().length > 0}
                     <TextFieldIcon class="material-icons" role="button" on:click={() => addTag(tag)}>add_circle
                     </TextFieldIcon>
                 {/if}
@@ -269,7 +270,6 @@
         align-items: center;
         margin-bottom: 1rem;
     }
-
 
     .form--input-field {
         display: block;
