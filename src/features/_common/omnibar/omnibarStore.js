@@ -19,7 +19,7 @@ export const omnibarStore$ = writable(DefaultOptions, set => {
     if (!isClientSide()) return voidFn
 
     settingsService.getValue(SettingsKeys.Omnibar).then( options => {
-        set(options)
+        set(options || DefaultOptions)
     })
 
     return () => {
