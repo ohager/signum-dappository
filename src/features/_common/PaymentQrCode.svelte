@@ -114,7 +114,7 @@
             flex-direction: column;
         }
 
-        .form--qrcode > section > ul {
+        .form--qrcode > section {
             text-align: center;
         }
     }
