@@ -232,7 +232,7 @@
 
     .tags-wrapper :global(.mdc-chip) {
         height: 24px;
-        margin: 0 2px 0 0;
+        margin: 2px 2px 0 0;
     }
 
     .tags-wrapper :global(.mdc-chip-set) {
