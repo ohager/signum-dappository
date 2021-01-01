@@ -13,9 +13,7 @@
 
     $: placeholder = isMobile() ? 'Enter search term' : 'Enter search term, e.g. text, tag, name'
     $: {
-        if(text.length){
-            $omnibarStore$.text = text
-        }
+        setText(text)
     }
 
 
@@ -56,7 +54,7 @@
             {/if}
         </div>
     </div>
-    <OmnibarOptions expanded={isFilterMenuOpen} bind:options={$omnibarStore$.options}/>
+    <OmnibarOptions expanded={isFilterMenuOpen} bind:options={$omnibarStore$.options} />
 </div>
 
 

@@ -7,7 +7,7 @@ const DefaultOptions = {
     text: '',
     options: {
         newestFirst: false,
-        orderByScore: false,
+        orderByScore: true,
         orderAlphabetically: false,
         viewMode: OmnibarViewMode.Cards,
     },
