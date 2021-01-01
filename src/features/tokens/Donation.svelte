@@ -26,10 +26,10 @@
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = !isEmptyAmount && isValidAmount
     $: suggestedFee = $burstFee$
-    $: costs = [
+    $: costs = isQrCodeVisible ? [
         ['Donation:', BurstValue.fromBurst(amount || 0)],
         ['Entitlement:', BurstValue.fromBurst(TokenContract.DonationEntitlement)],
-    ]
+    ] : []
 
     function handleCancel() {
         history.back()
@@ -54,8 +54,8 @@
                     the experienced recognition, but also helps the Burst community. Thank you very much.
                 </p>
                 <p class="mdc-typography--body1">
-                    Mind that you will be charged an <em>Entitlement Fee</em> of {TokenContract.DonationEntitlement} BURST,
-                    that will be reimbursed entirely once the donation was processed.
+                    Note that you will be charged an <em>Entitlement Fee</em> of {TokenContract.DonationEntitlement} BURST.
+                    But it will be reimbursed entirely once the donation was processed.
                 </p>
             </article>
             <div class="item-wrapper">

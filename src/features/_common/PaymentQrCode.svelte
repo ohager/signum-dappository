@@ -1,4 +1,5 @@
 <script>
+    import Button, { Label, Icon } from '@smui/button'
     import QrCode from 'qrcode'
     import { BurstValue, convertNumericIdToAddress, FeeQuantPlanck } from '@burstjs/util'
     import { mountLegacyDeepLink } from '../../utils/deeplink'
@@ -25,30 +26,36 @@
         info.push(['Total:', BurstValue.fromBurst(totalCosts.getBurst()).add(fee)])
     }
 
-    $: deepLink =  mountLegacyDeepLink(recipient, totalCosts, fee, message)
+    $: deepLink = mountLegacyDeepLink(recipient, totalCosts, fee, message)
 
     $: {
         if (QrCodeCanvas !== null) {
             QrCode.toCanvas(QrCodeCanvas, deepLink, {
                 width: 256,
-                color : {
+                color: {
                     light: $theme$ === ThemeNames.Dark ? '#323f65ff' : '#ffffffff',
-                    dark: $theme$ === ThemeNames.Dark ? '#b2b2d4ff' : '#001e35ff'
-                }
+                    dark: $theme$ === ThemeNames.Dark ? '#b2b2d4ff' : '#001e35ff',
+                },
             })
         }
+    }
+
+    function openDeeplink() {
+        window.open(deepLink, '_blank')
     }
 
 </script>
 
 <div class="form--qrcode">
     <a href={deepLink}>
-        <canvas bind:this={QrCodeCanvas}/>
+        <canvas bind:this={QrCodeCanvas} />
     </a>
     <section>
         <p>
             Scan the code with a QR-Code scanner,
-            or tap/click the QR-Code, to open an installed wallet
+            tap/click the QR-Code,
+            or PAY NOW button,
+            to open an installed wallet
         </p>
 
         <ul>
@@ -57,6 +64,14 @@
                     { `${label} ${value}` }</li>
             {/each}
         </ul>
+
+
+        <div class="paynow">
+            <Button on:click={openDeeplink}>
+                <Label>Pay Now</Label>
+            </Button>
+        </div>
+
     </section>
 </div>
 
@@ -85,6 +100,10 @@
         padding: 0;
     }
 
+    .form--qrcode > section > .paynow {
+        margin-top: 1rem;
+    }
+
     .form--qrcode-infoitem {
         list-style: none;
     }
@@ -99,5 +118,6 @@
             text-align: center;
         }
     }
+
 
 </style>
