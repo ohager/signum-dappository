@@ -4,7 +4,7 @@
     import Icon from '@smui/textfield/icon'
     import IconButton from '@smui/icon-button'
     import OmnibarOptions from './OmnibarOptions.svelte'
-    import { omnibarStore$, setText } from './omnibarStore'
+    import { omnibarStore$, setText, setOptions } from './omnibarStore'
     import { isMobile } from '../../../utils/isMobile'
 
     export let text = ''
@@ -12,8 +12,13 @@
     let isFilterMenuOpen = false
 
     $: placeholder = isMobile() ? 'Enter search term' : 'Enter search term, e.g. text, tag, name'
+    $: optionsExpanded = $omnibarStore$.options.expanded
     $: {
         setText(text)
+    }
+
+    $: {
+        setOptions($omnibarStore$.options)
     }
 
 
@@ -22,7 +27,7 @@
     }
 
     function toggleMenu() {
-        isFilterMenuOpen = !isFilterMenuOpen
+        $omnibarStore$.options.expanded = !optionsExpanded
     }
 
 </script>
@@ -43,7 +48,7 @@
             {/if}
         </TextField>
         <div class="filter-icon-wrapper">
-            {#if isFilterMenuOpen}
+            {#if optionsExpanded}
                 <div transition:fade class="menu-icon">
                     <IconButton class="material-icons" on:click={toggleMenu}>filter_list</IconButton>
                 </div>
@@ -54,7 +59,7 @@
             {/if}
         </div>
     </div>
-    <OmnibarOptions expanded={isFilterMenuOpen} bind:options={$omnibarStore$.options} />
+    <OmnibarOptions bind:options={$omnibarStore$.options} />
 </div>
 
 

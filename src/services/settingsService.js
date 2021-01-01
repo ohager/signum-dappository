@@ -2,7 +2,8 @@ import { settingsRepository } from './repositories/settingsRepository'
 
 export const SettingsKeys = {
     CurrentAccount: 'current-account',
-    Theme:'theme'
+    Theme: 'theme',
+    Omnibar: 'omnibar',
 }
 
 export class SettingsService {

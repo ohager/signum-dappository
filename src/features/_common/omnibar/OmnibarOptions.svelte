@@ -7,9 +7,8 @@
     import { isClientSide } from '../../../utils/isClientSide'
     import { isMobile } from '../../../utils/isMobile'
 
-    export let expanded = false
-
     export let options = {
+        expanded: true,
         newestFirst: false,
         orderByScore: false,
         orderAlphabetically: false,
@@ -20,6 +19,7 @@
         return () => options.viewMode = selected
     }
 
+    $: expanded = options.expanded
     $: viewMode = options.viewMode
     $: barHeight = isMobile() ? '120px' : '48px'
 

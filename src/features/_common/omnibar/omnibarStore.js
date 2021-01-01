@@ -2,10 +2,12 @@ import { writable } from 'svelte/store'
 import { OmnibarViewMode } from './OmnibarViewMode'
 import { isClientSide } from '../../../utils/isClientSide'
 import { voidFn } from '../../../utils/voidFn'
+import { SettingsKeys, settingsService } from '../../../services/settingsService'
 
 const DefaultOptions = {
     text: '',
     options: {
+        expanded: true,
         newestFirst: false,
         orderByScore: true,
         orderAlphabetically: false,
@@ -16,7 +18,9 @@ const DefaultOptions = {
 export const omnibarStore$ = writable(DefaultOptions, set => {
     if (!isClientSide()) return voidFn
 
-    // TODO: load settings eventually
+    settingsService.getValue(SettingsKeys.Omnibar).then( options => {
+        set(options)
+    })
 
     return () => {
         set(DefaultOptions)
@@ -27,21 +31,17 @@ function setField(obj) {
     if (!isClientSide()) return voidFn
 
     omnibarStore$.update(state => {
-        // TODO: persist data if needed
-        // settingsService.updateValue(SettingsKeys.Theme, themeName)
-        return {
+        const newState = {
             ...state,
             ...obj,
         }
+        settingsService.updateValue(SettingsKeys.Omnibar, newState)
+        return newState
     })
 }
 
-export function setViewMode(viewMode) {
-    setField({ viewMode })
-}
-
-export function setFilter(filter) {
-    setField({ filter })
+export function setOptions(options) {
+    setField({ options })
 }
 
 export function setText(text) {
