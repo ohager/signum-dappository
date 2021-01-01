@@ -33,9 +33,13 @@
         dispatchEvent(Events.ShowMenu, { isOpen: !isMenuOpen })
     }
 
+    function gotoHome(){
+        goto(RouteHome())
+    }
+
     function unsetAccount() {
         clearAccount()
-        goto(RouteHome())
+        gotoHome()
     }
 
 </script>
@@ -44,19 +48,21 @@
     <Row>
         <Section>
             <div class="menu-icon-wrapper">
-            {#if isMenuOpen}
-                <div transition:fade class="menu-icon">
-                    <IconButton class="material-icons" on:click={toggleMenu}>menu_open</IconButton>
-                </div>
-            {:else}
-                <div transition:fade class="menu-icon">
-                    <IconButton class="material-icons" on:click={toggleMenu}>menu</IconButton>
-                </div>
-            {/if}
+                {#if isMenuOpen}
+                    <div transition:fade class="menu-icon">
+                        <IconButton class="material-icons" on:click={toggleMenu}>menu_open</IconButton>
+                    </div>
+                {:else}
+                    <div transition:fade class="menu-icon">
+                        <IconButton class="material-icons" on:click={toggleMenu}>menu</IconButton>
+                    </div>
+                {/if}
             </div>
-            <Logo height="42px" />
-            <div class="title-text">
-                <Title>The Burst dAppository</Title>
+            <div class="logo" on:click={gotoHome}>
+                <Logo height="42px" />
+                <div class="title-text">
+                    <Title>The Burst dAppository</Title>
+                </div>
             </div>
         </Section>
         <Section align="end" toolbar>
@@ -71,18 +77,18 @@
             {/if}
         </Section>
     </Row>
-    <SyncProgressBar/>
-    <LoadingBar/>
+    <SyncProgressBar />
+    <LoadingBar />
     {#if isTestnet }
         <div class="testnet-marker">
-            <Stamp text="testnet"/>
+            <Stamp text="testnet" />
         </div>
     {/if}
 </TopAppBar>
 
 <style>
 
-    :global(.mdc-top-app-bar){
+    :global(.mdc-top-app-bar) {
         box-shadow: var(--box-shadow);
     }
 
@@ -90,6 +96,20 @@
         .title-text {
             display: none;
         }
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 0 0.5rem;
+        transition: none;
+    }
+
+    .logo:hover {
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 4px;
+        transition: none;
     }
 
     .current-account {
