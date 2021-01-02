@@ -1,4 +1,5 @@
 <script>
+    import { TokenContract } from '../../../context'
     import TutorialPage from './TutorialPage.svelte'
     import {TokenItem, TokenItemVariant} from '../../_common'
 
@@ -23,12 +24,13 @@
         </div>
         <div class="description">
             <div class="mdc-typography--body1">
-                The tokens main feature is receiving donations, i.e. anyone who has a Burst account
-                can send BURST to that token. The respective <b>owner automatically receives the amount</b>
-                minus the execution costs for the Smart Contract (less than 0.4 BURST) and a 1% commission
-                for the maintainer of this project.
+                The tokens main feature is receiving donations. Anyone who has a Burst account
+                can send BURST to that token. The <b>owner automatically receives the amount</b>
+                minus {TokenContract.ActivationCosts} BURST and a 1% commission. While the commission goes to the maintainer of this project,
+                the {TokenContract.ActivationCosts} BURST remains in the token to pay the execution costs and raising the tokens value.
+                Only <b>on deactivation the remaining balance will be transferred to the owner</b>.
                 <br/>
-                Each received donation raises the <b>tokens score</b>. This feature will be explained next.
+                Each received donation raises not only the tokens value, but also the <b>tokens score</b>.
             </div>
         </div>
     </div>

@@ -129,7 +129,7 @@
 
     {#if !isEmptyString(stampText) }
         <div class='stamp-wrapper'>
-            <Stamp text={stampText}/>
+            <Stamp text={stampText} />
         </div>
     {/if}
 
@@ -141,7 +141,7 @@
          class="item-wrapper mdc-elevation-transition">
         <Card>
             <PrimaryAction on:mouseenter={prefetchDetails} on:click={handleDetailsClick}>
-                <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!"/>
+                <img src={imageUrl} on:error={handleMediaError} hidden alt="nothing here!" />
                 <Media aspectRatio="16x9" style={mediaStyle}>
                     <div class="badge-wrapper">
                         <BadgeCollection token={data} />
@@ -162,7 +162,7 @@
                         </div>
                         {data.desc}
                     {:else}
-                        <h2 class="mdc-typography--headline6" style="margin: 0; font-size: 90%">{data.name}</h2>
+                        <h2 class="compact-title mdc-typography--headline6">{data.name}</h2>
                     {/if}
                 </Content>
             </PrimaryAction>
@@ -189,15 +189,20 @@
                     {#if variant !== TokenItemVariant.Owner}
                         <ActionIcons>
                             {#if !isEmptyString(data.repo)}
-                                <IconButton class="material-icons" on:click={handleProjectClick} title="Go to project site">web</IconButton>
+                                <IconButton class="material-icons" on:click={handleProjectClick}
+                                            title="Go to project site">web
+                                </IconButton>
                             {/if}
                             <div class="share">
-                                <IconButton class="material-icons" on:click={handleShareClick} title="Share">share</IconButton>
+                                <IconButton class="material-icons" on:click={handleShareClick} title="Share">share
+                                </IconButton>
                                 <MenuSurface bind:this={sharingIconSurface} anchorCorner="TOP_LEFT">
                                     <SocialMediaList token={data} />
                                 </MenuSurface>
                             </div>
-                            <IconButton class="material-icons" on:mousenter={prefetchDetails} on:click={handleDetailsClick} title="More details">description</IconButton>
+                            <IconButton class="material-icons" on:mousenter={prefetchDetails}
+                                        on:click={handleDetailsClick} title="More details">description
+                            </IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>
@@ -252,5 +257,13 @@
         right: 1rem;
         bottom: 0;
         filter: drop-shadow(0px 2px 2px #555555)
+    }
+
+    .compact-title {
+        margin: 0;
+        font-size: 90%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden
     }
 </style>
