@@ -195,11 +195,11 @@
                         <ActionIcons>
                             {#if compact && !isEmptyString(data.repo)}
                                 <IconButton class="material-icons" on:click={handleProjectClick}
-                                            title="Go to project site">web
+                                            title="Visit Project Site">web
                                 </IconButton>
                             {/if}
                             <div class="share">
-                                <IconButton class="material-icons" on:click={handleShareClick} title="Share">share
+                                <IconButton class="material-icons" on:click={handleShareClick} title="Share on Social Media">share
                                 </IconButton>
                                 <MenuSurface bind:this={sharingIconSurface} anchorCorner="TOP_LEFT">
                                     <SocialMediaList token={data} />

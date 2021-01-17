@@ -34,7 +34,7 @@
         $omnibarStore$.text = tagName
     }
 
-    afterUpdate(() => {
+    beforeUpdate(() => {
         const itemLists = document.getElementsByClassName('item-list')
         if(itemLists.length){
             itemListContainerHeight = itemLists[itemLists.length - 1].getBoundingClientRect().height
