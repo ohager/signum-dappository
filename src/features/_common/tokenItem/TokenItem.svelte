@@ -23,6 +23,7 @@
     import BadgeCollection from '../badge/BadgeCollection.svelte'
     import TokenRank from './TokenRank.svelte'
     import SocialMediaList from './SocialMediaList.svelte'
+    import { setAccount } from '../accountStore'
 
 
     export let compact = false
@@ -89,6 +90,7 @@
     })
 
     const handleOwnerTokensClick = ifNotPreview(async () => {
+        setAccount(data.owner)
         await goto(RouteAccountTokens(data.owner))
     })
 
