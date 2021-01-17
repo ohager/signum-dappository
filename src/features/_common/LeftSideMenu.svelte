@@ -92,7 +92,7 @@
         <div class="theme-switch">
             <FormField>
                 <Switch bind:checked={darkThemeChecked}/>
-                <span slot="label">{darkThemeChecked ? 'Switch to Default Theme' : 'Switch to Dark Theme'}</span>
+                <span slot="label">{darkThemeChecked ? 'Switch to Light Theme' : 'Switch to Dark Theme'}</span>
             </FormField>
         </div>
     </Header>

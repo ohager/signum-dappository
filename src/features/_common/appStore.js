@@ -64,7 +64,6 @@ export const blockchainStatus$ = readable(DefaultBlockchainStatusState, set => {
 
     async function fetchCurrentBlock() {
         const currentBlock = await networkService.getCurrentBlock()
-        console.debug('current', currentBlock)
         set({ currentBlock })
     }
 

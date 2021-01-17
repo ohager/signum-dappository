@@ -184,11 +184,16 @@
                             <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
                                 <Label>Donate</Label>
                             </Button>
+                            {#if !compact && !isEmptyString(data.repo)}
+                                <Button on:click={handleProjectClick}>
+                                    <Label>Visit Project</Label>
+                                </Button>
+                            {/if}
                         {/if}
                     </ActionButtons>
                     {#if variant !== TokenItemVariant.Owner}
                         <ActionIcons>
-                            {#if !isEmptyString(data.repo)}
+                            {#if compact && !isEmptyString(data.repo)}
                                 <IconButton class="material-icons" on:click={handleProjectClick}
                                             title="Go to project site">web
                                 </IconButton>
@@ -200,9 +205,6 @@
                                     <SocialMediaList token={data} />
                                 </MenuSurface>
                             </div>
-                            <IconButton class="material-icons" on:mousenter={prefetchDetails}
-                                        on:click={handleDetailsClick} title="More details">description
-                            </IconButton>
                         </ActionIcons>
                     {/if}
                 </Actions>

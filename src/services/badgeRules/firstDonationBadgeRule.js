@@ -5,12 +5,12 @@ export class FirstDonationBadgeRule extends AbstractBadgeRule {
         super({
             name: 'First Donation',
             description: 'You got a donation',
-            icon: 'first-donation'
+            icon: 'first-donation',
         })
     }
 
-    test({token, allTokens, block}) {
-        const {donationCount} = token
+    test({ token, allTokens, block }) {
+        const { donationCount } = token
         return donationCount > 0
     }
 }

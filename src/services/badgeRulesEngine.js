@@ -4,6 +4,8 @@ import { FirstDonationBadgeRule } from './badgeRules/firstDonationBadgeRule'
 import { LowScoreBadgeRule } from './badgeRules/lowScoreBadgeRule'
 import { HiScoreBadgeRule } from './badgeRules/hiScoreBadgeRule'
 import { NewBadgeRule } from './badgeRules/newBadgeRule'
+import { ChampionBadgeRule } from './badgeRules/championBadgeRule'
+import { ContributorBadgeRule } from './badgeRules/contributorBadgeRule'
 
 class BadgeRulesEngine {
     constructor(rules) {
@@ -23,9 +25,11 @@ class BadgeRulesEngine {
 
 const ruleSet = [
     new FirstDonationBadgeRule(),
-    new LowScoreBadgeRule(),
     new EarlyAccessBadgeRule(Vars.MaxEarlyAccessBlockHeight),
+    new LowScoreBadgeRule(),
     new HiScoreBadgeRule(),
+    new ContributorBadgeRule(),
+    new ChampionBadgeRule(),
     new NewBadgeRule(),
 ]
 
