@@ -3,6 +3,7 @@ import { Vars } from '../context'
 import { FirstDonationBadgeRule } from './badgeRules/firstDonationBadgeRule'
 import { LowScoreBadgeRule } from './badgeRules/lowScoreBadgeRule'
 import { HiScoreBadgeRule } from './badgeRules/hiScoreBadgeRule'
+import { NewBadgeRule } from './badgeRules/newBadgeRule'
 
 class BadgeRulesEngine {
     constructor(rules) {
@@ -11,8 +12,8 @@ class BadgeRulesEngine {
 
     run({ token, allTokens, block }) {
         let badges = []
-        for(const rule of this._rules){
-            if(rule.test({ token, allTokens, block })){
+        for (const rule of this._rules) {
+            if (rule.test({ token, allTokens, block })) {
                 badges.push(rule.badgeData)
             }
         }
@@ -25,6 +26,7 @@ const ruleSet = [
     new LowScoreBadgeRule(),
     new EarlyAccessBadgeRule(Vars.MaxEarlyAccessBlockHeight),
     new HiScoreBadgeRule(),
+    new NewBadgeRule(),
 ]
 
 export const badgeRulesEngine = new BadgeRulesEngine(ruleSet)

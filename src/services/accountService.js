@@ -45,7 +45,6 @@ export class AccountService {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
         return BurstValue.fromPlanck(balanceNQT)
     }
-
 }
 
 export const accountService = new AccountService()

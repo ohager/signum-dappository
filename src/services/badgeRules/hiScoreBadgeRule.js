@@ -14,7 +14,7 @@ export class HiScoreBadgeRule extends AbstractBadgeRule {
     test({ token, allTokens, block }) {
         const score = calculateRankingPoints(token)
         let targetScore = 0
-        for(let i=1000; i<10000; i+=500){
+        for (let i = 1000; i < 10000; i += 500) {
             if (score >= i) {
                 targetScore = i
             }
@@ -26,6 +26,6 @@ export class HiScoreBadgeRule extends AbstractBadgeRule {
     _adjustData(targetScore) {
         this._name = `High Score ${targetScore} Token`
         this._description = `You got a high score greater than ${targetScore}`
-        this._text = (targetScore / 100).toFixed(0)
+        this._text = (targetScore / 1000).toFixed(0)
     }
 }

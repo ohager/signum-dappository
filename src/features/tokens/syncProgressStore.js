@@ -8,7 +8,7 @@ import { voidFn } from '../../utils/voidFn'
 const InitialSyncProgressState = 0
 const UpdateInterval = Vars.ContractPollingIntervalSecs
 
-export const syncProgress$ = readable(InitialSyncProgressState, (set) => {
+export const syncProgress$ = readable(InitialSyncProgressState, set => {
     if (!isClientSide()) return voidFn
 
     const service = applicationTokenService
@@ -16,7 +16,7 @@ export const syncProgress$ = readable(InitialSyncProgressState, (set) => {
         const { total, processed } = detail
         set(total && processed / total)
     }
-    window.addEventListener(Events.Progress, updateProgress, {passive:true})
+    window.addEventListener(Events.Progress, updateProgress, { passive: true })
     service.syncTokens()
     const interval = setInterval(service.syncTokens.bind(service), UpdateInterval)
     return () => {

@@ -1,11 +1,11 @@
-import { writable } from 'svelte/store'
+import { writable, readable } from 'svelte/store'
 import { SettingsKeys, settingsService } from '../../services/settingsService'
 import { isClientSide } from '../../utils/isClientSide'
 import { ThemeNames } from '../../utils/themeNames'
 import { voidFn } from '../../utils/voidFn'
-
-
-
+import { Events } from '../../utils/events'
+import { Vars } from '../../context'
+import { networkService } from '../../services/networkService'
 
 const PrefersDarkModeQuery = '(prefers-color-scheme: dark)'
 
@@ -52,3 +52,26 @@ export function startLoading() {
 export function finishLoading() {
     loading$.update(_ => false)
 }
+
+const BlockPollingInterval = Vars.ContractPollingIntervalSecs
+
+const DefaultBlockchainStatusState = {
+    currentBlock: null,
+}
+
+export const blockchainStatus$ = readable(DefaultBlockchainStatusState, set => {
+    if (!isClientSide()) return voidFn
+
+    async function fetchCurrentBlock() {
+        const currentBlock = await networkService.getCurrentBlock()
+        console.debug('current', currentBlock)
+        set({ currentBlock })
+    }
+
+    fetchCurrentBlock()
+    const interval = setInterval(fetchCurrentBlock, BlockPollingInterval)
+    return () => {
+        clearInterval(interval)
+        set(DefaultBlockchainStatusState)
+    }
+})

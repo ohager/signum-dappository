@@ -3,6 +3,8 @@
     import Badge from './Badge.svelte'
     import { badgeRulesEngine } from '../../../services/badgeRulesEngine'
     import { tokens$ } from '../tokenStore'
+    import { blockchainStatus$ } from '../appStore'
+
     export let token = EmptyToken
 
     let expanded = false
@@ -14,7 +16,10 @@
 
     $: allTokens = $tokens$.items.filter(t => t.isActive)
     $: {
-       badges = badgeRulesEngine.run({ token, allTokens })
+        const { currentBlock: block } = $blockchainStatus$
+        if(block){
+            badges = badgeRulesEngine.run({ token, allTokens, block })
+        }
     }
 
 </script>
@@ -22,7 +27,7 @@
 <div class="badges-collection" on:mouseenter={toggleExpanded} on:mouseleave={toggleExpanded}>
     {#each badges as badgeProps}
         <div class="badge-wrapper" class:expanded>
-            <Badge {...badgeProps}/>
+            <Badge {...badgeProps} />
         </div>
     {/each}
 </div>

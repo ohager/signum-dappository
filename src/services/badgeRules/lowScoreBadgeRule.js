@@ -14,7 +14,7 @@ export class LowScoreBadgeRule extends AbstractBadgeRule {
     test({ token, allTokens, block }) {
         const score = calculateRankingPoints(token)
         let targetScore = 0
-        for(let i=0; i<1000; i+=250){
+        for (let i = 0; i < 1000; i += 250) {
             if (score >= i) {
                 targetScore = i
             }

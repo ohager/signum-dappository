@@ -5,13 +5,13 @@ export class EarlyAccessBadgeRule extends AbstractBadgeRule {
         super({
             name: 'Early Access',
             description: 'You are an early adopter',
-            icon: 'early-adopt'
+            icon: 'early-adopt',
         })
 
         this._maxEarlyAccessBlock = maxEarlyAccessBlock
     }
 
-    test({token, allTokens, block}) {
+    test({ token, allTokens, block }) {
         return token.creationBlock < this._maxEarlyAccessBlock
     }
 }
