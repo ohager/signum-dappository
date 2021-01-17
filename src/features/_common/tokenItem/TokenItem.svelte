@@ -7,7 +7,14 @@
     import MenuSurface from '@smui/menu-surface'
     import { goto, prefetch } from '@sapper/app'
     import { BurstValue } from '@burstjs/util'
-    import { RouteDonate, RouteActivate, RouteTransfer, RouteDeactivate, RouteTokenDetail } from '../../../utils/routes'
+    import {
+        RouteDonate,
+        RouteActivate,
+        RouteTransfer,
+        RouteDeactivate,
+        RouteTokenDetail,
+        RouteAccountTokens,
+    } from '../../../utils/routes'
     import { isEmptyString } from '../../../utils/isEmptyString'
     import Stamp from '../Stamp.svelte'
     import { TokenItemVariant } from './TokenItemVariant'
@@ -75,6 +82,14 @@
 
     const handleDetailsClick = ifNotPreview(async () => {
         await goto(RouteTokenDetail(data.at))
+    })
+
+    const prefetchOwnerTokens = ifNotPreview(() => {
+        prefetch(RouteAccountTokens(data.owner))
+    })
+
+    const handleOwnerTokensClick = ifNotPreview(async () => {
+        await goto(RouteAccountTokens(data.owner))
     })
 
     const handleProjectClick = ifNotPreview(() => {
@@ -198,6 +213,8 @@
                                             title="Visit Project Site">web
                                 </IconButton>
                             {/if}
+                            <IconButton class="material-icons" on:mouseenter={prefetchOwnerTokens} on:click={handleOwnerTokensClick} title="See all tokens of this owner">person_search
+                            </IconButton>
                             <div class="share">
                                 <IconButton class="material-icons" on:click={handleShareClick} title="Share on Social Media">share
                                 </IconButton>
