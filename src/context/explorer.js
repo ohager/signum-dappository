@@ -4,7 +4,7 @@ const explorer = path => `${Vars.ExplorerUrl}${path}`
 
 export const ExplorerApi = {
     getBlockUrl: blockId => {
-        console.info('Explorer does not support block urls')
+        explorer(`action=blocks&height=/${blockId}`)
     },
     getAccountUrl: accountId => explorer(`?action=account&account=${accountId}`),
 }
