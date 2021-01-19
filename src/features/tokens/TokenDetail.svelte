@@ -33,7 +33,7 @@
                 'Number of Donations': { v: donationCount },
                 'Balance': { v: BurstValue.fromPlanck(balancePlanck) },
                 'Activation Costs': { v: BurstValue.fromPlanck(minActivationPlanck) },
-                'Creation Block': { v: creationBlock, url: ExplorerApi.getBlockUrl(creationBlock) },
+                'Creation Block': { v: creationBlock },
             }
         }
     }
