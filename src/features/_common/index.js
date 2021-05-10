@@ -23,6 +23,8 @@ import Stamp from './Stamp.svelte'
 import TabContent from './TabContent.svelte'
 import { TokenItem, TokenItemVariant } from './tokenItem'
 import ThemeProvider from './ThemeProvider.svelte'
+import TokenMetaHead from './TokenMetaHead.svelte'
+import GenericMetaHead from './GenericMetaHead.svelte'
 
 export {
     AccountDialog,
@@ -32,6 +34,7 @@ export {
     BadgeCollection,
     omnibarStore$,
     burstFeeStore,
+    GenericMetaHead,
     Header,
     Link,
     LeftSideMenu,
@@ -50,5 +53,6 @@ export {
     ThemeProvider,
     TokenItem,
     TokenItemVariant,
+    TokenMetaHead,
     tokenStore,
 }
