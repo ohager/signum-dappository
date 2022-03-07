@@ -30,7 +30,7 @@
     "publish": "now --prod"
   },
   "dependencies": {
-    "@braintree/sanitize-url": "^5.0.0",
+    "@braintree/sanitize-url": "^6.0.0",
     "@burstjs/contracts": "^0.5.0",
     "@burstjs/core": "^0.5.0",
     "@burstjs/crypto": "^0.5.0",
