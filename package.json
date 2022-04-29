@@ -41,7 +41,7 @@
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "dexie": "^3.0.2",
+    "dexie": "^3.2.2",
     "form-data": "^3.0.0",
     "lodash.debounce": "^4.0.8",
     "magic-mapper": "0.0.11",
