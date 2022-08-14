@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@braintree/sanitize-url": "^5.0.0",
-    "@burstjs/contracts": "^0.5.0",
+    "@signumjs/contracts": "^1.0.0-rc.27",
     "@burstjs/core": "^0.5.0",
     "@signumjs/crypto": "^1.0.0-rc.27",
     "@burstjs/http": "^0.5.0",

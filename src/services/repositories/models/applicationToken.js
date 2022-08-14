@@ -22,7 +22,7 @@
  */
 
 import MagicMapper from 'magic-mapper'
-import { ContractDataView } from '@burstjs/contracts'
+import { ContractDataView } from '@signumjs/contracts'
 import { TokenStatus } from '../../../utils/tokenStatus'
 
 const mapper = new MagicMapper({

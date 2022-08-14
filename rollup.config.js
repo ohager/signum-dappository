@@ -77,7 +77,7 @@ export default {
                         'verifySignature',
                         'generateSignature',
                     ],
-                    '@burstjs/contracts': [
+                    '@signumjs/contracts': [
                         'ContractDataView',
                         'calculateMinimumCreationFee',
                     ],
