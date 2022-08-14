@@ -70,7 +70,7 @@ export default {
                         'broadcastTransaction',
                         'BurstService',
                     ],
-                    '@burstjs/crypto': [
+                    '@signumjs/crypto': [
                         'generateMasterKeys',
                         'getAccountIdFromPublicKey',
                         'generateSignedTransactionBytes',
