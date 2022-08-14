@@ -33,7 +33,7 @@
     "@braintree/sanitize-url": "^5.0.0",
     "@burstjs/contracts": "^0.5.0",
     "@burstjs/core": "^0.5.0",
-    "@burstjs/crypto": "^0.5.0",
+    "@signumjs/crypto": "^1.0.0-rc.27",
     "@burstjs/http": "^0.5.0",
     "@burstjs/util": "^0.5.0",
     "@hapi/boom": "^9.1.0",

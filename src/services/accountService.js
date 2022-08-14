@@ -1,7 +1,7 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../context'
 import { BurstValue } from '@burstjs/util'
-import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
+import { generateMasterKeys, getAccountIdFromPublicKey } from '@signumjs/crypto'
 
 export class AccountService {
     constructor() {
