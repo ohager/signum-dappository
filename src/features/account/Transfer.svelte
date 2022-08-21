@@ -4,8 +4,6 @@
     import { Page, TokenItemVariant, TokenItem, PassphraseInput, AccountInput } from '../_common'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { EmptyToken } from '../../utils/emptyToken'
-    import { BurstValue } from '@burstjs/util'
-    import { isEmptyString } from '../../utils/isEmptyString'
     import { account$ } from '../_common/accountStore'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'

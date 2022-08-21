@@ -25,6 +25,7 @@ import { TokenItem, TokenItemVariant } from './tokenItem'
 import ThemeProvider from './ThemeProvider.svelte'
 import TokenMetaHead from './TokenMetaHead.svelte'
 import GenericMetaHead from './GenericMetaHead.svelte'
+import {convertNumericIdToAddress} from './convertNumericIdToAddress'
 
 export {
     AccountDialog,
@@ -55,4 +56,5 @@ export {
     TokenItemVariant,
     TokenMetaHead,
     tokenStore,
+  convertNumericIdToAddress
 }

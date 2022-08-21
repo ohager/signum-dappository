@@ -6,8 +6,8 @@ import { Events } from '../utils/events'
 import { accountService } from './accountService'
 import { getAccountIdFromPublicKey } from '@signumjs/crypto'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
-import { BurstValue } from '@burstjs/util'
 import { finishLoading, startLoading } from '../features/_common/appStore'
+import {Amount} from "@signumjs/util";
 
 const MaxParallelFetches = 6
 
@@ -74,7 +74,7 @@ export class ApplicationTokenService {
     }
 
     getActivationCostsPlanck() {
-        return BurstValue.fromBurst(TokenContract.ActivationCosts).getPlanck()
+        return Amount.fromSigna(TokenContract.ActivationCosts).getPlanck()
     }
 
     async _callContractMethod(token, passphrase, methodHash, methodArgs) {

@@ -1,6 +1,6 @@
 import { voidFn } from './voidFn'
 import { isClientSide } from './isClientSide'
-import { HttpImpl as HttpClient } from '@burstjs/http'
+import { HttpClientFactory } from '@signumjs/http'
 
 const voidPromise = () => new Promise(voidFn)
 const getBaseUrl = () => (isClientSide() ? window.location.origin : 'dummyOrigin')
@@ -13,5 +13,6 @@ const voidHttpClient = {
 }
 
 export const httpClientProvider = {
-    get: () => (isClientSide() ? new HttpClient(`${getBaseUrl()}/api`) : voidHttpClient),
+    get: () =>
+        isClientSide() ? HttpClientFactory.createHttpClient(`${getBaseUrl()}/api`) : voidHttpClient,
 }

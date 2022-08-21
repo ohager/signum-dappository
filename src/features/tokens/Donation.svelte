@@ -2,9 +2,9 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Button, { Label } from '@smui/button'
-    import { BurstValue } from '@burstjs/util'
     import {Page, TokenItem, TokenItemVariant, burstFeeStore, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../context'
+    import {Amount} from "@signumjs/util";
 
     export let token = {
         at: '',
@@ -27,8 +27,8 @@
     $: isQrCodeVisible = !isEmptyAmount && isValidAmount
     $: suggestedFee = $burstFee$
     $: costs = isQrCodeVisible ? [
-        ['Donation:', BurstValue.fromBurst(amount || 0)],
-        ['Entitlement:', BurstValue.fromBurst(TokenContract.DonationEntitlement)],
+        ['Donation:', Amount.fromSigna(amount || 0)],
+        ['Entitlement:', Amount.fromSigna(TokenContract.DonationEntitlement)],
     ] : []
 
     function handleCancel() {

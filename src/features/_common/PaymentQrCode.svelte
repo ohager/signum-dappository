@@ -1,21 +1,22 @@
 <script>
     import Button, { Label, Icon } from '@smui/button'
     import QrCode from 'qrcode'
-    import { BurstValue, convertNumericIdToAddress, FeeQuantPlanck } from '@burstjs/util'
     import { mountLegacyDeepLink } from '../../utils/deeplink'
     import { assureAccountId } from '../../utils/assureAccountId'
     import { theme$ } from './appStore'
     import { ThemeNames } from '../../utils/themeNames'
+    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
+    import {Amount, FeeQuantPlanck} from "@signumjs/util";
 
     export let recipient
     export let costs = []
-    export let fee = BurstValue.fromPlanck(FeeQuantPlanck.toString())
+    export let fee = Amount.fromPlanck(FeeQuantPlanck.toString())
     export let message = null
 
     let info = []
     let QrCodeCanvas = null
 
-    $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), BurstValue.fromBurst(0))
+    $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), Amount.fromSigna(0))
     $: {
         info = []
         const recipientAddress = convertNumericIdToAddress(assureAccountId(recipient))
@@ -23,7 +24,7 @@
         info.push(...costs)
         info.push(['Fee:', fee])
         info.push(['---', ''])
-        info.push(['Total:', BurstValue.fromBurst(totalCosts.getBurst()).add(fee)])
+        info.push(['Total:', Amount.fromSigna(totalCosts.getSigna()).add(fee)])
     }
 
     $: deepLink = mountLegacyDeepLink(recipient, totalCosts, fee, message)

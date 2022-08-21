@@ -1,7 +1,7 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
 import { BurstApi } from '../context'
-import { BurstValue } from '@burstjs/util'
 import { generateMasterKeys, getAccountIdFromPublicKey } from '@signumjs/crypto'
+import {Amount} from "@signumjs/util";
 
 export class AccountService {
     constructor() {
@@ -12,7 +12,7 @@ export class AccountService {
 
     async getSuggestedFee() {
         const fees = await BurstApi.network.suggestFee()
-        return BurstValue.fromPlanck(fees.standard.toString(10))
+        return Amount.fromPlanck(fees.standard.toString(10))
     }
 
     getKeys(passphrase) {
@@ -43,7 +43,7 @@ export class AccountService {
 
     async getBalance(accountId) {
         const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
-        return BurstValue.fromPlanck(balanceNQT)
+        return Amount.fromPlanck(balanceNQT)
     }
 }
 

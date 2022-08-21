@@ -1,5 +1,6 @@
-import { convertNumericIdToAddress, createDeeplink } from '@burstjs/util'
+import { createDeeplink } from '@signumjs/util'
 import { Vars } from '../context'
+import { convertNumericIdToAddress } from '../features/_common'
 
 const redirectable = targetUrl => Vars.DeeplinkRedirectServiceUrl + encodeURIComponent(targetUrl)
 

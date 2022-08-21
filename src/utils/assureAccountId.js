@@ -1,12 +1,14 @@
-import { convertAddressToNumericId, isBurstAddress } from '@burstjs/util'
+import { Address } from '@signumjs/core'
 
-export const assureAccountId = (account) => {
+export const assureAccountId = account => {
     let id = account
-    if (isBurstAddress(id)) {
-        id = convertAddressToNumericId(id)
+    try {
+        return Address.fromReedSolomonAddress(account).getNumericId()
+    } catch (e) {
+        return id
     }
 
     // TODO: support alias
 
-    return id;
+    return id
 }

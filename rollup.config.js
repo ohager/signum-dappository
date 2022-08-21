@@ -64,30 +64,25 @@ export default {
             postcss(postcssOptions()),
             commonjs({
                 namedExports: {
-                    '@burstjs/core': [
-                        'ApiSettings',
-                        'composeApi',
-                        'broadcastTransaction',
-                        'BurstService',
+                    '@signumjs/core': [
+                        'Address',
+                        'composeApi'
                     ],
                     '@signumjs/crypto': [
                         'generateMasterKeys',
                         'getAccountIdFromPublicKey',
                         'generateSignedTransactionBytes',
                         'verifySignature',
-                        'generateSignature',
+                        'generateSignature'
                     ],
                     '@signumjs/contracts': [
                         'ContractDataView',
-                        'calculateMinimumCreationFee',
+                        'calculateMinimumCreationFee'
                     ],
-                    '@burstjs/util': [
-                        'convertNumericIdToAddress',
-                        'convertAddressToNumericId',
+                    '@signumjs/util': [
                         'createDeeplink',
-                        'isBurstAddress',
-                        'BurstValue',
-                        'FeeQuantPlanck',
+                        'Amount',
+                        'FeeQuantPlanck'
                     ],
                 },
             }),

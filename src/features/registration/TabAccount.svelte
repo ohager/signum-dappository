@@ -9,8 +9,8 @@
     import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { accountService } from '../../services/accountService'
     import { TokenContract } from '../../context'
-    import { BurstValue } from '@burstjs/util'
     import AccountInput from '../_common/AccountInput.svelte'
+    import {Amount} from "@signumjs/util";
 
     export let accountId = ''
 
@@ -30,7 +30,7 @@
 
     async function validateAccount(account) {
         const balance = await getBalance(account)
-        const minimumBalance = TokenContract.CreationFee.add(BurstValue.fromBurst(1))
+        const minimumBalance = TokenContract.CreationFee.add(Amount.fromSigna(1))
         if(!balance.greaterOrEqual(minimumBalance)){
             throw new Error(`Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`)
         }

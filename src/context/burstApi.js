@@ -1,5 +1,6 @@
-import { ApiSettings, composeApi } from '@burstjs/core'
+import { composeApi } from '@signumjs/core'
 import { Vars } from './vars'
 
-const Settings = new ApiSettings(Vars.PeerUrl)
-export const BurstApi = composeApi(Settings)
+export const BurstApi = composeApi({
+    nodeHost: Vars.PeerUrl,
+})

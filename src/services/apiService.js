@@ -1,6 +1,6 @@
 import { httpClientProvider } from '../utils/httpClientProvider'
 import { v4 as uuid } from 'uuid'
-import { HttpError } from '@burstjs/http'
+import { HttpError } from '@signumjs/http'
 
 function mangle(filename) {
     return filename.replace(/^.*\.(.+)$/i, `${uuid()}.$1`)

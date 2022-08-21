@@ -3,9 +3,9 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
     import { assureAccountId } from '../../utils/assureAccountId'
-    import { convertNumericIdToAddress } from '@burstjs/util'
     import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
     import { accountService } from '../../services/accountService'
+    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
 
     export let account = ''
     export let valid = false
