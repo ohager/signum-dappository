@@ -1,17 +1,17 @@
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { BurstApi } from '../context'
+import { Ledger } from '../context'
 import { generateMasterKeys, getAccountIdFromPublicKey } from '@signumjs/crypto'
 import {Amount} from "@signumjs/util";
 
 export class AccountService {
     constructor() {
         this._dispatch = dispatchEvent
-        this._accountApi = BurstApi.account
-        this._contractApi = BurstApi.contract
+        this._accountApi = Ledger.account
+        this._contractApi = Ledger.contract
     }
 
     async getSuggestedFee() {
-        const fees = await BurstApi.network.suggestFee()
+        const fees = await Ledger.network.suggestFee()
         return Amount.fromPlanck(fees.standard.toString(10))
     }
 
@@ -24,7 +24,7 @@ export class AccountService {
     }
 
     async getAccount(accountId) {
-        return await BurstApi.account.getAccount(accountId)
+        return await Ledger.account.getAccount(accountId)
     }
 
     async existsAccount(accountId) {

@@ -67,7 +67,7 @@ export default {
                 namedExports: {
                     '@signumjs/core': [
                         'Address',
-                        'composeApi'
+                        'LedgerClientFactory'
                     ],
                     '@signumjs/crypto': [
                         'generateMasterKeys',

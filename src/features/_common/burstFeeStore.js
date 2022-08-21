@@ -1,6 +1,6 @@
 import { readable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
-import { BurstApi } from '../../context'
+import { Ledger } from '../../context'
 import { voidFn } from '../../utils/voidFn'
 import { Amount, FeeQuantPlanck } from '@signumjs/util'
 
@@ -10,7 +10,7 @@ export const burstFee$ = readable(InitialFee, set => {
     if (!isClientSide()) return voidFn
 
     function fetchFee() {
-        BurstApi.network.suggestFee().then(({ standard }) => {
+        Ledger.network.suggestFee().then(({ standard }) => {
             set(Amount.fromPlanck(standard.toString(10)))
         })
     }

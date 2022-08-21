@@ -1,7 +1,7 @@
-import { BurstApi } from "../context";
+import { Ledger } from "../context";
 import { ApplicationToken } from "../services/repositories/models/applicationToken";
 
 export async function preloadToken(tokenId) {
-  const contract = await BurstApi.contract.getContract(tokenId);
+  const contract = await Ledger.contract.getContract(tokenId);
   return ApplicationToken.mapFromContract(contract);
 }
