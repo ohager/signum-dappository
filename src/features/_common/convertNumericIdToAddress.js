@@ -1,8 +1,10 @@
 import { Address } from '@signumjs/core'
+import { Vars } from '../../context'
 
 export const convertNumericIdToAddress = id => {
     try {
-        return Address.fromNumericId(id).getReedSolomonAddress()
+        const prefix = Vars.IsTestnet ? 'TS' : 'S'
+        return Address.fromNumericId(id, prefix).getReedSolomonAddress()
     } catch (e) {
         return ''
     }

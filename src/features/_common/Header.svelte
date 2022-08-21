@@ -61,7 +61,7 @@
             <div class="logo" on:click={gotoHome}>
                 <Logo height="42px" />
                 <div class="title-text">
-                    <Title>The Burst dAppository</Title>
+                    <Title>The Signum dAppository</Title>
                 </div>
             </div>
         </Section>

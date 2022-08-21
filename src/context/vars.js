@@ -2,7 +2,7 @@
 export const Vars = {
     IsTestnet: process.env.SAPPER_APP_IS_TESTNET,
     IsMaintenance: process.env.SAPPER_APP_IS_MAINTENANCE,
-    PeerUrl: process.env.SAPPER_APP_BURST_PEER_URL,
+    HostUrl: process.env.SAPPER_APP_HOST_URL,
     ContractMachineCodeHash: process.env.SAPPER_APP_MACHINE_CODE_HASH_ID,
     ContractPollingIntervalSecs: process.env.SAPPER_APP_CONTRACT_POLLING_INTERVAL_SECS * 1000,
     UnconfirmedTxPollingIntervalSecs:

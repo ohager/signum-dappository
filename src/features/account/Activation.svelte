@@ -1,6 +1,6 @@
 <script>
     import Button, { Label } from '@smui/button'
-    import { Page, TokenItem, TokenItemVariant, burstFeeStore, PaymentQrCode } from '../_common'
+    import { Page, TokenItem, TokenItemVariant, feeStore, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../context'
     import { EmptyToken } from '../../utils/emptyToken'
     import { isEmptyString } from '../../utils/isEmptyString'
@@ -9,7 +9,7 @@
 
     export let token = EmptyToken
 
-    const { burstFee$ } = burstFeeStore
+    const { fee$ } = feeStore
     async function startMonitoring() {
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
@@ -54,7 +54,7 @@
         {#if !isEmptyString(token.at)}
             <PaymentQrCode
                     costs={getCosts()}
-                    fee={$burstFee$}
+                    fee={$fee$}
                     recipient={token.at}
             />
         {/if}

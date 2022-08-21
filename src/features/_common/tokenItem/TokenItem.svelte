@@ -17,8 +17,6 @@
   import {isEmptyString} from '../../../utils/isEmptyString'
   import Stamp from '../Stamp.svelte'
   import {TokenItemVariant} from './TokenItemVariant'
-  import {Events} from '../../../utils/events'
-  import {dispatchEvent} from '../../../utils/dispatchEvent'
   import BadgeCollection from '../badge/BadgeCollection.svelte'
   import TokenRank from './TokenRank.svelte'
   import SocialMediaList from './SocialMediaList.svelte'

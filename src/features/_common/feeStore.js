@@ -6,7 +6,7 @@ import { Amount, FeeQuantPlanck } from '@signumjs/util'
 
 const InitialFee = Amount.fromPlanck(FeeQuantPlanck.toString(10))
 
-export const burstFee$ = readable(InitialFee, set => {
+export const fee$ = readable(InitialFee, set => {
     if (!isClientSide()) return voidFn
 
     function fetchFee() {

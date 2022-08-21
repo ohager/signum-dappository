@@ -1,9 +1,9 @@
 {
-  "name": "burst-dappository",
-  "description": "A decentralized application and tool registry using Burst blockchain and Smart Contracts",
+  "name": "signum-dappository",
+  "description": "A decentralized application and tool registry using the eco-friendly Signum blockchain and Smart Contracts",
   "keywords": [
     "blockchain",
-    "burstcoin",
+    "signum",
     "dApp",
     "dWeb",
     "smart contracts",

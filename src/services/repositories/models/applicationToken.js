@@ -1,11 +1,11 @@
 /** Original Contract Data
  at: "347549679294837383"
- atRS: "BURST-QWN9-LY64-M5VL-2YPNB"
+ atRS: "TS-QWN9-LY64-M5VL-2YPNB"
  atVersion: 1
  balanceNQT: "430000000"
  creationBlock: 110911
  creator: "2402520554221019656"
- creatorRS: "BURST-QAJA-QW5Y-SWVP-4RVP4"
+ creatorRS: "TS-QAJA-QW5Y-SWVP-4RVP4"
  dead: false
  description: "Echo, created with BlockTalk"
  finished: true

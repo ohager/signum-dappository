@@ -1,13 +1,6 @@
 <script>
-    import { goto } from '@sapper/app'
-    import Button, { Label } from '@smui/button'
     import {
         Page,
-        TokenItem,
-        TokenItemVariant,
-        burstFeeStore,
-        PassphraseInput,
-        PaymentQrCode,
         appStore,
     } from '../_common'
     import Logo from '../_common/Logo.svelte'
@@ -42,9 +35,9 @@
         <div class="credits-container">
             <div class="mdc-typography--headline6">Credits</div>
             <List class="credit-list" dense>
-                <Item on:SMUI:action={openUrl('https://www.burst-coin.org/')}>
+                <Item on:SMUI:action={openUrl('https://signum.network/')}>
                     <Graphic>
-                        <img src="/img/burst-logo.svg" height="32px" alt="burstcoin logo">
+                        <img src="/img/signum-logo.svg" height="32px" alt="signum logo">
                     </Graphic>
                     <Text>Burstcoin Community</Text>
                 </Item>
@@ -82,7 +75,7 @@
             <ul class="special-credits">
                 <li><small>Nivok for this dApps name</small></li>
                 <li><small>jjos for BlockTalk Smart Contract Compiler</small></li>
-                <li><small>Shoutouts to the BAT and BMF</small></li>
+                <li><small>Shoutouts to the Signum Community</small></li>
             </ul>
         </div>
 

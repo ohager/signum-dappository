@@ -2,7 +2,7 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Button, { Label } from '@smui/button'
-    import {Page, TokenItem, TokenItemVariant, burstFeeStore, PaymentQrCode } from '../_common'
+    import {Page, TokenItem, TokenItemVariant, feeStore, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../context'
     import {Amount} from "@signumjs/util";
 
@@ -17,7 +17,7 @@
         isActive: true,
     }
 
-    const { burstFee$ } = burstFeeStore
+    const { fee$ } = feeStore
     const AmountValidationPattern = /^[1-9]\d*$/
 
     let amount = ''
@@ -25,7 +25,7 @@
     $: isValidAmount = AmountValidationPattern.test(amount)
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = !isEmptyAmount && isValidAmount
-    $: suggestedFee = $burstFee$
+    $: suggestedFee = $fee$
     $: costs = isQrCodeVisible ? [
         ['Donation:', Amount.fromSigna(amount || 0)],
         ['Entitlement:', Amount.fromSigna(TokenContract.DonationEntitlement)],
@@ -80,7 +80,7 @@
         {#if isQrCodeVisible}
             <PaymentQrCode recipient={token.at}
                            costs={costs}
-                           fee={$burstFee$}
+                           fee={$fee$}
             />
         {/if}
 

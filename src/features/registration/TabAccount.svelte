@@ -6,7 +6,7 @@
     import { registration$ } from './registrationStore'
     import { assureAccountId } from '../../utils/assureAccountId'
     import { onDestroy, onMount } from 'svelte'
-    import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
+    import { pruneLedgerErrorMessage } from '../../utils/pruneLedgerErrorMessage'
     import { accountService } from '../../services/accountService'
     import { TokenContract } from '../../context'
     import AccountInput from '../_common/AccountInput.svelte'

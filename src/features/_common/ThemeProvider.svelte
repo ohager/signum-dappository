@@ -12,22 +12,22 @@
         --dark-grey: #444;
         --mid-grey: #676778;
         --solar-grey: #b2b2d4;
-        --burst-blue: #00579d;
-        --burst-dark-blue: #323f65;
-        --burst-darker-blue: #001e35;
+        --signum-blue: #0066ff;
+        --signum-dark-blue: #323f65;
+        --signum-darker-blue: #001e35;
         transition: color, background-color 500ms ease-in;
     }
 
     :global(*.theme-default){
-        --theme-text: var(--burst-dark-blue);
+        --theme-text: var(--signum-dark-blue);
         --mdc-theme-background : white;
         --mdc-theme-error: var(--material-color-red-900);
-        --mdc-theme-primary : var(--burst-blue);
+        --mdc-theme-primary : var(--signum-blue);
         --mdc-theme-secondary: var(--mid-grey);
         --mdc-theme-surface : white;
-        --mdc-theme-on-surface : var(--burst-dark-blue);
-        --mdc-theme-text-primary-on-background:var(--burst-dark-blue);
-        --mdc-theme-text-primary-on-surface:var(--burst-dark-blue);
+        --mdc-theme-on-surface : var(--signum-dark-blue);
+        --mdc-theme-text-primary-on-background:var(--signum-dark-blue);
+        --mdc-theme-text-primary-on-surface:var(--signum-dark-blue);
         --theme-hover-background: black;
         --theme-hover-opacity: 0.04;
         --theme-light-background: var(--solar-grey);
@@ -36,13 +36,13 @@
 
     :global(*.theme-dark){
         --theme-text: var(--solar-grey);
-        --mdc-theme-background : var(--burst-darker-blue);
+        --mdc-theme-background : var(--signum-darker-blue);
         --mdc-theme-error: var(--material-color-red-600);
         --mdc-theme-on-background: var(--theme-text);
         --mdc-theme-on-primary: var(--theme-text);
-        --mdc-theme-on-secondary: var(--burst-dark-blue);
+        --mdc-theme-on-secondary: var(--signum-dark-blue);
         --mdc-theme-on-surface: var(--theme-text);
-        --mdc-theme-primary : var(--burst-dark-blue);
+        --mdc-theme-primary : var(--signum-dark-blue);
         --mdc-theme-secondary: var(--solar-grey);
         --mdc-theme-surface: var(--theme-lighter-background) ;
         --mdc-theme-text-primary-on-background: var(--theme-text);
@@ -52,7 +52,7 @@
         --theme-hover-background: white;
         --theme-hover-opacity: 0.1;
         --theme-light-background: var(--solar-grey);
-        --theme-lighter-background: var(--burst-dark-blue);
+        --theme-lighter-background: var(--signum-dark-blue);
     }
 
     :global(main){
