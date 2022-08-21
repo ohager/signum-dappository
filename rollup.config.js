@@ -1,6 +1,7 @@
 import path from 'path'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
+import json from '@rollup/plugin-json'
 import commonjs from 'rollup-plugin-commonjs'
 import postcss from 'rollup-plugin-postcss'
 import svelte from 'rollup-plugin-svelte'
@@ -86,7 +87,7 @@ export default {
                     ],
                 },
             }),
-
+            json(),
             legacy && babel({
                 extensions: ['.js', '.mjs', '.html', '.svelte'],
                 runtimeHelpers: true,
@@ -147,6 +148,7 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             commonjs(),
+            json(),
             !dev && terser(),
         ],
 
