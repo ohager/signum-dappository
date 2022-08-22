@@ -1,5 +1,5 @@
 import * as appStore from './appStore'
-import * as burstFeeStore from './burstFeeStore'
+import * as feeStore from './feeStore'
 import * as accountStore from './accountStore'
 import * as tokenStore from './tokenStore'
 import AccountDialog from './AccountDialog.svelte'
@@ -25,6 +25,7 @@ import { TokenItem, TokenItemVariant } from './tokenItem'
 import ThemeProvider from './ThemeProvider.svelte'
 import TokenMetaHead from './TokenMetaHead.svelte'
 import GenericMetaHead from './GenericMetaHead.svelte'
+import { convertNumericIdToAddress } from './convertNumericIdToAddress'
 
 export {
     AccountDialog,
@@ -33,7 +34,7 @@ export {
     appStore,
     BadgeCollection,
     omnibarStore$,
-    burstFeeStore,
+    feeStore,
     GenericMetaHead,
     Header,
     Link,
@@ -55,4 +56,5 @@ export {
     TokenItemVariant,
     TokenMetaHead,
     tokenStore,
+    convertNumericIdToAddress,
 }

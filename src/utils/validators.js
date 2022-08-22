@@ -5,7 +5,7 @@ import {
     MaxUrlLength,
 } from '../features/registration/constants'
 import { hasLength } from './hasLength'
-import { generateMasterKeys, getAccountIdFromPublicKey } from '@burstjs/crypto'
+import { generateMasterKeys, getAccountIdFromPublicKey } from '@signumjs/crypto'
 import { assureAccountId } from './assureAccountId'
 
 const testUrl = url => /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/]+$/i.test(url)

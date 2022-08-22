@@ -6,8 +6,8 @@
 <TutorialPage>
     <h1 class="mdc-typography--headline6">What is it all about?</h1>
     <p class="mdc-typography--body1">
-        <em>The dAppository</em> enables tool and application developers to generate a <b>Secure Digital Certificate/Asset</b> and store
-        it in the Burstcoin block chain.
+        <em>The dAppository</em> enables tool and application developers to generate a NFT-like  <b>Secure Digital Certificate/Asset</b> and store
+        it in the Signum blockchain.
         This asset is a so called <b>Smart Contract</b> and has a built-in logic that enables the following actions:
     </p>
     <ol class="mdc-typography--body1">

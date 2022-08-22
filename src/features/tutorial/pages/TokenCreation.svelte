@@ -10,11 +10,11 @@
             <RegisterFabButton />
         </div>
         <p class="mdc-typography--body1">
-            To create a token, an <b>active Burst account</b> (creator account) with a few BURST (15 BURST are quite
+            To create a token, an <b>active Signum account</b> (creator account) with a few SIGNA (15 SIGNA are quite
             sufficient)
             is required. The process is divided into <b>two phases: Registration and Activation</b>. The whole process,
             taking into
-            account the confirmation from the Burstcoin network, takes about 10 minutes. The process is as follows:
+            account the confirmation from the Signum network, takes about 10 minutes. The process is as follows:
         </p>
         <ol class="mdc-typography--body1">
             <li>
@@ -27,7 +27,7 @@
                 wait until the registration is completed (about 4 minutes)
             </li>
             <li>
-                finally, activate the token. That means you have to send a small amount (5 Burst) to the token
+                finally, activate the token. That means you have to send a small amount (5 SIGNA) to the token
             </li>
         </ol>
         <p class="mdc-typography--body1">

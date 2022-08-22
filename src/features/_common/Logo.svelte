@@ -6,7 +6,7 @@
 </script>
 
 <div class="logo" style="height:{height}">
-    <img {src} alt="The Burst dAppository" role="img" />
+    <img {src} alt="The Signum dAppository" role="img" />
 </div>
 
 <style>

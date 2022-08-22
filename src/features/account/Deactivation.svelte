@@ -3,8 +3,6 @@
     import Button, { Label } from '@smui/button'
     import { Page, TokenItem, TokenItemVariant, PassphraseInput } from '../_common'
     import { EmptyToken } from '../../utils/emptyToken'
-    import { BurstValue } from '@burstjs/util'
-    import { isEmptyString } from '../../utils/isEmptyString'
     import { account$ } from '../_common/accountStore'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { RouteAccountTokens } from '../../utils/routes'

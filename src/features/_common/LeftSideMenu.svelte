@@ -87,8 +87,8 @@
 
 <Drawer variant="modal" bind:this={drawerElement} bind:open={open}>
     <Header>
-        <Title>The Burst dAppository</Title>
-        <Subtitle>All the Burst Apps in one place</Subtitle>
+        <Title>The Signum dAppository</Title>
+        <Subtitle>All the Signum Apps in one place</Subtitle>
         <div class="theme-switch">
             <FormField>
                 <Switch bind:checked={darkThemeChecked}/>

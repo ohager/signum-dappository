@@ -1,8 +1,8 @@
-import { BurstApi } from '../context'
+import { Ledger } from '../context'
 
 export class NetworkService {
     async getCurrentBlock() {
-        const { blocks } = await BurstApi.block.getBlocks(0,1,false)
+        const { blocks } = await Ledger.block.getBlocks(0,1,false)
         return blocks[0]
     }
 }

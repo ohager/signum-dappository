@@ -5,7 +5,7 @@
       "src": "package.json",
       "use": "vercel-sapper",
       "config": {
-        "memory": 256
+        "memory": 512
       }
     }
   ]

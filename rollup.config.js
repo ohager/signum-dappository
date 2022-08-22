@@ -1,6 +1,7 @@
 import path from 'path'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
+import json from '@rollup/plugin-json'
 import commonjs from 'rollup-plugin-commonjs'
 import postcss from 'rollup-plugin-postcss'
 import svelte from 'rollup-plugin-svelte'
@@ -64,34 +65,29 @@ export default {
             postcss(postcssOptions()),
             commonjs({
                 namedExports: {
-                    '@burstjs/core': [
-                        'ApiSettings',
-                        'composeApi',
-                        'broadcastTransaction',
-                        'BurstService',
+                    '@signumjs/core': [
+                        'Address',
+                        'LedgerClientFactory'
                     ],
-                    '@burstjs/crypto': [
+                    '@signumjs/crypto': [
                         'generateMasterKeys',
                         'getAccountIdFromPublicKey',
                         'generateSignedTransactionBytes',
                         'verifySignature',
-                        'generateSignature',
+                        'generateSignature'
                     ],
-                    '@burstjs/contracts': [
+                    '@signumjs/contracts': [
                         'ContractDataView',
-                        'calculateMinimumCreationFee',
+                        'calculateMinimumCreationFee'
                     ],
-                    '@burstjs/util': [
-                        'convertNumericIdToAddress',
-                        'convertAddressToNumericId',
+                    '@signumjs/util': [
                         'createDeeplink',
-                        'isBurstAddress',
-                        'BurstValue',
-                        'FeeQuantPlanck',
+                        'Amount',
+                        'FeeQuantPlanck'
                     ],
                 },
             }),
-
+            json(),
             legacy && babel({
                 extensions: ['.js', '.mjs', '.html', '.svelte'],
                 runtimeHelpers: true,
@@ -152,6 +148,7 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             commonjs(),
+            json(),
             !dev && terser(),
         ],
 

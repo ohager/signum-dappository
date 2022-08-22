@@ -1,11 +1,6 @@
-import { BurstApi } from './burstApi'
+import { Ledger } from './ledgerApi'
 import { ExplorerApi } from './explorer'
 import { TokenContract } from './tokenContract'
 import { Vars } from './vars'
 
-export {
-    BurstApi,
-    ExplorerApi,
-    Vars,
-    TokenContract,
-}
+export { Ledger, ExplorerApi, Vars, TokenContract }

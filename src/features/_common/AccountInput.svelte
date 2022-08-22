@@ -3,9 +3,9 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Icon from '@smui/textfield/icon/index'
     import { assureAccountId } from '../../utils/assureAccountId'
-    import { convertNumericIdToAddress } from '@burstjs/util'
-    import { pruneBurstErrorMessage } from '../../utils/pruneBurstErrorMessage'
+    import { pruneLedgerErrorMessage } from '../../utils/pruneLedgerErrorMessage'
     import { accountService } from '../../services/accountService'
+    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
 
     export let account = ''
     export let valid = false
@@ -31,7 +31,7 @@
                 errorMessage =  ''
                 valid = true
             } catch (e) {
-                errorMessage = pruneBurstErrorMessage(e.message || e)
+                errorMessage = pruneLedgerErrorMessage(e.message || e)
                 valid = false
             } finally {
                 validationTimeout = null

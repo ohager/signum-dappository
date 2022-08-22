@@ -1,42 +1,42 @@
 <script>
-    import List from '@smui/list'
-    import { BurstValue, convertNumericIdToAddress } from '@burstjs/util'
-    import { accountStore, TokenItem, TokenItemVariant, Page } from '../_common'
-    import TokenDetailListItem from './TokenDetailListItem.svelte'
-    import { ExplorerApi } from '../../context'
+  import List from '@smui/list'
+  import {accountStore, TokenItem, TokenItemVariant, Page, convertNumericIdToAddress} from '../_common'
+  import TokenDetailListItem from './TokenDetailListItem.svelte'
+  import {ExplorerApi} from '../../context'
+  import {Amount} from "@signumjs/util";
 
-    export let token = {}
-    let infoList = {}
+  export let token = {}
+  let infoList = {}
 
-    const { account$ } = accountStore
+  const {account$} = accountStore
 
-    $: isOwner = $account$.accountId === token.owner
-    $: {
+  $: isOwner = $account$.accountId === token.owner
+  $: {
 
-        if (token.at) {
-            const {
-                at,
-                creator,
-                owner,
-                minActivationPlanck,
-                status,
-                creationBlock,
-                balancePlanck,
-                donationPlanck,
-                donationCount
-            } = token
-            infoList = {
-                'Token Id': { v: convertNumericIdToAddress(at), url: ExplorerApi.getAccountUrl(at) },
-                'Creator': { v: convertNumericIdToAddress(creator), url: ExplorerApi.getAccountUrl(creator) },
-                'Owner': { v: convertNumericIdToAddress(owner), url: ExplorerApi.getAccountUrl(owner) },
-                'Donated': { v: BurstValue.fromPlanck(donationPlanck) },
-                'Number of Donations': { v: donationCount },
-                'Balance': { v: BurstValue.fromPlanck(balancePlanck) },
-                'Activation Costs': { v: BurstValue.fromPlanck(minActivationPlanck) },
-                'Creation Block': { v: creationBlock, url: ExplorerApi.getBlockUrl(creationBlock) },
-            }
-        }
+    if (token.at) {
+      const {
+        at,
+        creator,
+        owner,
+        minActivationPlanck,
+        status,
+        creationBlock,
+        balancePlanck,
+        donationPlanck,
+        donationCount
+      } = token
+      infoList = {
+        'Token Id': {v: convertNumericIdToAddress(at), url: ExplorerApi.getAccountUrl(at)},
+        'Creator': {v: convertNumericIdToAddress(creator), url: ExplorerApi.getAccountUrl(creator)},
+        'Owner': {v: convertNumericIdToAddress(owner), url: ExplorerApi.getAccountUrl(owner)},
+        'Donated': {v: Amount.fromPlanck(donationPlanck)},
+        'Number of Donations': {v: donationCount},
+        'Balance': {v: Amount.fromPlanck(balancePlanck)},
+        'Activation Costs': {v: Amount.fromPlanck(minActivationPlanck)},
+        'Creation Block': {v: creationBlock, url: ExplorerApi.getBlockUrl(creationBlock)},
+      }
     }
+  }
 
 </script>
 
@@ -77,6 +77,7 @@
         .detail-container {
             flex-direction: column;
         }
+
         .token,
         .info {
             width: 100%;

@@ -1,17 +1,15 @@
 <script>
-    import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
-    import { Page, TokenItem, TokenItemVariant, burstFeeStore, PassphraseInput, PaymentQrCode } from '../_common'
+    import { Page, TokenItem, TokenItemVariant, feeStore, PaymentQrCode } from '../_common'
     import { TokenContract } from '../../context'
     import { EmptyToken } from '../../utils/emptyToken'
-    import { BurstValue } from '@burstjs/util'
     import { isEmptyString } from '../../utils/isEmptyString'
-    import { TokenStateMonitor } from '../../services/TokenStateMonitor'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
+    import {Amount} from "@signumjs/util";
 
     export let token = EmptyToken
 
-    const { burstFee$ } = burstFeeStore
+    const { fee$ } = feeStore
     async function startMonitoring() {
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
@@ -30,7 +28,7 @@
     }
 
     function getCosts() {
-        return [['Activation Costs', BurstValue.fromBurst(TokenContract.ActivationCosts)]]
+        return [['Activation Costs', Amount.fromSigna(TokenContract.ActivationCosts)]]
     }
 
 </script>
@@ -56,7 +54,7 @@
         {#if !isEmptyString(token.at)}
             <PaymentQrCode
                     costs={getCosts()}
-                    fee={$burstFee$}
+                    fee={$fee$}
                     recipient={token.at}
             />
         {/if}

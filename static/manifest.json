@@ -1,9 +1,9 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "The Burst dAppository",
+	"name": "The Signum dAppository",
 	"short_name": "dAppository",
-	"display": "minimal-ui",
+	"display": "standalone",
 	"start_url": "/",
 	"icons": [
 		{

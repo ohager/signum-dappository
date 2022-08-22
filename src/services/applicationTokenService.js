@@ -1,13 +1,13 @@
 import { applicationTokenRepository } from './repositories/applicationTokenRepository.js'
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { BurstApi, TokenContract, Vars } from '../context'
+import { Ledger, TokenContract, Vars } from '../context'
 import { ApplicationToken } from './repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
-import { getAccountIdFromPublicKey } from '@burstjs/crypto'
+import { getAccountIdFromPublicKey } from '@signumjs/crypto'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
-import { BurstValue } from '@burstjs/util'
 import { finishLoading, startLoading } from '../features/_common/appStore'
+import { Amount } from '@signumjs/util'
 
 const MaxParallelFetches = 6
 
@@ -18,13 +18,14 @@ export class ApplicationTokenService {
     }
 
     _fetchContractDetailsChunked(contractIds) {
-        return Promise.all(contractIds.map(cid => BurstApi.contract.getContract(cid)))
+        return Promise.all(contractIds.map(cid => Ledger.contract.getContract(cid)))
     }
 
     async _fetchContractIds() {
-        const { atIds } = await BurstApi.contract.getAllContractIds(null)
-        const firstContractId = atIds.lastIndexOf(Vars.FirstApplicationContractId)
-        return atIds.slice(firstContractId - 1)
+        const { atIds } = await Ledger.contract.getAllContractIds({
+            machineCodeHash: Vars.ContractMachineCodeHash,
+        })
+        return atIds
     }
 
     async syncTokens() {
@@ -74,7 +75,7 @@ export class ApplicationTokenService {
     }
 
     getActivationCostsPlanck() {
-        return BurstValue.fromBurst(TokenContract.ActivationCosts).getPlanck()
+        return Amount.fromSigna(TokenContract.ActivationCosts).getPlanck()
     }
 
     async _callContractMethod(token, passphrase, methodHash, methodArgs) {
@@ -83,7 +84,7 @@ export class ApplicationTokenService {
             const contractId = token.at
             const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
             const feeValue = await accountService.getSuggestedFee()
-            await BurstApi.contract.callContractMethod({
+            await Ledger.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 methodHash,
@@ -128,7 +129,7 @@ export class ApplicationTokenService {
                 )
             }
 
-            let { transaction: unconfirmedTokenId } = await BurstApi.contract.publishContract({
+            let { transaction: unconfirmedTokenId } = await Ledger.contract.publishContract({
                 codeHex: TokenContract.Bytecode,
                 activationAmountPlanck: this.getActivationCostsPlanck(),
                 description: JSON.stringify(tokenData),

@@ -1,4 +1,4 @@
-import { calculateMinimumCreationFee } from '@burstjs/contracts'
+import { calculateMinimumCreationFee } from '@signumjs/contracts'
 import { Vars } from './vars'
 
 const TokenContract = {

@@ -9,11 +9,11 @@
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { account$, clearAccount } from './accountStore'
     import { Events } from '../../utils/events'
-    import { convertNumericIdToAddress } from '@burstjs/util'
     import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
     import Logo from './Logo.svelte'
     import Stamp from './Stamp.svelte'
     import LoadingBar from './LoadingBar.svelte'
+    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
 
     export let isMenuOpen = false
     export let isTestnet = false
@@ -61,7 +61,7 @@
             <div class="logo" on:click={gotoHome}>
                 <Logo height="42px" />
                 <div class="title-text">
-                    <Title>The Burst dAppository</Title>
+                    <Title>The Signum dAppository</Title>
                 </div>
             </div>
         </Section>

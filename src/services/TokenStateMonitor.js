@@ -1,5 +1,5 @@
 import { ApplicationToken } from './repositories/models/applicationToken'
-import { BurstApi } from '../context'
+import { Ledger } from '../context'
 
 export class TokenStateMonitor {
     constructor({ tokenId, intervalSecs, abortAfterSecs }) {
@@ -17,7 +17,7 @@ export class TokenStateMonitor {
         this._debug('Monitoring...')
         this._handle = setTimeout(async () => {
             try {
-                const contract = await BurstApi.contract.getContract(this._tokenId)
+                const contract = await Ledger.contract.getContract(this._tokenId)
                 const tokenData = ApplicationToken.mapFromContract(contract)
                 if (predicateFn(tokenData)) {
                     this._debug('Monitor predicate fulfilled')
