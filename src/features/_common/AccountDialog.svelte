@@ -1,68 +1,72 @@
 <script>
-    import { goto, prefetch } from '@sapper/app'
-    import Dialog, { Title, Content, Actions, InitialFocus } from '@smui/dialog'
-    import Button, { Label } from '@smui/button'
-    import TextField from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text/index'
-    import { RouteAccountTokens, RouteRegister } from '../../utils/routes'
-    import { Events } from '../../utils/events'
-    import { assureAccountId } from '../../utils/assureAccountId'
-    import { isEmptyString } from '../../utils/isEmptyString'
-    import { dispatchEvent } from '../../utils/dispatchEvent'
-    import debounce from 'lodash.debounce'
-    import { accountService } from '../../services/accountService'
-    import { setAccount } from './accountStore'
+  import {goto, prefetch} from '@sapper/app'
+  import Dialog, {Title, Content, Actions, InitialFocus} from '@smui/dialog'
+  import Button, {Label} from '@smui/button'
+  import TextField from '@smui/textfield'
+  import HelperText from '@smui/textfield/helper-text/index'
+  import {RouteAccountTokens, RouteRegister} from '../../utils/routes'
+  import {Events} from '../../utils/events'
+  import {assureAccountId} from '../../utils/assureAccountId'
+  import {isEmptyString} from '../../utils/isEmptyString'
+  import {dispatchEvent} from '../../utils/dispatchEvent'
+  import debounce from 'lodash.debounce'
+  import {accountService} from '../../services/accountService'
+  import {setAccount} from './accountStore'
 
-    let isRegistering = false
-    let account = ''
-    let isValidating = false
-    let isValid = false
-    let dialog = null
+  let isRegistering = false
+  let account = ''
+  let isValidating = false
+  let isValid = false
+  let dialog = null
 
-    async function validateAccount(accountId) {
-        isValidating = true
-        isValid = await accountService.existsAccount(accountId)
-        isValidating = false
+  async function validateAccount(accountId) {
+    isValidating = true
+    isValid = await accountService.existsAccount(accountId)
+    isValidating = false
+  }
+
+  const debouncedValidateAccount = debounce(validateAccount, 300)
+
+  $: accountId = assureAccountId(account)
+  $: {
+    debouncedValidateAccount(accountId)
+  }
+
+  function handleEnter() {
+    prefetch(RouteAccountTokens(accountId))
+    dispatchEvent(Events.ShowAccountDialog, false)
+    setAccount(accountId)
+    setTimeout(() => {
+      goto(RouteAccountTokens(accountId))
+    }, 500)
+  }
+
+  function handleRegister() {
+    setAccount(accountId)
+    prefetch(RouteRegister())
+    dispatchEvent(Events.ShowAccountDialog, false)
+    setTimeout(() => {
+      goto(RouteRegister())
+    }, 500)
+  }
+
+  function handleCancel() {
+    dispatchEvent(Events.ShowAccountDialog, false)
+  }
+
+  function showDialog({detail}) {
+    const {isVisible, wantsRegister = false} = detail
+    isRegistering = wantsRegister
+    if (isVisible) {
+      dialog.open()
+    } else {
+      dialog.close()
     }
+  }
 
-    const debouncedValidateAccount = debounce(validateAccount, 300)
-
-    $: accountId = assureAccountId(account)
-    $: {
-        debouncedValidateAccount(accountId)
-    }
-
-    function handleEnter() {
-        prefetch(RouteAccountTokens(accountId))
-        dispatchEvent(Events.ShowAccountDialog, false)
-        setAccount(accountId)
-        setTimeout(() => {
-            goto(RouteAccountTokens(accountId))
-        }, 500)
-    }
-
-    function handleRegister() {
-        setAccount(accountId)
-        prefetch(RouteRegister())
-        dispatchEvent(Events.ShowAccountDialog, false)
-        setTimeout(() => {
-            goto(RouteRegister())
-        }, 500)
-    }
-
-    function handleCancel() {
-        dispatchEvent(Events.ShowAccountDialog, false)
-    }
-
-    function showDialog({ detail }) {
-        const {isVisible, wantsRegister = false} = detail
-        isRegistering = wantsRegister
-        if (isVisible) {
-            dialog.open()
-        } else {
-            dialog.close()
-        }
-    }
+  function handleConnect() {
+    console.log("connect xt wallet")
+  }
 
 </script>
 
@@ -71,7 +75,7 @@
 <Dialog bind:this={dialog} scrimClickAction="" escapeKeyAction="">
     <Title>Enter Account Zone</Title>
     <Content>
-        <div class="icon-wrapper">
+        <div class="center">
             <img src="/img/login.svg" alt="Account Zone">
         </div>
         <p>
@@ -79,6 +83,11 @@
             owners, because there are more functions like (de)activation and transfer available. Please note that
             for these actions the passphrase is required.
         </p>
+        <div class="center">
+            <Button on:click={handleConnect} variant="raised">
+                <Label>Connect With XT Wallet</Label>
+            </Button>
+        </div>
 
         <TextField
                 bind:value={account}
@@ -102,11 +111,11 @@
 </Dialog>
 
 <style>
-    .icon-wrapper {
+    .center {
         text-align: center;
     }
 
-    .icon-wrapper > img {
+    .center > img {
         height: 128px;
     }
 </style>

@@ -28,7 +28,7 @@
                 others are time and/or event based, and others may apply to other rules. And new badges will be added in the future.
             </div>
         </div>
-        <div class="icon-wrapper">
+        <div class="center">
             <div class="banner">
                 <img src="/img/badges/banner.svg" alt="Token Score Banner"/>
                 <small class="score">1785</small>
@@ -49,26 +49,26 @@
         text-align: justify;
     }
 
-    .icon-wrapper {
+    .center {
         display: flex;
         flex-direction: row;
         justify-content: center;
         margin-top: 1rem;
     }
 
-    .icon-wrapper .banner {
+    .center .banner {
         position: relative;
         margin-right: 1rem;
         animation: waving 4s infinite alternate-reverse ease-in-out;
     }
 
-    .icon-wrapper .banner .score {
+    .center .banner .score {
         position: absolute;
         left: calc(50% - 15px);
         top: 18px;
     }
 
-    .icon-wrapper img {
+    .center img {
         width: 64px;
     }
 
