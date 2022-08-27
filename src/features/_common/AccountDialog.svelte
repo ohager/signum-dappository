@@ -12,12 +12,25 @@
   import debounce from 'lodash.debounce'
   import {accountService} from '../../services/accountService'
   import {setAccount} from './accountStore'
+  import {isClientSide} from "../../utils/isClientSide";
+  import Link from "./Link.svelte";
+  import {xtWalletStore$, connectXtWallet} from "./xtWalletStore";
 
   let isRegistering = false
   let account = ''
   let isValidating = false
   let isValid = false
   let dialog = null
+
+  function getWalletLink() {
+    let link = ""
+    if (isClientSide()) {
+      link = navigator.userAgent.match(/firefox|fxios/i)
+        ? 'https://addons.mozilla.org/en-US/firefox/addon/signum-xt-wallet'
+        : 'https://chrome.google.com/webstore/detail/signum-xt-wallet/kdgponmicjmjiejhifbjgembdcaclcib'
+    }
+    return link
+  }
 
   async function validateAccount(accountId) {
     isValidating = true
@@ -64,9 +77,6 @@
     }
   }
 
-  function handleConnect() {
-    console.log("connect xt wallet")
-  }
 
 </script>
 
@@ -80,14 +90,15 @@
         </div>
         <p>
             In the Account Zone you can see the tokens of a single account. This is especially useful for the token
-            owners, because there are more functions like (de)activation and transfer available. Please note that
-            for these actions the passphrase is required.
+            owners, because there are more functions like (de)activation and transfer available.
         </p>
-        <div class="center">
-            <Button on:click={handleConnect} variant="raised">
-                <Label>Connect With XT Wallet</Label>
-            </Button>
-        </div>
+        <p>
+            It's highly recommended to use the
+            <Link inline href={getWalletLink()} target="_blank">XT Wallet</Link>
+            ,
+            But you can add any account manually also if you to see only tokens of that account.
+            Note: Without XT Wallet one have access to owners token functions only by using the passphrase
+        </p>
 
         <TextField
                 bind:value={account}
@@ -106,6 +117,9 @@
         </Button>
         <Button on:click={isRegistering ? handleRegister : handleEnter} disabled={!isValid || isValidating}>
             <Label>{isValidating ? 'Checking...' : 'Enter'}</Label>
+        </Button>
+        <Button on:click={connectXtWallet}>
+            <Label>Connect XT Wallet</Label>
         </Button>
     </Actions>
 </Dialog>
