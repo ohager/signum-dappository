@@ -7,17 +7,22 @@
     import { ThemeNames } from '../../utils/themeNames'
     import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
     import {Amount, FeeQuantPlanck} from "@signumjs/util";
+    import {xtWallet$} from "./xtWalletStore";
+    import {Ledger} from "../../context";
 
-    export let recipient
+    export let recipient = ""
     export let costs = []
     export let fee = Amount.fromPlanck(FeeQuantPlanck.toString())
     export let message = null
 
     let info = []
     let QrCodeCanvas = null
+    let walletOpen = false
 
+    $: wallet = $xtWallet$.wallet
     $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), Amount.fromSigna(0))
     $: {
+      console.log('wallet', wallet)
         info = []
         const recipientAddress = convertNumericIdToAddress(assureAccountId(recipient))
         info.push(['Recipient:', recipientAddress])
@@ -41,6 +46,31 @@
         }
     }
 
+    async function payNow() {
+      if(wallet){
+        await payWithXtWallet()
+      }
+      else{
+        openDeeplink()
+      }
+    }
+
+    async function payWithXtWallet(){
+      walletOpen = true
+
+      const {unsignedTransactionBytes} = await Ledger.transaction.sendAmountToSingleRecipient({
+        senderPublicKey: wallet.connection.publicKey,
+        feePlanck: fee.getPlanck(),
+        amountPlanck: totalCosts.getPlanck(),
+        recipientId: recipient
+      })
+
+      const transaction = await wallet.confirm(unsignedTransactionBytes)
+      console.log(transaction)
+      walletOpen = false
+
+    }
+
     function openDeeplink() {
         window.open(deepLink, '_blank')
     }
@@ -49,7 +79,7 @@
 
 <div class="form--qrcode">
     <a href={deepLink}>
-        <canvas bind:this={QrCodeCanvas} />
+        <canvas bind:this={QrCodeCanvas} ></canvas>
     </a>
     <section>
         <p>
@@ -68,7 +98,7 @@
 
 
         <div class="paynow">
-            <Button on:click={openDeeplink}>
+            <Button on:click={payNow}>
                 <Label>Pay Now</Label>
             </Button>
         </div>
@@ -103,6 +133,7 @@
 
     .form--qrcode > section > .paynow {
         margin-top: 1rem;
+        margin: 0 auto;
     }
 
     .form--qrcode-infoitem {

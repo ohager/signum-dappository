@@ -1,7 +1,7 @@
 <script>
     import { goto, prefetch } from '@sapper/app'
-    import Drawer, {AppContent, Content, Header, Title, Subtitle, Scrim} from '@smui/drawer';
-    import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+    import Drawer, {Content, Header, Title, Subtitle, Scrim} from '@smui/drawer';
+    import List, {Item, Text, Graphic} from '@smui/list';
     import Switch from '@smui/switch';
     import FormField from '@smui/form-field';
     import { account$, clearAccount } from './accountStore'
@@ -11,6 +11,7 @@
     import { Events } from '../../utils/events'
     import { dispatchEvent } from '../../utils/dispatchEvent'
     import { ThemeNames } from '../../utils/themeNames'
+    import {disconnectXtWallet} from "./xtWalletStore";
 
     let drawerElement
     export let open = false
@@ -47,6 +48,7 @@
 
     function leaveAccountZone() {
         active = ItemNames.LeaveAccountZone
+        disconnectXtWallet()
         clearAccount()
         routeTo(RouteHome())
     }

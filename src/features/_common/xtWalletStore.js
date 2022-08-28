@@ -1,8 +1,9 @@
-import { readable, writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
 import { voidFn } from '../../utils/voidFn'
 import { GenericExtensionWallet } from '@signumjs/wallets'
 import { Vars } from '../../context'
+import { setAccount, clearAccount } from './accountStore'
 
 const InitialState = {
     wallet: null,
@@ -10,7 +11,7 @@ const InitialState = {
 
 let connectionListener = null
 
-export const xtWalletStore$ = writable(InitialState, set => {
+export const xtWallet$ = writable(InitialState, set => {
     if (!isClientSide()) return voidFn
 
     return () => {
@@ -35,32 +36,32 @@ function onPermissionRemoved(args) {
     console.log('On permission removed', args)
 }
 
-export function connectXtWallet() {
-    xtWalletStore$.update(async state => {
-        if (connectionListener) return
-
-        const wallet = new GenericExtensionWallet()
-        const connection = await wallet.connect({
-            appName: 'The DAppository',
-            networkName: Vars.IsTestnet ? 'Signum-TESTNET' : 'Signum',
-        })
-        connectionListener = connection.listen({
-            onAccountChanged,
-            onAccountRemoved,
-            onNetworkChanged,
-            onPermissionRemoved,
-        })
-
-        state.wallet = wallet;
+export async function connectXtWallet() {
+    const wallet = new GenericExtensionWallet()
+    const connection = await wallet.connect({
+        appName: 'The DAppository',
+        networkName: Vars.IsTestnet ? 'Signum-TESTNET' : 'Signum',
     })
+
+    connectionListener = connection.listen({
+        onAccountChanged,
+        onAccountRemoved,
+        onNetworkChanged,
+        onPermissionRemoved,
+    })
+
+    setAccount(connection.accountId)
+    xtWallet$.set({ wallet })
+    console.debug("XT Wallet connected")
 }
 
 export function disconnectXtWallet() {
-    xtWalletStore$.update(async state => {
+    xtWallet$.update(() => {
         if (connectionListener) {
             connectionListener.unlisten()
             connectionListener = null
         }
-        state.wallet = null
+        clearAccount()
+        return InitialState
     })
 }

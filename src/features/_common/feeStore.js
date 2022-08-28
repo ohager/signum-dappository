@@ -10,7 +10,7 @@ export const fee$ = readable(InitialFee, set => {
     if (!isClientSide()) return voidFn
 
     function fetchFee() {
-        Ledger.network.suggestFee().then(({ standard }) => {
+        Ledger.network.getSuggestedFees().then(({ standard }) => {
             set(Amount.fromPlanck(standard.toString(10)))
         })
     }

@@ -2,9 +2,10 @@
     import TextField from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
     import Button, { Label } from '@smui/button'
-    import {Page, TokenItem, TokenItemVariant, feeStore, PaymentQrCode } from '../_common'
+    import {Page, TokenItem, TokenItemVariant, feeStore, PaymentQrCode, xtWalletStore } from '../_common'
     import { TokenContract } from '../../context'
     import {Amount} from "@signumjs/util";
+    import {xtWallet$} from "../_common/xtWalletStore";
 
     export let token = {
         at: '',
@@ -22,6 +23,7 @@
 
     let amount = ''
 
+    $: isConnectedtWithXt =  $xtWallet$.wallet !== null
     $: isValidAmount = AmountValidationPattern.test(amount)
     $: isEmptyAmount = amount.length === 0
     $: isQrCodeVisible = !isEmptyAmount && isValidAmount
@@ -51,10 +53,10 @@
                 </p>
                 <p class="mdc-typography--body1">
                     Donating not only helps the project itself and fills the owner with pride through
-                    the experienced recognition, but also helps the Burst community. Thank you very much.
+                    the experienced recognition, but also helps the Signum community. Thank you very much.
                 </p>
                 <p class="mdc-typography--body1">
-                    Note that you will be charged an <em>Entitlement Fee</em> of {TokenContract.DonationEntitlement} BURST.
+                    Note that you will be charged an <em>Entitlement Fee</em> of {TokenContract.DonationEntitlement} SIGNA.
                     But it will be reimbursed entirely once the donation was processed.
                 </p>
             </article>
@@ -74,7 +76,7 @@
                     <HelperText validationMsg>Invalid Amount</HelperText>
                 {/if}
             </div>
-            <span class="mdc-typography--headline6">BURST</span>
+            <span class="mdc-typography--headline6">SIGNA</span>
         </div>
 
         {#if isQrCodeVisible}

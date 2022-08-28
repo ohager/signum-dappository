@@ -1,6 +1,6 @@
 <script>
   import {goto, prefetch} from '@sapper/app'
-  import Dialog, {Title, Content, Actions, InitialFocus} from '@smui/dialog'
+  import Dialog, {Title, Content, Actions, } from '@smui/dialog'
   import Button, {Label} from '@smui/button'
   import TextField from '@smui/textfield'
   import HelperText from '@smui/textfield/helper-text/index'
@@ -14,13 +14,14 @@
   import {setAccount} from './accountStore'
   import {isClientSide} from "../../utils/isClientSide";
   import Link from "./Link.svelte";
-  import {xtWalletStore$, connectXtWallet} from "./xtWalletStore";
+  import {connectXtWallet, xtWallet$} from "./xtWalletStore";
 
   let isRegistering = false
   let account = ''
   let isValidating = false
   let isValid = false
   let dialog = null
+
 
   function getWalletLink() {
     let link = ""
