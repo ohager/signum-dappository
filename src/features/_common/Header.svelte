@@ -14,10 +14,13 @@
   import Stamp from './Stamp.svelte'
   import LoadingBar from './LoadingBar.svelte'
   import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
+  import {connectXtWallet, xtWallet$} from "./xtWalletStore";
+  import {afterUpdate} from "svelte";
 
   export let isMenuOpen = false
   export let isTestnet = false
 
+  $: wallet = $xtWallet$.wallet
   $: currentAccount = $account$.accountId
   $: hasAccount = !isEmptyString(currentAccount)
 
@@ -70,6 +73,17 @@
                     </Button>
                 </div>
             {/if}
+            {#if wallet}
+                <div class="current-account">
+                    <img src="/img/signum-xt-logo.svg" height="24" alt="XT Wallet Connected" title="XT Wallet Connected" role="img" />
+                </div>
+            {:else}
+                <div class="current-account">
+                    <Button title="Connect XT Wallet" on:click={connectXtWallet}>
+                        <Label style="color: white">Connect XT Wallet</Label>
+                    </Button>
+                </div>
+            {/if}
         </Section>
     </Row>
     <SyncProgressBar/>
@@ -112,10 +126,6 @@
         flex-direction: row;
         align-items: center;
         color: white !important;
-    }
-
-    .current-account .mdc-typography--body1 {
-        margin-right: 1rem;
     }
 
     .menu-icon-wrapper {

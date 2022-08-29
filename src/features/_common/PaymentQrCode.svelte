@@ -1,92 +1,93 @@
 <script>
-    import Button, { Label, Icon } from '@smui/button'
-    import QrCode from 'qrcode'
-    import { mountLegacyDeepLink } from '../../utils/deeplink'
-    import { assureAccountId } from '../../utils/assureAccountId'
-    import { theme$ } from './appStore'
-    import { ThemeNames } from '../../utils/themeNames'
-    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
-    import {Amount, FeeQuantPlanck} from "@signumjs/util";
-    import {xtWallet$} from "./xtWalletStore";
-    import {Ledger} from "../../context";
+  import Button, {Label, Icon} from '@smui/button'
+  import QrCode from 'qrcode'
+  import {mountLegacyDeepLink} from '../../utils/deeplink'
+  import {assureAccountId} from '../../utils/assureAccountId'
+  import {dispatchEvent} from '../../utils/dispatchEvent'
+  import {theme$} from './appStore'
+  import {ThemeNames} from '../../utils/themeNames'
+  import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
+  import {Amount, FeeQuantPlanck} from "@signumjs/util";
+  import {xtWallet$} from "./xtWalletStore";
+  import {Ledger} from "../../context";
+  import {Events} from "../../utils/events";
 
-    export let recipient = ""
-    export let costs = []
-    export let fee = Amount.fromPlanck(FeeQuantPlanck.toString())
-    export let message = null
+  export let recipient = ""
+  export let costs = []
+  export let fee = Amount.fromPlanck(FeeQuantPlanck.toString())
+  export let message = null
 
-    let info = []
-    let QrCodeCanvas = null
-    let walletOpen = false
+  let info = []
+  let QrCodeCanvas = null
+  let walletOpen = false
 
-    $: wallet = $xtWallet$.wallet
-    $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), Amount.fromSigna(0))
-    $: {
-      console.log('wallet', wallet)
-        info = []
-        const recipientAddress = convertNumericIdToAddress(assureAccountId(recipient))
-        info.push(['Recipient:', recipientAddress])
-        info.push(...costs)
-        info.push(['Fee:', fee])
-        info.push(['---', ''])
-        info.push(['Total:', Amount.fromSigna(totalCosts.getSigna()).add(fee)])
+  $: wallet = $xtWallet$.wallet
+  $: totalCosts = costs.reduce((sum, [_, value]) => sum.add(value), Amount.fromSigna(0))
+  $: {
+    info = []
+    const recipientAddress = convertNumericIdToAddress(assureAccountId(recipient))
+    info.push(['Recipient:', recipientAddress])
+    info.push(...costs)
+    info.push(['Fee:', fee])
+    info.push(['---', ''])
+    info.push(['Total:', Amount.fromSigna(totalCosts.getSigna()).add(fee)])
+  }
+
+  $: deepLink = mountLegacyDeepLink(recipient, totalCosts, fee, message)
+
+  $: {
+    if (QrCodeCanvas !== null) {
+      QrCode.toCanvas(QrCodeCanvas, deepLink, {
+        width: 256,
+        color: {
+          light: $theme$ === ThemeNames.Dark ? '#323f65ff' : '#ffffffff',
+          dark: $theme$ === ThemeNames.Dark ? '#b2b2d4ff' : '#001e35ff',
+        },
+      })
     }
+  }
 
-    $: deepLink = mountLegacyDeepLink(recipient, totalCosts, fee, message)
-
-    $: {
-        if (QrCodeCanvas !== null) {
-            QrCode.toCanvas(QrCodeCanvas, deepLink, {
-                width: 256,
-                color: {
-                    light: $theme$ === ThemeNames.Dark ? '#323f65ff' : '#ffffffff',
-                    dark: $theme$ === ThemeNames.Dark ? '#b2b2d4ff' : '#001e35ff',
-                },
-            })
-        }
+  async function payNow() {
+    if (wallet) {
+      await payWithXtWallet()
+    } else {
+      openDeeplink()
     }
+  }
 
-    async function payNow() {
-      if(wallet){
-        await payWithXtWallet()
-      }
-      else{
-        openDeeplink()
-      }
-    }
-
-    async function payWithXtWallet(){
-      walletOpen = true
-
+  async function payWithXtWallet() {
+    walletOpen = true
+    try {
       const {unsignedTransactionBytes} = await Ledger.transaction.sendAmountToSingleRecipient({
         senderPublicKey: wallet.connection.publicKey,
         feePlanck: fee.getPlanck(),
         amountPlanck: totalCosts.getPlanck(),
         recipientId: recipient
       })
-
-      const transaction = await wallet.confirm(unsignedTransactionBytes)
-      console.log(transaction)
+      await wallet.confirm(unsignedTransactionBytes)
+      dispatchEvent(Events.Success, "Transaction successfully transmitted")
+    } catch (e) {
+      dispatchEvent(Events.Error, "Transaction not sent")
+    } finally {
       walletOpen = false
-
     }
 
-    function openDeeplink() {
-        window.open(deepLink, '_blank')
-    }
+  }
+
+  function openDeeplink() {
+    window.open(deepLink, '_blank')
+  }
 
 </script>
 
 <div class="form--qrcode">
     <a href={deepLink}>
-        <canvas bind:this={QrCodeCanvas} ></canvas>
+        <canvas bind:this={QrCodeCanvas}></canvas>
     </a>
     <section>
         <p>
             Scan the code with a QR-Code scanner,
-            tap/click the QR-Code,
-            or PAY NOW button,
-            to open an installed wallet
+            or click [PAY] button, to open a wallet
         </p>
 
         <ul>
@@ -98,8 +99,8 @@
 
 
         <div class="paynow">
-            <Button on:click={payNow}>
-                <Label>Pay Now</Label>
+            <Button on:click={payNow} disabled={walletOpen}>
+                <Label>{wallet ? "Pay with XT wallet" : "Pay via Deeplink"}</Label>
             </Button>
         </div>
 
@@ -132,8 +133,7 @@
     }
 
     .form--qrcode > section > .paynow {
-        margin-top: 1rem;
-        margin: 0 auto;
+        margin-top: 1rem
     }
 
     .form--qrcode-infoitem {

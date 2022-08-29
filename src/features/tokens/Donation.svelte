@@ -30,7 +30,7 @@
     $: suggestedFee = $fee$
     $: costs = isQrCodeVisible ? [
         ['Donation:', Amount.fromSigna(amount || 0)],
-        ['Entitlement:', Amount.fromSigna(TokenContract.DonationEntitlement)],
+        ['Entitlement (will be reimbursed):', Amount.fromSigna(TokenContract.DonationEntitlement)],
     ] : []
 
     function handleCancel() {

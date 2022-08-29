@@ -22,7 +22,6 @@
   let isValid = false
   let dialog = null
 
-
   function getWalletLink() {
     let link = ""
     if (isClientSide()) {

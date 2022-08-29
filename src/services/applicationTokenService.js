@@ -66,7 +66,7 @@ export class ApplicationTokenService {
     }
 
     async getTokens() {
-        return await this._tokenRepository.get()
+        return this._tokenRepository.get()
     }
 
     async toggleFavorite(id) {
@@ -78,13 +78,22 @@ export class ApplicationTokenService {
         return Amount.fromSigna(TokenContract.ActivationCosts).getPlanck()
     }
 
-    async _callContractMethod(token, passphrase, methodHash, methodArgs) {
+    async _callContractMethod(token, passphraseOrWallet, methodHash, methodArgs) {
         try {
             startLoading()
             const contractId = token.at
-            const { signPrivateKey, publicKey } = accountService.getKeys(passphrase)
+            const isUsingWallet = !!passphraseOrWallet.connection
+            let signPrivateKey = undefined
+            let publicKey = ''
+            if (isUsingWallet) {
+                publicKey = passphraseOrWallet.connection.publicKey
+            } else {
+                const keys = accountService.getKeys(passphraseOrWallet)
+                signPrivateKey = keys.signPrivateKey
+                publicKey = keys.publicKey
+            }
             const feeValue = await accountService.getSuggestedFee()
-            await Ledger.contract.callContractMethod({
+            const result = await Ledger.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 methodHash,
@@ -93,6 +102,9 @@ export class ApplicationTokenService {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
             })
+            if (isUsingWallet) {
+                await passphraseOrWallet.confirm(result.unsignedTransactionBytes)
+            }
         } catch (e) {
             this._dispatch(Events.Error, e.message)
             throw e
@@ -101,35 +113,49 @@ export class ApplicationTokenService {
         }
     }
 
-    async deactivateToken(token, passphrase) {
-        await this._callContractMethod(token, passphrase, TokenContract.MethodHash.deactivate)
+    async deactivateToken(token, passphraseOrWallet) {
+        await this._callContractMethod(
+            token,
+            passphraseOrWallet,
+            TokenContract.MethodHash.deactivate,
+        )
         this._dispatch(Events.Success, 'Token deactivated')
     }
 
-    async transferToken(token, passphrase, newOwnerId) {
+    async transferToken(token, passphraseOrWallet, newOwnerId) {
         await this._callContractMethod(
             token,
-            passphrase,
+            passphraseOrWallet,
             TokenContract.MethodHash.transfer,
             // eslint-disable-next-line prettier/prettier
-            [newOwnerId],
+      [newOwnerId],
         )
         this._dispatch(Events.Success, 'Token transferred successfully')
     }
 
-    async registerToken(tokenData, passphrase) {
+    async registerToken(tokenData, passphraseOrWallet) {
         try {
             startLoading()
-            const { publicKey, signPrivateKey } = accountService.getKeys(passphrase)
+            const isUsingWallet = !!passphraseOrWallet.connection
+            let signPrivateKey = undefined
+            let publicKey = ''
+            if (isUsingWallet) {
+                publicKey = passphraseOrWallet.connection.publicKey
+            } else {
+                const keys = accountService.getKeys(passphraseOrWallet)
+                signPrivateKey = keys.signPrivateKey
+                publicKey = keys.publicKey
+            }
+
             const accountId = getAccountIdFromPublicKey(publicKey)
-            const balanceBurst = await accountService.getBalance(accountId)
-            if (balanceBurst.less(TokenContract.CreationFee)) {
+            const balanceSigna = await accountService.getBalance(accountId)
+            if (balanceSigna.less(TokenContract.CreationFee)) {
                 throw new Error(
                     `Accounts balance needs at least ${TokenContract.CreationFee.toString()}`,
                 )
             }
 
-            let { transaction: unconfirmedTokenId } = await Ledger.contract.publishContract({
+            let transaction = await Ledger.contract.publishContract({
                 codeHex: TokenContract.Bytecode,
                 activationAmountPlanck: this.getActivationCostsPlanck(),
                 description: JSON.stringify(tokenData),
@@ -139,7 +165,11 @@ export class ApplicationTokenService {
                 isCIP20Active: true,
             })
 
-            // TODO: better set a state within the collection and not using an additional repo
+            if (isUsingWallet) {
+                transaction = await passphraseOrWallet.confirm(transaction.unsignedTransactionBytes)
+            }
+
+            const unconfirmedTokenId = transaction.transaction
             await unconfirmedTokenService.addToken({
                 at: unconfirmedTokenId,
                 creator: accountId,

@@ -7,11 +7,14 @@
     import { isEmptyString } from '../../utils/isEmptyString'
     import { isValidPassphrase } from '../../utils/validators'
     import { MaxDataLength } from './constants'
+    import {xtWallet$} from "../_common/xtWalletStore";
 
     let isPassphraseVisible = false
     let passphrase = ''
     let isPassphraseValid = false
 
+
+    $: wallet = $xtWallet$.wallet
     $: message = () => {
 
         // this check avoids flicker while typing

@@ -4,6 +4,7 @@ import { voidFn } from '../../utils/voidFn'
 import { GenericExtensionWallet } from '@signumjs/wallets'
 import { Vars } from '../../context'
 import { setAccount, clearAccount } from './accountStore'
+import { dispatchEvent } from '../../utils/dispatchEvent'
 
 const InitialState = {
     wallet: null,
@@ -23,17 +24,21 @@ export const xtWallet$ = writable(InitialState, set => {
 })
 
 function onAccountChanged(args) {
-    console.log('On account changed', args)
+    setAccount(args.accountId)
 }
 
-function onAccountRemoved(args) {
-    console.log('On account removed', args)
+function onAccountRemoved() {
+    clearAccount()
 }
+
 function onNetworkChanged(args) {
-    console.log('On network changed', args)
+    const expectedNetwork = Vars.IsTestnet ? 'Signum-TESTNET' : 'Signum'
+    if (args.networkName !== expectedNetwork) {
+        dispatchEvent(Events.Warning, 'Unsupported Network selected')
+    }
 }
-function onPermissionRemoved(args) {
-    console.log('On permission removed', args)
+function onPermissionRemoved() {
+    clearAccount()
 }
 
 export async function connectXtWallet() {
@@ -52,7 +57,7 @@ export async function connectXtWallet() {
 
     setAccount(connection.accountId)
     xtWallet$.set({ wallet })
-    console.debug("XT Wallet connected")
+    console.debug('XT Wallet connected')
 }
 
 export function disconnectXtWallet() {
