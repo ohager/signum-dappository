@@ -1,9 +1,8 @@
 import multer from 'multer'
 import path from 'path'
 import Boom from '@hapi/boom'
-import { pinFile } from './__helpers__/pinFile'
 import { serializeResponse } from './__helpers__/serializeResponse'
-
+import { pinFileWithWeb3Storage } from './__helpers__/pinFileWithWeb3Storage'
 const AcceptedFormats = ['.png', '.jpg', '.jpeg', '.webp', '.svg']
 
 const IpfsGateways = {
@@ -17,7 +16,7 @@ const upload = multer({
     limits: {
         files: 1,
         fileSize: 256 * 1024,
-        parts: 2,
+        // parts: 2,
     },
     fileFilter: (req, file, cb) => {
         const { ext } = path.parse(file.originalname)
@@ -35,7 +34,7 @@ export const post = async (req, res) => {
     uploadCb(req, res, async err => {
         res.setHeader('Content-Type', 'application/json')
         if (err) {
-            if(!Boom.isBoom(err)){
+            if (!Boom.isBoom(err)) {
                 err = Boom.notAcceptable(err.message)
             }
             const { output } = err
@@ -45,13 +44,9 @@ export const post = async (req, res) => {
         }
         try {
             const { buffer, originalname } = req.file
-            const { data } = await pinFile({
+            const { data } = await pinFileWithWeb3Storage({
                 fileBuffer: buffer,
                 name: originalname,
-                meta: {
-                    origin: req.headers.host,
-                    account: req.body.account,
-                },
             })
 
             const response = {

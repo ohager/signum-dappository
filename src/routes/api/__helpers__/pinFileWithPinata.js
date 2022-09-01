@@ -7,7 +7,7 @@ const PinataKeys = {
     SecretKey: process.env.SAPPER_APP_PINATA_SECRET_API_KEY
 }
 
-export const pinFile = async ({ fileBuffer, name, meta }) => {
+export const pinFileWithPinata = async ({ fileBuffer, name, meta }) => {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
     let data = new FormData()
     data.append('file', Readable.from(fileBuffer), name)
