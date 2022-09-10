@@ -12,7 +12,7 @@ const TokenContract = {
     ActivationCosts: 5,
     DonationEntitlement: 100,
     FeatureCostsPerMinute: 1,
-    CreationFee: Amount.fromSigna(5),
+    CreationFee: Amount.fromSigna(0.5),
 }
 
 export { TokenContract }

@@ -1,7 +1,7 @@
 <script>
-  import Button, {Label, Icon} from '@smui/button'
+  import Button, {Label} from '@smui/button'
   import QrCode from 'qrcode'
-  import {mountLegacyDeepLink} from '../../utils/deeplink'
+  import {mountDeepLink} from '../../utils/deeplink'
   import {assureAccountId} from '../../utils/assureAccountId'
   import {dispatchEvent} from '../../utils/dispatchEvent'
   import {theme$} from './appStore'
@@ -35,7 +35,7 @@
     info.push(['Total:', Amount.fromSigna(totalCosts.getSigna()).add(fee)])
   }
 
-  $: deepLink = mountLegacyDeepLink(recipient, totalCosts, fee, message)
+  $: deepLink = mountDeepLink(recipient, totalCosts, fee, message)
 
   $: {
     if (QrCodeCanvas !== null) {
@@ -105,7 +105,9 @@
                 <Label>{wallet ? "Pay with XT wallet" : "Pay via Deeplink"}</Label>
             </Button>
             {#if !wallet}
-                <p>Or connect to <Link inline href={getXtWalletLink()} target="_blank">XT Wallet</Link></p>
+                <p>Or connect to
+                    <Link inline href={getXtWalletLink()} target="_blank">XT Wallet</Link>
+                </p>
             {/if}
         </div>
 

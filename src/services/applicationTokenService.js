@@ -160,7 +160,7 @@ export class ApplicationTokenService {
             let transaction = await Ledger.contract.publishContractByReference({
                 referencedTransactionHash: TokenContract.Reference,
                 activationAmountPlanck: this.getActivationCostsPlanck(),
-                feePlanck: TokenContract.CreationFee,
+                feePlanck: TokenContract.CreationFee.getPlanck(),
                 description: JSON.stringify(tokenData),
                 name: TokenContract.Name,
                 senderPrivateKey: signPrivateKey,

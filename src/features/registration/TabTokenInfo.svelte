@@ -179,7 +179,7 @@
         <IconButton title="Browse for image" class="material-icons" on:click={openFileDialog}>image_search</IconButton>
         <div class="upload-icon-wrapper">
             {#if isUploading}
-                <div class="upload-icon mdc-typography--body1" style="top:12px;left:8px"
+                <div class="upload-icon mdc-typography--body1 animation-pulse" style="top:12px;left:8px"
                      transition:fade>{(uploadProgress * 100).toFixed(1)}%
                 </div>
             {:else}
