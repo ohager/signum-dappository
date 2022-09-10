@@ -1,13 +1,14 @@
 <script>
     import { goto } from '@sapper/app'
     import Button, { Label } from '@smui/button'
-    import { Page, TokenItemVariant, TokenItem, PassphraseInput, AccountInput } from '../_common'
+    import {Page, TokenItemVariant, TokenItem, PassphraseInput, AccountInput} from '../_common'
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { EmptyToken } from '../../utils/emptyToken'
     import { account$ } from '../_common/accountStore'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
     import { assureAccountId } from '../../utils/assureAccountId'
+    import {xtWallet$} from "../_common/xtWalletStore";
 
     export let token = EmptyToken
     let isPassphraseValid = false
@@ -15,18 +16,22 @@
     let targetAccount = ''
     let passphrase = ''
 
+    $: wallet = $xtWallet$.wallet
     $: ownerId = $account$.accountId
-    $: canTransfer = isAccountValid && isPassphraseValid
+    $: isOwner = $account$.accountId === token.owner
+    $: canTransfer = isOwner && (wallet ? isAccountValid : isAccountValid && isPassphraseValid)
+
 
     function handleCancel() {
         history.back()
     }
 
     async function handleTransfer() {
-        await applicationTokenService.transferToken(token, passphrase, targetAccount)
+        const targetAccountId = assureAccountId(targetAccount)
+        await applicationTokenService.transferToken(token, wallet || passphrase, targetAccountId)
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
-            expectedValue: assureAccountId(targetAccount),
+            expectedValue: targetAccountId,
             fieldName: 'owner',
         })
         goto(RouteAccountTokens(ownerId))
@@ -74,10 +79,12 @@
                       validate={validateAccount}
         />
 
+        {#if !wallet}
         <PassphraseInput bind:valid={isPassphraseValid}
                          bind:passphrase={passphrase}
                         account={$account$.accountId}
         />
+        {/if}
 
         <div class="form--footer">
             <Button on:click={handleCancel}>

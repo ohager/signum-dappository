@@ -85,6 +85,9 @@ export default {
                         'Amount',
                         'FeeQuantPlanck'
                     ],
+                    '@signumjs/wallets': [
+                        'GenericExtensionWallet'
+                    ],
                 },
             }),
             json(),

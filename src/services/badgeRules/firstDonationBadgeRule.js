@@ -5,7 +5,7 @@ export class FirstDonationBadgeRule extends AbstractBadgeRule {
         super({
             name: 'First Donation',
             description: 'You got a donation',
-            icon: 'first-donation',
+            icon: 'first-donation.svg',
         })
     }
 

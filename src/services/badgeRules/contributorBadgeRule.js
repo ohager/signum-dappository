@@ -6,7 +6,7 @@ export class ContributorBadgeRule extends AbstractBadgeRule {
         super({
             name: 'Contributor',
             description: 'Token from most frequent contributor',
-            icon: 'contributor',
+            icon: 'contributor.svg',
         })
     }
 

@@ -10,13 +10,15 @@ const InitialTokensState = {
     unconfirmedItems: [],
 }
 
-export const tokens$ = writable(InitialTokensState, (set) => {
+export const tokens$ = writable(InitialTokensState, set => {
     if (!isClientSide()) return voidFn
     const updateTokens = async () => {
         const confirmedTokens = await applicationTokenService.getTokens()
         const confirmedTokenIds = confirmedTokens.map(({ at }) => at)
         await unconfirmedTokenService.prune(confirmedTokenIds)
         const unconfirmedTokens = await unconfirmedTokenService.getTokens()
+
+
         tokens$.update(state => ({
             ...state,
             items: confirmedTokens,

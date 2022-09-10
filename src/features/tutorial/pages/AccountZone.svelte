@@ -6,7 +6,7 @@
 <TutorialPage>
     <h1 class="mdc-typography--headline6">What is the Account Zone?</h1>
     <div class="container">
-        <div class="icon-wrapper animation-pulse">
+        <div class="center animation-pulse">
             <img src="/img/login.svg" alt="Account Zone">
         </div>
         <div class="description">
@@ -45,11 +45,11 @@
         align-items: center;
     }
 
-    .icon-wrapper {
+    .center {
         text-align: center;
     }
 
-    .icon-wrapper > img {
+    .center > img {
         height: 80px;
     }
 

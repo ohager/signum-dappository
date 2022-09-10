@@ -7,17 +7,22 @@
     import { applicationTokenService } from '../../services/applicationTokenService'
     import { RouteAccountTokens } from '../../utils/routes'
     import { tokenMonitorService } from '../../services/tokenMonitorService'
+    import {xtWallet$} from "../_common/xtWalletStore";
 
     export let token = EmptyToken
     let isPassphraseValid = false
     let passphrase = ''
+
+    $: wallet = $xtWallet$.wallet
+    $: isOwner = $account$.accountId === token.owner
+    $: isDisabled = (!wallet && !passphrase) || (!isOwner)
 
     function handleCancel() {
         history.back()
     }
 
     async function handleDeactivate() {
-        await applicationTokenService.deactivateToken(token, passphrase)
+        await applicationTokenService.deactivateToken(token, wallet || passphrase)
         await tokenMonitorService.startMonitor({
             tokenId: token.at,
             expectedValue: false,
@@ -55,15 +60,16 @@
             </div>
         </div>
 
+        {#if !wallet}
         <PassphraseInput account={$account$.accountId} bind:valid={isPassphraseValid} bind:passphrase={passphrase}/>
+        {/if}
 
         <div class="form--footer">
             <Button on:click={handleCancel}>
                 <Label>Back</Label>
             </Button>
 
-            <Button on:click={handleDeactivate} disabled={!isPassphraseValid}>
-
+            <Button on:click={handleDeactivate} disabled={isDisabled}>
                 <Label>Deactivate</Label>
             </Button>
         </div>

@@ -6,7 +6,7 @@ export class ChampionBadgeRule extends AbstractBadgeRule {
         super({
             name: 'Champion',
             description: 'Highest score of all',
-            icon: 'champion',
+            icon: 'champion.svg',
         })
     }
 

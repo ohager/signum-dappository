@@ -3,6 +3,7 @@ export const Vars = {
     IsTestnet: process.env.SAPPER_APP_IS_TESTNET,
     IsMaintenance: process.env.SAPPER_APP_IS_MAINTENANCE,
     HostUrl: process.env.SAPPER_APP_HOST_URL,
+    ContractReference: process.env.SAPPER_APP_CONTRACT_REFERENCE,
     ContractMachineCodeHash: process.env.SAPPER_APP_MACHINE_CODE_HASH_ID,
     ContractPollingIntervalSecs: process.env.SAPPER_APP_CONTRACT_POLLING_INTERVAL_SECS * 1000,
     UnconfirmedTxPollingIntervalSecs:
@@ -12,4 +13,5 @@ export const Vars = {
     TokenWatcherTimeoutSecs: process.env.SAPPER_APP_TOKEN_WATCHER_TIMEOUT_SECS,
     ExplorerUrl: process.env.SAPPER_APP_EXPLORER_URL,
     MaxEarlyAccessBlockHeight: process.env.SAPPER_APP_MAX_EARLY_ACCESS_BLOCK_HEIGHT,
+    MaxLegacyBlockHeight: process.env.SAPPER_APP_MAX_LEGACY_BLOCK_HEIGHT,
 }

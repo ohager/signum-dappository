@@ -2,7 +2,7 @@
     export let height
     export let dark = false
 
-    $: src = dark ? 'img/logo.black.svg' : 'img/logo.white.svg'
+    $: src = dark ? 'img/logo.white.svg' : 'img/logo.black.svg'
 </script>
 
 <div class="logo" style="height:{height}">

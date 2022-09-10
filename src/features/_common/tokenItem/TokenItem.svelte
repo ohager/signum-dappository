@@ -23,7 +23,6 @@
   import {setAccount} from '../accountStore'
   import {Amount} from "@signumjs/util";
 
-
   export let compact = false
   export let variant = TokenItemVariant.Normal
   export let data = {
@@ -31,6 +30,7 @@
     name: '',
     desc: '',
     repo: '',
+    owner: '',
     img: null,
     tags: [],
     donationPlanck: '0',
@@ -49,7 +49,7 @@
   $: imageUrl = data.img || PlaceholderImage
   $: mediaStyle = `
         background-image: url(${imageUrl});
-        background-size: contain;
+        background-size: cover;
     `
   $: isUnconfirmed = variant === TokenItemVariant.Unconfirmed
   $: {
@@ -185,20 +185,41 @@
                 <Actions>
                     <ActionButtons>
                         {#if variant === TokenItemVariant.Owner && !data.isActive}
-                            <Button on:mouseenter={prefetchActivate} on:click={handleActivate}>
-                                <Label>Activate</Label>
-                            </Button>
+                            {#if compact}
+                                <IconButton class="material-icons" on:click={handleActivate}
+                                            title="Activate">power_outlined
+                                </IconButton>
+                            {:else}
+                                <Button on:mouseenter={prefetchActivate} on:click={handleActivate}>
+                                    <Label>Activate</Label>
+                                </Button>
+                            {/if}
                         {:else if variant === TokenItemVariant.Owner && data.isActive}
-                            <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
-                                <Label>Deactivate</Label>
-                            </Button>
-                            <Button on:mouseenter={prefetchTransfer} on:click={handleTransfer}>
-                                <Label>Transfer</Label>
-                            </Button>
+                            {#if compact}
+                                <IconButton class="material-icons" on:click={handleDeactivate}
+                                            title="Deactivate">power_off_outlined
+                                </IconButton>
+                                <IconButton class="material-icons" on:click={handleTransfer}
+                                            title="Deactivate">compare_arrows
+                                </IconButton>
+                            {:else}
+                                <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
+                                    <Label>Deactivate</Label>
+                                </Button>
+                                <Button on:mouseenter={prefetchTransfer} on:click={handleTransfer}>
+                                    <Label>Transfer</Label>
+                                </Button>
+                            {/if}
                         {:else}
-                            <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
-                                <Label>Donate</Label>
-                            </Button>
+                            {#if compact}
+                                <IconButton class="material-icons" on:click={prefetchDonate}
+                                            title="Donate">favorite_border
+                                </IconButton>
+                            {:else}
+                                <Button on:mouseenter={prefetchDonate} on:click={handleDonate}>
+                                    <Label>Donate</Label>
+                                </Button>
+                            {/if}
                             {#if !compact && !isEmptyString(data.repo)}
                                 <Button on:click={handleProjectClick}>
                                     <Label>Visit Project</Label>
@@ -206,8 +227,8 @@
                             {/if}
                         {/if}
                     </ActionButtons>
-                    {#if variant !== TokenItemVariant.Owner}
-                        <ActionIcons>
+                    <ActionIcons>
+                        {#if variant !== TokenItemVariant.Owner}
                             {#if compact && !isEmptyString(data.repo)}
                                 <IconButton class="material-icons" on:click={handleProjectClick}
                                             title="Visit Project Site">web
@@ -217,16 +238,16 @@
                                         on:click={handleOwnerTokensClick} title="See all tokens of this owner">
                                 person_search
                             </IconButton>
-                            <div class="share">
-                                <IconButton class="material-icons" on:click={handleShareClick}
-                                            title="Share on Social Media">share
-                                </IconButton>
-                                <MenuSurface bind:this={sharingIconSurface} anchorCorner="TOP_LEFT">
-                                    <SocialMediaList token={data}/>
-                                </MenuSurface>
-                            </div>
-                        </ActionIcons>
-                    {/if}
+                        {/if}
+                        <div class="share">
+                            <IconButton class="material-icons" on:click={handleShareClick}
+                                        title="Share on Social Media">share
+                            </IconButton>
+                            <MenuSurface bind:this={sharingIconSurface} anchorCorner="TOP_LEFT">
+                                <SocialMediaList token={data}/>
+                            </MenuSurface>
+                        </div>
+                    </ActionIcons>
                 </Actions>
             {/if}
         </Card>

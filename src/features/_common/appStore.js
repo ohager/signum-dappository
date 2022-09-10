@@ -3,7 +3,6 @@ import { SettingsKeys, settingsService } from '../../services/settingsService'
 import { isClientSide } from '../../utils/isClientSide'
 import { ThemeNames } from '../../utils/themeNames'
 import { voidFn } from '../../utils/voidFn'
-import { Events } from '../../utils/events'
 import { Vars } from '../../context'
 import { networkService } from '../../services/networkService'
 
@@ -74,3 +73,4 @@ export const blockchainStatus$ = readable(DefaultBlockchainStatusState, set => {
         set(DefaultBlockchainStatusState)
     }
 })
+

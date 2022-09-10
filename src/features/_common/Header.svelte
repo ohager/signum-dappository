@@ -1,46 +1,47 @@
 <script>
-    import { fade } from 'svelte/transition'
-    import { goto, prefetch } from '@sapper/app'
-    import Button, { Label } from '@smui/button'
-    import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar'
-    import IconButton from '@smui/icon-button'
-    import { RouteAccountTokens, RouteHome } from '../../utils/routes'
-    import { isEmptyString } from '../../utils/isEmptyString'
-    import { dispatchEvent } from '../../utils/dispatchEvent'
-    import { account$, clearAccount } from './accountStore'
-    import { Events } from '../../utils/events'
-    import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
-    import Logo from './Logo.svelte'
-    import Stamp from './Stamp.svelte'
-    import LoadingBar from './LoadingBar.svelte'
-    import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
+  import {fade} from 'svelte/transition'
+  import {goto, prefetch} from '@sapper/app'
+  import Button, {Label} from '@smui/button'
+  import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar'
+  import IconButton from '@smui/icon-button'
+  import {RouteAccountTokens, RouteHome} from '../../utils/routes'
+  import {isEmptyString} from '../../utils/isEmptyString'
+  import {dispatchEvent} from '../../utils/dispatchEvent'
+  import {account$} from './accountStore'
+  import {Events} from '../../utils/events'
+  import SyncProgressBar from '../../features/tokens/SyncProgressBar.svelte'
+  import Logo from './Logo.svelte'
+  import Stamp from './Stamp.svelte'
+  import LoadingBar from './LoadingBar.svelte'
+  import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
+  import {connectXtWallet, xtWallet$} from "./xtWalletStore";
+  import {theme$} from "./appStore";
+  import {ThemeNames} from "../../utils/themeNames";
+  import {isMobile} from "../../utils/isMobile";
 
-    export let isMenuOpen = false
-    export let isTestnet = false
+  export let isMenuOpen = false
+  export let isTestnet = false
 
-    $: currentAccount = $account$.accountId
-    $: hasAccount = !isEmptyString(currentAccount)
+  $: wallet = $xtWallet$.wallet
+  $: currentAccount = $account$.accountId
+  $: hasAccount = !isEmptyString(currentAccount)
 
-    function gotoOwnerPage() {
-        if (hasAccount) {
-            goto(RouteAccountTokens(currentAccount))
-        } else {
-            dispatchEvent(Events.ShowAccountDialog, { isVisible: true })
-        }
+
+  function gotoOwnerPage() {
+    if (hasAccount) {
+      goto(RouteAccountTokens(currentAccount))
+    } else {
+      dispatchEvent(Events.ShowAccountDialog, {isVisible: true})
     }
+  }
 
-    function toggleMenu() {
-        dispatchEvent(Events.ShowMenu, { isOpen: !isMenuOpen })
-    }
+  function toggleMenu() {
+    dispatchEvent(Events.ShowMenu, {isOpen: !isMenuOpen})
+  }
 
-    function gotoHome(){
-        goto(RouteHome())
-    }
-
-    function unsetAccount() {
-        clearAccount()
-        gotoHome()
-    }
+  function gotoHome() {
+    goto(RouteHome())
+  }
 
 </script>
 
@@ -59,7 +60,7 @@
                 {/if}
             </div>
             <div class="logo" on:click={gotoHome}>
-                <Logo height="42px" />
+                <Logo height="42px" dark={$theme$ === ThemeNames.Dark}/>
                 <div class="title-text">
                     <Title>The Signum dAppository</Title>
                 </div>
@@ -75,13 +76,27 @@
                     </Button>
                 </div>
             {/if}
+            {#if !isMobile()}
+                {#if wallet}
+                    <div class="current-account">
+                        <img src="/img/signum-xt-logo.svg" height="24" alt="XT Wallet Connected"
+                             title="XT Wallet Connected" role="img"/>
+                    </div>
+                {:else}
+                    <div class="current-account">
+                        <Button title="Connect XT Wallet" on:click={connectXtWallet}>
+                            <Label style="color: white">Connect XT Wallet</Label>
+                        </Button>
+                    </div>
+                {/if}
+            {/if}
         </Section>
     </Row>
-    <SyncProgressBar />
-    <LoadingBar />
+    <SyncProgressBar/>
+    <LoadingBar/>
     {#if isTestnet }
         <div class="testnet-marker">
-            <Stamp text="testnet" />
+            <Stamp text="testnet"/>
         </div>
     {/if}
 </TopAppBar>
@@ -107,7 +122,7 @@
     }
 
     .logo:hover {
-        background-color: rgba(255,255,255,0.1);
+        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 4px;
         transition: none;
     }
@@ -117,10 +132,6 @@
         flex-direction: row;
         align-items: center;
         color: white !important;
-    }
-
-    .current-account .mdc-typography--body1 {
-        margin-right: 1rem;
     }
 
     .menu-icon-wrapper {

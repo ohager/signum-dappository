@@ -17,11 +17,11 @@ export class SettingsService {
     }
 
     async removeValue(key) {
-        return await this._repository.remove(key)
+        return this._repository.remove(key)
     }
 
     async updateValue(key, value) {
-        return await this._repository.upsert(key, value)
+        return this._repository.upsert(key, value)
     }
 }
 

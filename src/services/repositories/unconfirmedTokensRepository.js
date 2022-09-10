@@ -16,7 +16,7 @@ export class UnconfirmedTokensRepository {
     }
 
     async remove(at) {
-        return await this._db.delete(at)
+        return this._db.delete(at)
     }
 }
 

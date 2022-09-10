@@ -6,6 +6,7 @@ import { HiScoreBadgeRule } from './badgeRules/hiScoreBadgeRule'
 import { NewBadgeRule } from './badgeRules/newBadgeRule'
 import { ChampionBadgeRule } from './badgeRules/championBadgeRule'
 import { ContributorBadgeRule } from './badgeRules/contributorBadgeRule'
+import {LegacyBadgeRule} from "./badgeRules/legacyBadgeRule";
 
 class BadgeRulesEngine {
     constructor(rules) {
@@ -24,6 +25,7 @@ class BadgeRulesEngine {
 }
 
 const ruleSet = [
+    new LegacyBadgeRule(Vars.MaxLegacyBlockHeight),
     new FirstDonationBadgeRule(),
     new EarlyAccessBadgeRule(Vars.MaxEarlyAccessBlockHeight),
     new LowScoreBadgeRule(),

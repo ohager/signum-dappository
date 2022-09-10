@@ -5,7 +5,7 @@ export class EarlyAccessBadgeRule extends AbstractBadgeRule {
         super({
             name: 'Early Access',
             description: 'You are an early adopter',
-            icon: 'early-adopt',
+            icon: 'early-adopt.svg',
         })
 
         this._maxEarlyAccessBlock = maxEarlyAccessBlock

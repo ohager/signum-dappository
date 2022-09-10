@@ -2,6 +2,7 @@ import * as appStore from './appStore'
 import * as feeStore from './feeStore'
 import * as accountStore from './accountStore'
 import * as tokenStore from './tokenStore'
+import * as xtWalletStore from './xtWalletStore'
 import AccountDialog from './AccountDialog.svelte'
 import AccountInput from './AccountInput.svelte'
 import BadgeCollection from './badge/BadgeCollection.svelte'
@@ -56,5 +57,6 @@ export {
     TokenItemVariant,
     TokenMetaHead,
     tokenStore,
+    xtWalletStore,
     convertNumericIdToAddress,
 }

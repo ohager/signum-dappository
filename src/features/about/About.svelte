@@ -14,7 +14,7 @@
         window.open(url, '_blank')
     }
 
-    $: dark = $theme$ === ThemeNames.Default
+    $: dark = $theme$ === ThemeNames.Dark
 
 </script>
 
@@ -39,7 +39,7 @@
                     <Graphic>
                         <img src="/img/signum-logo.svg" height="32px" alt="signum logo">
                     </Graphic>
-                    <Text>Burstcoin Community</Text>
+                    <Text>Signum Community</Text>
                 </Item>
                 <Item on:SMUI:action={openUrl('https://svelte.dev/')}>
                     <Graphic>
@@ -53,11 +53,11 @@
                     </Graphic>
                     <Text>Svelte Material UI</Text>
                 </Item>
-                <Item on:SMUI:action={openUrl('https://pinata.cloud/')}>
+                <Item on:SMUI:action={openUrl('https://web3.storage/')}>
                     <Graphic>
-                        <img src="/img/pinata-logo.svg" height="32px" alt="pinata logo">
+                        <img class:light={dark} src="/img/web3-storage-logo.svg" height="32px" alt="web3 storage logo">
                     </Graphic>
-                    <Text>Pinata IPFS Pinning Service</Text>
+                    <Text>Web3 IPFS Storage Service</Text>
                 </Item>
             </List>
             <div class="mdc-typography--body1">
@@ -137,6 +137,9 @@
         text-align: center;
     }
 
+    .light {
+        filter: invert(1);
+    }
 
     @media (max-width: 480px){
         .credits-container {
