@@ -9,6 +9,9 @@
     "smart contracts",
     "web3.0"
   ],
+  "engines": {
+    "node": "14"
+  },
   "author": {
     "email": "ohager@signum.network",
     "name": "ohager"
@@ -16,9 +19,9 @@
   "license": "MIT",
   "repository": {
     "type": "github",
-    "url": "git@github.com:ohager/burst-dappository.git"
+    "url": "git@github.com:ohager/signum-dappository.git"
   },
-  "version": "0.0.1",
+  "version": "2.0.0",
   "scripts": {
     "dev": "sapper dev -p 3001",
     "build": "sapper build --legacy",
