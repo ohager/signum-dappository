@@ -11,6 +11,8 @@
   import {xtWallet$} from "./xtWalletStore";
   import {Ledger} from "../../context";
   import {Events} from "../../utils/events";
+  import Link from "./Link.svelte";
+  import {getXtWalletLink} from "../../utils/getXtWalletLink";
 
   export let recipient = ""
   export let costs = []
@@ -102,6 +104,9 @@
             <Button on:click={payNow} disabled={walletOpen}>
                 <Label>{wallet ? "Pay with XT wallet" : "Pay via Deeplink"}</Label>
             </Button>
+            {#if !wallet}
+                <p>Or connect to <Link inline href={getXtWalletLink()} target="_blank">XT Wallet</Link></p>
+            {/if}
         </div>
 
     </section>
@@ -133,7 +138,10 @@
     }
 
     .form--qrcode > section > .paynow {
-        margin-top: 1rem
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .form--qrcode-infoitem {

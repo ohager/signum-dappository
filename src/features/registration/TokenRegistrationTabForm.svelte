@@ -15,6 +15,7 @@
         isValidUrl,
     } from '../../utils/validators'
     import { calculateDataLength, registration$, tokenData } from './registrationStore'
+    import {xtWallet$} from "../_common/xtWalletStore";
     import { account$ } from '../_common/accountStore'
     import { loading$ } from '../_common/appStore'
     import Introduction from './Introduction.svelte'
@@ -52,7 +53,8 @@
 
     async function handleRegister() {
         try{
-            await applicationTokenService.registerToken(tokenData(), $registration$.passphrase)
+          const passphraseOrConnection = $xtWallet$.wallet || $registration$.passphrase
+            await applicationTokenService.registerToken(tokenData(), passphraseOrConnection)
             await goto(RouteAccountTokens($account$.accountId))
         }catch(e){
             // noop yet

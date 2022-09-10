@@ -12,9 +12,9 @@
   import debounce from 'lodash.debounce'
   import {accountService} from '../../services/accountService'
   import {setAccount} from './accountStore'
-  import {isClientSide} from "../../utils/isClientSide";
   import Link from "./Link.svelte";
-  import {connectXtWallet, xtWallet$} from "./xtWalletStore";
+  import {connectXtWallet} from "./xtWalletStore";
+  import {getXtWalletLink} from "../../utils/getXtWalletLink";
 
   let isRegistering = false
   let account = ''
@@ -22,15 +22,6 @@
   let isValid = false
   let dialog = null
 
-  function getWalletLink() {
-    let link = ""
-    if (isClientSide()) {
-      link = navigator.userAgent.match(/firefox|fxios/i)
-        ? 'https://addons.mozilla.org/en-US/firefox/addon/signum-xt-wallet'
-        : 'https://chrome.google.com/webstore/detail/signum-xt-wallet/kdgponmicjmjiejhifbjgembdcaclcib'
-    }
-    return link
-  }
 
   async function validateAccount(accountId) {
     isValidating = true
@@ -94,7 +85,7 @@
         </p>
         <p>
             It's highly recommended to use the
-            <Link inline href={getWalletLink()} target="_blank">XT Wallet</Link>
+            <Link inline href={getXtWalletLink()} target="_blank">XT Wallet</Link>
             ,
             But you can add any account manually also if you to see only tokens of that account.
             Note: Without XT Wallet one have access to owners token functions only by using the passphrase
