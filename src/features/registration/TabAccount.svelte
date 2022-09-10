@@ -1,40 +1,35 @@
 <script>
-    import TextField from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text/index'
-    import Icon from '@smui/textfield/icon/index'
-    import { isEmptyString } from '../../utils/isEmptyString'
-    import { registration$ } from './registrationStore'
-    import { assureAccountId } from '../../utils/assureAccountId'
-    import { onDestroy, onMount } from 'svelte'
-    import { pruneLedgerErrorMessage } from '../../utils/pruneLedgerErrorMessage'
-    import { accountService } from '../../services/accountService'
-    import { TokenContract } from '../../context'
-    import AccountInput from '../_common/AccountInput.svelte'
-    import {Amount} from "@signumjs/util";
+  import {registration$} from './registrationStore'
+  import {assureAccountId} from '../../utils/assureAccountId'
+  import {onMount} from 'svelte'
+  import {accountService} from '../../services/accountService'
+  import {TokenContract} from '../../context'
+  import AccountInput from '../_common/AccountInput.svelte'
+  import {Amount} from "@signumjs/util";
 
-    export let accountId = ''
+  export let accountId = ''
 
-    let validation = {
-        message: 'Account is required',
-        valid: false,
+  let validation = {
+    message: 'Account is required',
+    valid: false,
+  }
+
+  onMount(() => {
+    $registration$.account = accountId
+  })
+
+  async function getBalance(account) {
+    const accountId = assureAccountId(account)
+    return await accountService.getBalance(accountId)
+  }
+
+  async function validateAccount(account) {
+    const balance = await getBalance(account)
+    const minimumBalance = TokenContract.CreationFee.clone().add(Amount.fromSigna(TokenContract.ActivationCosts + 1))
+    if (!balance.greaterOrEqual(minimumBalance)) {
+      throw new Error(`Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`)
     }
-
-    onMount(() => {
-        $registration$.account = accountId
-    })
-
-    async function getBalance(account) {
-        const accountId = assureAccountId(account)
-        return await accountService.getBalance(accountId)
-    }
-
-    async function validateAccount(account) {
-        const balance = await getBalance(account)
-        const minimumBalance = TokenContract.CreationFee.add(Amount.fromSigna(1))
-        if(!balance.greaterOrEqual(minimumBalance)){
-            throw new Error(`Insufficient Balance (${balance.toString()}): You need at least ${minimumBalance.toString()}`)
-        }
-    }
+  }
 
 </script>
 
