@@ -2,17 +2,19 @@
     import { beforeUpdate } from 'svelte'
     import { scale } from 'svelte/transition'
     import {
-        TokenItem,
-        Omnibar,
-        OmnibarViewMode,
-        tokenStore,
-        omnibarStore$,
+      TokenItem,
+      Omnibar,
+      OmnibarViewMode,
+      tokenStore,
+      omnibarStore$, TokenItemVariant,
 
     } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'
     import { filterTokens } from '../../utils/filterTokens'
     import TokenListItem from '../_common/tokenItem/TokenListItem.svelte'
+    import {account$} from "../_common/accountStore";
+    import {xtWallet$} from "../_common/xtWalletStore";
 
     export let searchText = ''
     let itemListContainerHeight = 0
@@ -26,6 +28,8 @@
     $: isSearching = $omnibarStore$.text.length > 0
     $: countText = `${activeTokens.length}/${unfilteredActiveTokens.length}`
     $: viewMode = $omnibarStore$.options.viewMode
+    $: wallet = $xtWallet$.wallet
+    $: ownerId = $account$.accountId
 
     function handleTagClick({ detail: tagName }) {
         $omnibarStore$.text = tagName
@@ -79,7 +83,7 @@
                     <div transition:scale class="item-list">
                         {#each activeTokens as data}
                             <div class="item compact">
-                                <TokenItem {data} on:tag-click={handleTagClick} compact />
+                                <TokenItem {data} on:tag-click={handleTagClick} compact variant={wallet && (ownerId === data.owner) ? TokenItemVariant.Owner : TokenItemVariant.Normal}/>
                             </div>
                         {/each}
                     </div>
@@ -87,7 +91,7 @@
                     <div transition:scale class="item-list">
                         {#each activeTokens as data}
                             <div class="item">
-                                <TokenItem {data} on:tag-click={handleTagClick} />
+                                <TokenItem {data} on:tag-click={handleTagClick} variant={wallet && (ownerId === data.owner) ? TokenItemVariant.Owner : TokenItemVariant.Normal} />
                             </div>
                         {/each}
                     </div>

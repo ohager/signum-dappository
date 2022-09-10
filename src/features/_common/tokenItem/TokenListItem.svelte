@@ -6,12 +6,14 @@
     import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
     import { isMobile } from '../../../utils/isMobile'
     import  { BadgeCollection } from '../../_common'
+    import {account$} from "../accountStore";
 
     export let data = {
         at: '',
         name: '',
         desc: '',
         repo: '',
+        owner: '',
         img: null,
         tags: [],
         donationPlanck: '0',
@@ -20,6 +22,7 @@
 
     $: score =  calculateRankingPoints(data)
     $: isCompactView = isMobile()
+    $: isOwner = $account$.accountId === data.owner
 
     const handleDetailsClick = () => {
         goto(RouteTokenDetail(data.at))
@@ -29,7 +32,7 @@
         goto(RouteDonate(data.at))
     }
 
-    function onResize(e){
+    function onResize(){
         isCompactView = window.innerWidth < 480
     }
 </script>
@@ -44,18 +47,29 @@
         <div class="smaller mdc-typography--body1">Score: {score}</div>
     </div>
     {#if !isCompactView}
-        <div class="description" on:click={handleDetailsClick}>
-            <small class="smaller mdc-typography--body1">{data.desc}</small>
-        </div>
         <div class="badges">
             <BadgeCollection token={data} />
         </div>
-        <div class="actions">
-            <Button on:click={handleDonateClick}><ButtonLabel>Donate</ButtonLabel></Button>
+        <div class="description" on:click={handleDetailsClick}>
+            <small class="smaller mdc-typography--body1">{data.desc}</small>
         </div>
+        {#if !isOwner}
+            <div class="actions">
+                <Button on:click={handleDonateClick}><ButtonLabel>Donate</ButtonLabel></Button>
+            </div>
+        {:else}
+            <div class="actions">
+                <Button on:click={handleDetailsClick}><ButtonLabel>More</ButtonLabel></Button>
+            </div>
+        {/if}
     {:else}
         <div class="actions">
-            <IconButton class="material-icons" on:click={handleDonateClick}>favorite_border</IconButton>
+            {#if !isOwner}
+                <IconButton class="material-icons" on:click={handleDonateClick}>favorite_border</IconButton>
+                {:else}
+                <IconButton class="material-icons" on:click={handleDetailsClick}>more_vert</IconButton>
+
+            {/if}
         </div>
     {/if}
 </div>

@@ -13,7 +13,9 @@
     let isPassphraseValid = false
     let passphrase = ''
 
-    $:wallet = $xtWallet$.wallet
+    $: wallet = $xtWallet$.wallet
+    $: isOwner = $account$.accountId === token.owner
+    $: isDisabled = (!wallet && !passphrase) || (!isOwner)
 
     function handleCancel() {
         history.back()
@@ -67,7 +69,7 @@
                 <Label>Back</Label>
             </Button>
 
-            <Button on:click={handleDeactivate} disabled={!wallet && !isPassphraseValid}>
+            <Button on:click={handleDeactivate} disabled={isDisabled}>
                 <Label>Deactivate</Label>
             </Button>
         </div>

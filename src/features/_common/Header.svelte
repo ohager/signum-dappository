@@ -15,9 +15,9 @@
   import LoadingBar from './LoadingBar.svelte'
   import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
   import {connectXtWallet, xtWallet$} from "./xtWalletStore";
-  import {afterUpdate} from "svelte";
   import {theme$} from "./appStore";
   import {ThemeNames} from "../../utils/themeNames";
+  import {isMobile} from "../../utils/isMobile";
 
   export let isMenuOpen = false
   export let isTestnet = false
@@ -25,6 +25,7 @@
   $: wallet = $xtWallet$.wallet
   $: currentAccount = $account$.accountId
   $: hasAccount = !isEmptyString(currentAccount)
+
 
   function gotoOwnerPage() {
     if (hasAccount) {
@@ -75,16 +76,19 @@
                     </Button>
                 </div>
             {/if}
-            {#if wallet}
-                <div class="current-account">
-                    <img src="/img/signum-xt-logo.svg" height="24" alt="XT Wallet Connected" title="XT Wallet Connected" role="img" />
-                </div>
-            {:else}
-                <div class="current-account">
-                    <Button title="Connect XT Wallet" on:click={connectXtWallet}>
-                        <Label style="color: white">Connect XT Wallet</Label>
-                    </Button>
-                </div>
+            {#if !isMobile()}
+                {#if wallet}
+                    <div class="current-account">
+                        <img src="/img/signum-xt-logo.svg" height="24" alt="XT Wallet Connected"
+                             title="XT Wallet Connected" role="img"/>
+                    </div>
+                {:else}
+                    <div class="current-account">
+                        <Button title="Connect XT Wallet" on:click={connectXtWallet}>
+                            <Label style="color: white">Connect XT Wallet</Label>
+                        </Button>
+                    </div>
+                {/if}
             {/if}
         </Section>
     </Row>

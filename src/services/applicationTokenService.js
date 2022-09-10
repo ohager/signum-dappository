@@ -157,21 +157,24 @@ export class ApplicationTokenService {
                 )
             }
 
-            let transaction = await Ledger.contract.publishContract({
-                codeHex: TokenContract.Bytecode,
+            let transaction = await Ledger.contract.publishContractByReference({
+                referencedTransactionHash: TokenContract.Reference,
                 activationAmountPlanck: this.getActivationCostsPlanck(),
+                feePlanck: TokenContract.CreationFee,
                 description: JSON.stringify(tokenData),
                 name: TokenContract.Name,
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
-                isCIP20Active: true,
             })
 
+            let unconfirmedTokenId = transaction.transaction
             if (isUsingWallet) {
-                transaction = await passphraseOrWallet.confirm(transaction.unsignedTransactionBytes)
+                const { transactionId } = await passphraseOrWallet.confirm(
+                    transaction.unsignedTransactionBytes,
+                )
+                unconfirmedTokenId = transactionId
             }
 
-            const unconfirmedTokenId = transaction.transaction
             await unconfirmedTokenService.addToken({
                 at: unconfirmedTokenId,
                 creator: accountId,

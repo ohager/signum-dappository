@@ -42,7 +42,7 @@
     <div class="form">
         <div class="form--header">
             <p class="mdc-typography--body1">
-                Before you can receive your first donations, the token must first be activated. Unfortunately there is a
+                Before you can receive your first donations, the token must be activated. Unfortunately, there is a
                 small fee for this, but it is not too much. Mind that the activation may take a few moments. Good luck
                 with your app.
             </p>

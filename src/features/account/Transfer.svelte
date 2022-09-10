@@ -18,7 +18,9 @@
 
     $: wallet = $xtWallet$.wallet
     $: ownerId = $account$.accountId
-    $: canTransfer = wallet ? isAccountValid : isAccountValid && isPassphraseValid
+    $: isOwner = $account$.accountId === token.owner
+    $: canTransfer = isOwner && (wallet ? isAccountValid : isAccountValid && isPassphraseValid)
+
 
     function handleCancel() {
         history.back()
