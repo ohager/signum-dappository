@@ -23,7 +23,6 @@
   import {setAccount} from '../accountStore'
   import {Amount} from "@signumjs/util";
 
-
   export let compact = false
   export let variant = TokenItemVariant.Normal
   export let data = {

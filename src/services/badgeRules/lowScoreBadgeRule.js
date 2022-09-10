@@ -6,7 +6,7 @@ export class LowScoreBadgeRule extends AbstractBadgeRule {
         super({
             name: '',
             description: '',
-            icon: 'loscore',
+            icon: 'loscore.svg',
             textStyle: 'top: 12px;',
         })
     }

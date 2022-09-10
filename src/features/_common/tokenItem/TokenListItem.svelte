@@ -1,10 +1,8 @@
 <script>
-    import { Item, Graphic, Meta, Label, Text, PrimaryText, SecondaryText } from '@smui/list'
     import Button, { Label as ButtonLabel } from '@smui/button';
     import IconButton from '@smui/icon-button';
     import { goto } from '@sapper/app'
     import { RouteDonate, RouteTokenDetail } from '../../../utils/routes'
-    import TokenRank from './TokenRank.svelte'
     import { calculateRankingPoints } from '../../../utils/calculateRankingPoints'
     import { isMobile } from '../../../utils/isMobile'
     import  { BadgeCollection } from '../../_common'

@@ -1,16 +1,13 @@
 <script>
-    import { afterUpdate, beforeUpdate } from 'svelte'
-    import LinearProgress from '@smui/linear-progress'
-    import List from '@smui/list'
+    import { beforeUpdate } from 'svelte'
     import { scale } from 'svelte/transition'
     import {
         TokenItem,
-        TokenItemVariant,
         Omnibar,
         OmnibarViewMode,
         tokenStore,
         omnibarStore$,
-        Page,
+
     } from '../_common'
     import { syncProgress$ } from './syncProgressStore'
     import TokenItemMessageCard from './TokenItemMessageCard.svelte'

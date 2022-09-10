@@ -2,8 +2,10 @@ import { calculateRankingPoints } from './calculateRankingPoints'
 
 const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
 
-const filterByText = text => ({ at, name, desc, tags }) =>
-    at === text || hasText(name, text) || hasText(desc, text) || tags.includes(text)
+const filterByText =
+    text =>
+    ({ at, name, desc, tags }) =>
+        at === text || hasText(name, text) || hasText(desc, text) || tags.includes(text)
 
 const sorter = options => (a, b) => {
     let delta = 0
@@ -15,11 +17,11 @@ const sorter = options => (a, b) => {
     if (options.orderByScore) {
         const rankA = calculateRankingPoints(a)
         const rankB = calculateRankingPoints(b)
-        delta = delta || (rankB - rankA)
+        delta = delta || rankB - rankA
     }
 
     if (options.newestFirst) {
-        delta = delta || (b.creationBlock - a.creationBlock)
+        delta = delta || b.creationBlock - a.creationBlock
     }
 
     return delta

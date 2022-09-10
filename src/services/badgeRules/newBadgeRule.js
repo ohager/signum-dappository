@@ -7,11 +7,11 @@ export class NewBadgeRule extends AbstractBadgeRule {
         super({
             name: 'New Token',
             description: 'This is a new token',
-            icon: 'new',
+            icon: 'new.svg',
         })
     }
 
-    test({ token, allTokens, block }) {
+    test({ token, block }) {
         const { height } = block
         return height - token.creationBlock < BlocksPerDay * 30
     }

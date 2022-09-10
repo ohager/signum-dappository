@@ -16,6 +16,8 @@
   import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
   import {connectXtWallet, xtWallet$} from "./xtWalletStore";
   import {afterUpdate} from "svelte";
+  import {theme$} from "./appStore";
+  import {ThemeNames} from "../../utils/themeNames";
 
   export let isMenuOpen = false
   export let isTestnet = false
@@ -57,7 +59,7 @@
                 {/if}
             </div>
             <div class="logo" on:click={gotoHome}>
-                <Logo height="42px"/>
+                <Logo height="42px" dark={$theme$ === ThemeNames.Dark}/>
                 <div class="title-text">
                     <Title>The Signum dAppository</Title>
                 </div>

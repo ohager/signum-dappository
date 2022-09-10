@@ -24,6 +24,7 @@
 import MagicMapper from 'magic-mapper'
 import { ContractDataView } from '@signumjs/contracts'
 import { TokenStatus } from '../../../utils/tokenStatus'
+import {Vars} from "../../../context";
 
 const mapper = new MagicMapper({
     exclusive: true,
@@ -114,6 +115,11 @@ export class ApplicationToken {
             const status = parseStatus(contract)
             delete data.description
             delete data.machineData
+
+            if (data.creationBlock < Vars.MaxLegacyBlockHeight) {
+                info.tags.push('legacy')
+            }
+
             return new ApplicationToken({ ...data, ...info, ...state, status })
         } catch (e) {
             return null // ignore unreadable contract

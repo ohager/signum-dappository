@@ -6,7 +6,7 @@ export class HiScoreBadgeRule extends AbstractBadgeRule {
         super({
             name: '',
             description: '',
-            icon: 'hiscore',
+            icon: 'hiscore.svg',
             textStyle: 'top: 16px; color: white',
         })
     }

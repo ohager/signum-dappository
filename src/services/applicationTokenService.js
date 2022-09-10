@@ -47,6 +47,8 @@ export class ApplicationTokenService {
                     .filter(contract => contract.name.startsWith(TokenContract.Name))
                     .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
+
+
                 await this._tokenRepository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
             }

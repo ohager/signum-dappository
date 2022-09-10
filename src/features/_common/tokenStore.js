@@ -17,6 +17,8 @@ export const tokens$ = writable(InitialTokensState, (set) => {
         const confirmedTokenIds = confirmedTokens.map(({ at }) => at)
         await unconfirmedTokenService.prune(confirmedTokenIds)
         const unconfirmedTokens = await unconfirmedTokenService.getTokens()
+
+
         tokens$.update(state => ({
             ...state,
             items: confirmedTokens,

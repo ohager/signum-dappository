@@ -19,7 +19,7 @@
     {#if !isEmptyString(text)}
         <small style={textStyle}>{text}</small>
     {/if}
-    <img width={Widths[size]} src={`/img/badges/${icon}.svg`} alt="{description}">
+    <img width={Widths[size]} src={`/img/badges/${icon}`} alt="{description}">
 </div>
 
 
