@@ -6,6 +6,7 @@ import { Vars } from '../../context'
 import { setAccount, clearAccount } from './accountStore'
 import { dispatchEvent } from '../../utils/dispatchEvent'
 import { Events } from '../../utils/events'
+import { ledgerService } from '../../services/ledgerService'
 
 const InitialState = {
     wallet: null,
@@ -36,6 +37,8 @@ function onNetworkChanged(args) {
     const expectedNetwork = Vars.IsTestnet ? 'Signum-TESTNET' : 'Signum'
     if (args.networkName !== expectedNetwork) {
         dispatchEvent(Events.Warning, 'Unsupported Network selected')
+    } else {
+        ledgerService.updateNode(args.networkHost)
     }
 }
 
@@ -50,6 +53,7 @@ export async function connectXtWallet() {
             appName: 'The DAppository',
             networkName: Vars.IsTestnet ? 'Signum-TESTNET' : 'Signum',
         })
+        ledgerService.updateNode(connection.currentNodeHost)
 
         connectionListener = connection.listen({
             onAccountChanged,
