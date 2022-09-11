@@ -3,15 +3,15 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ohager_burst-dappository&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=ohager_burst-dappository)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ohager_burst-dappository&metric=alert_status)](https://sonarcloud.io/dashboard?id=ohager_burst-dappository)
 
-# signum-dappository
+# Signum DAppository
 
-__Signum Dappository__ is a platform to register tools and applications for the [Signum ](https://www.burst-coin.org/) eco-system. 
+The __Signum DAppository__ is a platform to register tools and applications for the [Signum](https://signum.network/) eco-system. 
 On one hand, this platform serves as a kind of application store, but also as an exhibition center for developers. 
 
 ## Digital Asset using Signum Smart Contracts
 
 Each registered entry is represented through a digital (cryptographic) asset/token using Signum Smart Contracts and is stored in the 
-Signum blockchain. The registree is the initial owner of that token. Therefore, the token is a so called [Non-Fungible Token](https://en.wikipedia.org/wiki/Non-fungible_token) (NFT):
+Signum blockchain. The registrar is the initial owner of that token. Therefore, the token is a so called [Non-Fungible Token](https://en.wikipedia.org/wiki/Non-fungible_token) (NFT):
 the token can only be owned by one person at a time, but it's possible to transfer it to another person, e.g. by selling it.
 
 Furthermore, the token can receive amounts from other Signum Accounts. The received amount will be redirected 

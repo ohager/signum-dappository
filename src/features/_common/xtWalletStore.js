@@ -5,7 +5,7 @@ import { GenericExtensionWallet } from '@signumjs/wallets'
 import { Vars } from '../../context'
 import { setAccount, clearAccount } from './accountStore'
 import { dispatchEvent } from '../../utils/dispatchEvent'
-import {Events} from "../../utils/events";
+import { Events } from '../../utils/events'
 
 const InitialState = {
     wallet: null,

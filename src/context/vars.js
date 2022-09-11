@@ -1,7 +1,7 @@
 // ATTENTION: THESE ARE CLIENT SIDE VARS - DO NOT PUT SECRET HERE IN
 export const Vars = {
-    IsTestnet: process.env.SAPPER_APP_IS_TESTNET,
-    IsMaintenance: process.env.SAPPER_APP_IS_MAINTENANCE,
+    IsTestnet: process.env.SAPPER_APP_IS_TESTNET === 'true',
+    IsMaintenance: process.env.SAPPER_APP_IS_MAINTENANCE === 'true',
     HostUrl: process.env.SAPPER_APP_HOST_URL,
     ContractReference: process.env.SAPPER_APP_CONTRACT_REFERENCE,
     ContractMachineCodeHashes: process.env.SAPPER_APP_MACHINE_CODE_HASH_IDS.split(','),

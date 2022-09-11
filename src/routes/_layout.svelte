@@ -2,8 +2,8 @@
     import { Vars } from '../context'
     export async function preload({ params, query }) {
         return {
-            isTestnet: Vars.IsTestnet === 'true',
-            isMaintenance: Vars.IsMaintenance === 'true'
+            isTestnet: Vars.IsTestnet,
+            isMaintenance: Vars.IsMaintenance
         }
     }
 </script>
