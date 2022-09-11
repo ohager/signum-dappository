@@ -35,8 +35,8 @@
 
 <section>
     <p class="mdc-typography--body1">
-        In order to register your application, you must provide a Burst account to which donations will be forwarded.
-        You will also have to pay a fee of {TokenContract.ActivationCosts} BURST to create the token. This fee is
+        In order to register your application, you must provide a Signum account to which donations will be forwarded.
+        You will also have to pay a fee of {TokenContract.ActivationCosts} SIGNA to create the token. This fee is
         used exclusively to create the token and no third party will receive anything.
     </p>
     <AccountInput bind:account={$registration$.account}
