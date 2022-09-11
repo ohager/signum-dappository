@@ -41,7 +41,7 @@
     $: tagFieldLabel = `Tag or Category (${characterCount(tag, MaxTagLength)})`
     $: licenseTextUrl = Licenses[$registration$.lic].url
     $: {
-        const baseLabel = 'Image (Max 256KiB)'
+        const baseLabel = 'Image (Max 256KiB, approx. 700x400 px)'
         imageFieldLabel = `${baseLabel} [No image selected yet]`
         if (selectedImageFile) {
             imageFieldLabel = `${baseLabel} [${selectedImageFile.name}]`
