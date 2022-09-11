@@ -17,7 +17,7 @@ export class LedgerService {
             this.ledger = LedgerClientFactory.createClient({
                 nodeHost: nodeHost,
             })
-            console.debug('Update node to', nodeHost)
+            console.debug('Updated node to', nodeHost)
         }
     }
 }
