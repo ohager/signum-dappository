@@ -1,6 +1,6 @@
 <script>
   import {fade} from 'svelte/transition'
-  import {goto, prefetch} from '@sapper/app'
+  import {goto} from '@sapper/app'
   import Button, {Label} from '@smui/button'
   import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar'
   import IconButton from '@smui/icon-button'
@@ -15,8 +15,6 @@
   import LoadingBar from './LoadingBar.svelte'
   import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
   import {connectXtWallet, xtWallet$} from "./xtWalletStore";
-  import {theme$} from "./appStore";
-  import {ThemeNames} from "../../utils/themeNames";
   import {isMobile} from "../../utils/isMobile";
 
   export let isMenuOpen = false
@@ -60,7 +58,7 @@
                 {/if}
             </div>
             <div class="logo" on:click={gotoHome}>
-                <Logo height="42px" dark={$theme$ === ThemeNames.Dark}/>
+                <Logo height="42px" dark/>
                 <div class="title-text">
                     <Title>The Signum dAppository</Title>
                 </div>

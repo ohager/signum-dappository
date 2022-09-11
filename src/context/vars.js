@@ -4,7 +4,7 @@ export const Vars = {
     IsMaintenance: process.env.SAPPER_APP_IS_MAINTENANCE,
     HostUrl: process.env.SAPPER_APP_HOST_URL,
     ContractReference: process.env.SAPPER_APP_CONTRACT_REFERENCE,
-    ContractMachineCodeHash: process.env.SAPPER_APP_MACHINE_CODE_HASH_ID,
+    ContractMachineCodeHashes: process.env.SAPPER_APP_MACHINE_CODE_HASH_IDS.split(','),
     ContractPollingIntervalSecs: process.env.SAPPER_APP_CONTRACT_POLLING_INTERVAL_SECS * 1000,
     UnconfirmedTxPollingIntervalSecs:
         process.env.SAPPER_APP_UNCONFIRMED_TX_POLLING_INTERVAL_SECS * 1000,

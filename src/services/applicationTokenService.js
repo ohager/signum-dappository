@@ -22,10 +22,11 @@ export class ApplicationTokenService {
     }
 
     async _fetchContractIds() {
-        const { atIds } = await Ledger.contract.getAllContractIds({
-            machineCodeHash: Vars.ContractMachineCodeHash,
-        })
-        return atIds
+        const requests = Vars.ContractMachineCodeHashes.map(machineCodeHash =>
+            Ledger.contract.getAllContractIds({ machineCodeHash }),
+        )
+        const contractIdArray = await Promise.all(requests)
+        return contractIdArray.flatMap(({atIds}) => atIds)
     }
 
     async syncTokens() {
@@ -47,7 +48,6 @@ export class ApplicationTokenService {
                     .filter(contract => contract.name.startsWith(TokenContract.Name))
                     .filter(contract => !contract.dead)
                     .map(ApplicationToken.mapFromContract)
-
 
                 await this._tokenRepository.upsertBulk(appTokens)
                 this._dispatch(Events.Progress, { total, processed: total - contractIds.length })
