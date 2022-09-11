@@ -14,7 +14,7 @@ On one hand, this platform serves as a kind of application store, but also as an
 
 ## Digital Asset using Signum Smart Contracts
 
-Each registered entry is represented through a digital (cryptographic) asset/token using Signum Smart Contracts and is stored in the 
+Each registered entry is represented through a digital (cryptographic) asset/token using [Signum Smart Contracts](./assets/SmartContract.java) and is stored in the 
 Signum blockchain. The registrar is the initial owner of that token. Therefore, the token is a so called [Non-Fungible Token](https://en.wikipedia.org/wiki/Non-fungible_token) (NFT):
 the token can only be owned by one person at a time, but it's possible to transfer it to another person, e.g. by selling it.
 
