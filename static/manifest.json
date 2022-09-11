@@ -1,8 +1,8 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "The Signum dAppository",
-	"short_name": "dAppository",
+	"name": "The Signum DAppository",
+	"short_name": "DAppository",
 	"display": "standalone",
 	"start_url": "/",
 	"icons": [

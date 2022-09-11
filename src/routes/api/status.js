@@ -1,3 +1,3 @@
 export const get = async (req, res) => {
-    res.end('dAppository is running fine...')
+    res.end('DAppository is running fine...')
 }

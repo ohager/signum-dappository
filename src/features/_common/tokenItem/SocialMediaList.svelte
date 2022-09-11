@@ -13,7 +13,7 @@
         isActive: true,
     }
 
-    $: title = `dAppository: ${token.name}`
+    $: title = `DAppository: ${token.name}`
     $: text = `This "${token.name}" is hot 🔥 stuff! Check it out!`
     $: url = isClientSide() ? `${location.origin}/token/${token.at}` : ''
 

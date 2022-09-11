@@ -89,7 +89,7 @@
 
 <Drawer variant="modal" bind:this={drawerElement} bind:open={open}>
     <Header>
-        <Title>The Signum dAppository</Title>
+        <Title>The Signum DAppository</Title>
         <Subtitle>All the Signum Apps in one place</Subtitle>
         <div class="theme-switch">
             <FormField>

@@ -9,7 +9,7 @@
         <Section>
             <Logo height="42px" />
             <div class="title-text">
-                <Title>The Signum dAppository</Title>
+                <Title>The Signum DAppository</Title>
             </div>
         </Section>
     </Row>

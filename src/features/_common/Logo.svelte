@@ -6,7 +6,7 @@
 </script>
 
 <div class="logo" style="height:{height}">
-    <img {src} alt="The Signum dAppository" role="img" />
+    <img {src} alt="The Signum DAppository" role="img" />
 </div>
 
 <style>
