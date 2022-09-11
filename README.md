@@ -5,6 +5,10 @@
 
 # Signum DAppository
 
+<p align="center">
+    <img src="./static/android-chrome-192x192.png" alt="Signum DAppository Logo">
+</p>
+
 The __Signum DAppository__ is a platform to register tools and applications for the [Signum](https://signum.network/) eco-system. 
 On one hand, this platform serves as a kind of application store, but also as an exhibition center for developers. 
 
@@ -17,3 +21,4 @@ the token can only be owned by one person at a time, but it's possible to transf
 Furthermore, the token can receive amounts from other Signum Accounts. The received amount will be redirected 
 (subtracting an inherent contract execution fee) to the owner. The number of transactions (considered as donations) 
 is counted, and the received amounts are summed up, and kept in the Smart Contract. This can be used as a success indicator. 
+
