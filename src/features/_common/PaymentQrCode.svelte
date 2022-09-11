@@ -9,10 +9,10 @@
   import {convertNumericIdToAddress} from "./convertNumericIdToAddress";
   import {Amount, FeeQuantPlanck} from "@signumjs/util";
   import {xtWallet$} from "./xtWalletStore";
-  import {Ledger} from "../../context";
   import {Events} from "../../utils/events";
   import Link from "./Link.svelte";
   import {getXtWalletLink} from "../../utils/getXtWalletLink";
+  import {ledgerService} from "../../services/ledgerService";
 
   export let recipient = ""
   export let costs = []
@@ -60,7 +60,7 @@
   async function payWithXtWallet() {
     walletOpen = true
     try {
-      const {unsignedTransactionBytes} = await Ledger.transaction.sendAmountToSingleRecipient({
+      const {unsignedTransactionBytes} = await ledgerService.client.transaction.sendAmountToSingleRecipient({
         senderPublicKey: wallet.connection.publicKey,
         feePlanck: fee.getPlanck(),
         amountPlanck: totalCosts.getPlanck(),

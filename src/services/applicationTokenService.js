@@ -1,6 +1,6 @@
 import { applicationTokenRepository } from './repositories/applicationTokenRepository.js'
 import { dispatchEvent } from '../utils/dispatchEvent'
-import { Ledger, TokenContract, Vars } from '../context'
+import { TokenContract, Vars } from '../context'
 import { ApplicationToken } from './repositories/models/applicationToken'
 import { Events } from '../utils/events'
 import { accountService } from './accountService'
@@ -8,6 +8,7 @@ import { getAccountIdFromPublicKey } from '@signumjs/crypto'
 import { unconfirmedTokenService } from './unconfirmedTokenService'
 import { finishLoading, startLoading } from '../features/_common/appStore'
 import { Amount } from '@signumjs/util'
+import { ledgerService } from './ledgerService'
 
 const MaxParallelFetches = 6
 
@@ -18,15 +19,15 @@ export class ApplicationTokenService {
     }
 
     _fetchContractDetailsChunked(contractIds) {
-        return Promise.all(contractIds.map(cid => Ledger.contract.getContract(cid)))
+        return Promise.all(contractIds.map(cid => ledgerService.client.contract.getContract(cid)))
     }
 
     async _fetchContractIds() {
         const requests = Vars.ContractMachineCodeHashes.map(machineCodeHash =>
-            Ledger.contract.getAllContractIds({ machineCodeHash }),
+            ledgerService.client.contract.getAllContractIds({ machineCodeHash }),
         )
         const contractIdArray = await Promise.all(requests)
-        return contractIdArray.flatMap(({atIds}) => atIds)
+        return contractIdArray.flatMap(({ atIds }) => atIds)
     }
 
     async syncTokens() {
@@ -95,7 +96,7 @@ export class ApplicationTokenService {
                 publicKey = keys.publicKey
             }
             const feeValue = await accountService.getSuggestedFee()
-            const result = await Ledger.contract.callContractMethod({
+            const result = await ledgerService.client.contract.callContractMethod({
                 amountPlanck: this.getActivationCostsPlanck(),
                 contractId,
                 methodHash,
@@ -157,7 +158,7 @@ export class ApplicationTokenService {
                 )
             }
 
-            let transaction = await Ledger.contract.publishContractByReference({
+            let transaction = await ledgerService.client.contract.publishContractByReference({
                 referencedTransactionHash: TokenContract.Reference,
                 activationAmountPlanck: this.getActivationCostsPlanck(),
                 feePlanck: TokenContract.CreationFee.getPlanck(),

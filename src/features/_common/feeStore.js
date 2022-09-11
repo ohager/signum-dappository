@@ -1,8 +1,8 @@
 import { readable } from 'svelte/store'
 import { isClientSide } from '../../utils/isClientSide'
-import { Ledger } from '../../context'
 import { voidFn } from '../../utils/voidFn'
 import { Amount, FeeQuantPlanck } from '@signumjs/util'
+import { ledgerService } from '../../services/ledgerService'
 
 const InitialFee = Amount.fromPlanck(FeeQuantPlanck.toString(10))
 
@@ -10,7 +10,7 @@ export const fee$ = readable(InitialFee, set => {
     if (!isClientSide()) return voidFn
 
     function fetchFee() {
-        Ledger.network.getSuggestedFees().then(({ standard }) => {
+        ledgerService.client.network.getSuggestedFees().then(({ standard }) => {
             set(Amount.fromPlanck(standard.toString(10)))
         })
     }

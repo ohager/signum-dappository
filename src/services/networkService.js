@@ -1,8 +1,8 @@
-import { Ledger } from '../context'
+import { ledgerService } from './ledgerService'
 
 export class NetworkService {
     async getCurrentBlock() {
-        const { blocks } = await Ledger.block.getBlocks(0,1,false)
+        const { blocks } = await ledgerService.client.block.getBlocks(0, 1, false)
         return blocks[0]
     }
 }

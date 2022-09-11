@@ -1,9 +1,7 @@
-import { dispatchEvent } from '../utils/dispatchEvent'
 import { unconfirmedTokensRepository } from './repositories/unconfirmedTokensRepository'
 
 export class UnconfirmedTokenService {
     constructor(repository = unconfirmedTokensRepository) {
-        this._dispatch = dispatchEvent
         this._repository = repository
     }
 
@@ -22,7 +20,7 @@ export class UnconfirmedTokenService {
     async prune(confirmedTokenIds) {
         let unconfirmedTokens = await this.getTokens()
         for (const { at } of unconfirmedTokens) {
-            if(confirmedTokenIds.includes(at)){
+            if (confirmedTokenIds.includes(at)) {
                 await this.removeToken(at)
             }
         }

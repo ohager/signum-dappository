@@ -1,17 +1,12 @@
-import { dispatchEvent } from '../utils/dispatchEvent'
-import { Ledger } from '../context'
 import { generateMasterKeys, getAccountIdFromPublicKey } from '@signumjs/crypto'
 import { Amount } from '@signumjs/util'
+import { ledgerService } from './ledgerService'
 
 export class AccountService {
-    constructor() {
-        this._dispatch = dispatchEvent
-        this._accountApi = Ledger.account
-        this._contractApi = Ledger.contract
-    }
+    constructor() {}
 
     async getSuggestedFee() {
-        const fees = await Ledger.network.getSuggestedFees()
+        const fees = await ledgerService.client.network.getSuggestedFees()
         return Amount.fromPlanck(fees.standard.toString(10))
     }
 
@@ -24,7 +19,7 @@ export class AccountService {
     }
 
     async getAccount(accountId) {
-        return Ledger.account.getAccount({ accountId })
+        return ledgerService.client.account.getAccount({ accountId })
     }
 
     async existsAccount(accountId) {
@@ -42,7 +37,7 @@ export class AccountService {
     }
 
     async getBalance(accountId) {
-        const { balanceNQT } = await this._accountApi.getAccountBalance(accountId)
+        const { balanceNQT } = await ledgerService.client.account.getAccountBalance(accountId)
         return Amount.fromPlanck(balanceNQT)
     }
 }
