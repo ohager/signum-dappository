@@ -12,7 +12,7 @@ const filterByText =
             at === loText ||
             hasText(loName, loText) ||
             hasText(loDesc, loText) ||
-            tags.map(t => t.toLowerCase()).includes(loText)
+            tags.some(tag => hasText(tag.toLowerCase(), loText))
         )
     }
 
