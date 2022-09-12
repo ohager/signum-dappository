@@ -1,11 +1,20 @@
 import { calculateRankingPoints } from './calculateRankingPoints'
 
-const hasText = (text, term) => text.toLowerCase().indexOf(term.toLowerCase()) !== -1
+const hasText = (text, term) => text.indexOf(term) !== -1
 
 const filterByText =
     text =>
-    ({ at, name, desc, tags }) =>
-        at === text || hasText(name, text) || hasText(desc, text) || tags.includes(text)
+    ({ at, name, desc, tags }) => {
+        const loText = text.toLowerCase()
+        const loName = name.toLowerCase()
+        const loDesc = desc.toLowerCase()
+        return (
+            at === loText ||
+            hasText(loName, loText) ||
+            hasText(loDesc, loText) ||
+            tags.map(t => t.toLowerCase()).includes(loText)
+        )
+    }
 
 const sorter = options => (a, b) => {
     let delta = 0

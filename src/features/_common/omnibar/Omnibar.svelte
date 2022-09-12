@@ -9,8 +9,6 @@
 
     export let text = ''
 
-    let isFilterMenuOpen = false
-
     $: placeholder = isMobile() ? 'Enter search term' : 'Enter search term, e.g. text, tag, name'
     $: optionsExpanded = $omnibarStore$.options.expanded
     $: {

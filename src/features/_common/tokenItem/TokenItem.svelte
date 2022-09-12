@@ -200,7 +200,7 @@
                                             title="Deactivate">power_off_outlined
                                 </IconButton>
                                 <IconButton class="material-icons" on:click={handleTransfer}
-                                            title="Deactivate">compare_arrows
+                                            title="Transfer">compare_arrows
                                 </IconButton>
                             {:else}
                                 <Button on:mouseenter={prefetchDeactivate} on:click={handleDeactivate}>
