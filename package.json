@@ -86,7 +86,7 @@
     "svelte": "3.24.1",
     "svelte-material-ui": "^1.0.0",
     "svelte-share-buttons-component": "^1.2.0",
-    "vercel": "21.1.0",
+    "vercel": "28.15.3",
     "vercel-sapper": "0.43.0"
   }
 }
