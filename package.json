@@ -33,7 +33,7 @@
     "publish": "now --prod"
   },
   "dependencies": {
-    "@braintree/sanitize-url": "^5.0.0",
+    "@braintree/sanitize-url": "^6.0.1",
     "@hapi/boom": "^9.1.0",
     "@signumjs/contracts": "^1.0.0-rc.30",
     "@signumjs/core": "^1.0.0-rc.30",
