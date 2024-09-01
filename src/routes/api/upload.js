@@ -5,10 +5,9 @@ import { serializeResponse } from './__helpers__/serializeResponse'
 import { pinFileWithWeb3Storage } from './__helpers__/pinFileWithWeb3Storage'
 const AcceptedFormats = ['.png', '.jpg', '.jpeg', '.webp', '.svg']
 
-const IpfsGateways = {
-    pinata: 'https://gateway.pinata.cloud/ipfs',
-    ipfs: 'https://ipfs.io/ipfs',
-    cloudflare: 'https://cloudflare-ipfs.com/ipfs',
+let IpfsGateway = process.env.SAPPER_APP_IPFS_URL
+if (!IpfsGateway.endsWith('/')) {
+    IpfsGateway += '/'
 }
 
 const upload = multer({
@@ -51,7 +50,7 @@ export const post = async (req, res) => {
 
             const response = {
                 cid: data.IpfsHash,
-                urls: Object.keys(IpfsGateways).map(k => `${IpfsGateways[k]}/${data.IpfsHash}`),
+                url: IpfsGateway + data.IpfsHash,
             }
 
             res.end(serializeResponse(response))

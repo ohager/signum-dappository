@@ -24,7 +24,13 @@
 import MagicMapper from 'magic-mapper'
 import { ContractDataView } from '@signumjs/contracts'
 import { TokenStatus } from '../../../utils/tokenStatus'
-import {Vars} from "../../../context";
+import { Vars } from '../../../context'
+
+let IpfsGateway = process.env.SAPPER_APP_IPFS_URL
+
+if (!IpfsGateway.endsWith('/')) {
+    IpfsGateway += '/'
+}
 
 const mapper = new MagicMapper({
     exclusive: true,
@@ -52,7 +58,12 @@ const mappingSchema = {
 const infoMappingSchema = {
     name: MagicMapper.Direct,
     desc: MagicMapper.Direct,
-    img: MagicMapper.Direct,
+    img: url => {
+        if (url.startsWith('https://cloudflare-ipfs.com/ipfs')) {
+            return url.replace('https://cloudflare-ipfs.com/', IpfsGateway)
+        }
+        return url
+    },
     repo: MagicMapper.Direct,
     tags: MagicMapper.Direct,
 }

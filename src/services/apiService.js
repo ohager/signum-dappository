@@ -22,7 +22,7 @@ class ApiService {
                 },
                 onUploadProgress: onProgressFn,
             })
-            return response.result.urls[2]
+            return response.result.url
         } catch (e) {
             let message = e.message
             if (e instanceof HttpError) {
